@@ -180,6 +180,10 @@ OpenCode is the first installation target. Packaging must support:
 Other compatible runtimes are adapters over the same canonical skills, not
 separate edited copies.
 
+The first delivery path is a cross-runtime npm initializer that materializes
+selected skills under `.agents/skills/`, not a runtime-specific plugin. See
+[`INSTALLATION_ARCHITECTURE.md`](INSTALLATION_ARCHITECTURE.md).
+
 Exit condition: clean install, update, selective install, and uninstall tests
 pass on supported platforms.
 

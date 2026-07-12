@@ -44,7 +44,10 @@ See [`docs/PLAN.md`](docs/PLAN.md) for the staged plan and
 Linux package design is documented in
 [`docs/LINUX_PACKAGE.md`](docs/LINUX_PACKAGE.md). Model-aware progressive
 disclosure and enforcement rules are documented in
-[`docs/SKILL_LOADING_POLICY.md`](docs/SKILL_LOADING_POLICY.md).
+[`docs/SKILL_LOADING_POLICY.md`](docs/SKILL_LOADING_POLICY.md). The cross-runtime
+npm initializer architecture is documented in
+[`docs/INSTALLATION_ARCHITECTURE.md`](docs/INSTALLATION_ARCHITECTURE.md). The
+current and planned work is tracked in [`docs/WORK_QUEUE.md`](docs/WORK_QUEUE.md).
 
 ## Research Workspace
 
