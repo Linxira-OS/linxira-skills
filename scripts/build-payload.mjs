@@ -7,10 +7,25 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const sourceRoot = join(root, 'skills');
 const payloadRoot = join(root, 'payload');
 const payloadSkills = join(payloadRoot, 'skills');
-const lifeSciencesProfile = JSON.parse(await readFile(join(root, 'profiles', 'life-sciences-core.json'), 'utf8'));
+const reviewedProfiles = [
+  {
+    manifest: JSON.parse(await readFile(join(root, 'profiles', 'life-sciences-core.json'), 'utf8')),
+    sourceRoot: join(root, 'sources', 'bioSkills'),
+    catalogSource: 'bioSkills',
+    noticeName: 'bioSkills-MIT.txt',
+  },
+  {
+    manifest: JSON.parse(await readFile(join(root, 'profiles', 'html-reporting-core.json'), 'utf8')),
+    sourceRoot: join(root, 'sources', 'html-anything', 'next', 'src', 'lib', 'templates', 'skills'),
+    catalogSource: 'html-anything',
+    noticeName: 'html-anything-Apache-2.0.txt',
+  },
+];
 
-if (lifeSciencesProfile.status !== 'approved-for-packaging') {
-  throw new Error('life-sciences-core is not approved for packaging.');
+for (const { manifest } of reviewedProfiles) {
+  if (manifest.status !== 'approved-for-packaging') {
+    throw new Error(`${manifest.name} is not approved for packaging.`);
+  }
 }
 
 const entries = await readdir(sourceRoot, { withFileTypes: true });
@@ -31,44 +46,54 @@ for (const directory of skillDirectories) {
 }
 
 const coreSkillNames = catalog.map(({ name }) => name);
-const lifeSciencesSkillNames = [...coreSkillNames];
-for (const skill of lifeSciencesProfile.skills) {
-  assertRelativeSkillPath(skill.relativePath);
-  const source = join(root, 'sources', 'bioSkills', skill.relativePath);
-  const body = await readFile(join(source, 'SKILL.md'), 'utf8');
-  const name = frontmatterValue(body, 'name');
-  const description = frontmatterValue(body, 'description');
-  const bodySha256 = createHash('sha256').update(body).digest('hex');
-  if (name !== skill.name || !description || bodySha256 !== skill.bodySha256) {
-    throw new Error(`Reviewed source skill changed or is invalid: ${skill.relativePath}`);
+const payloadProfiles = { core: { skills: coreSkillNames } };
+const reviewedSkills = [];
+const packagedSkillNames = new Set(coreSkillNames);
+for (const profile of reviewedProfiles) {
+  const profileSkillNames = [...coreSkillNames];
+  const sourceTrack = profile.manifest.sourceTracks[0];
+  for (const skill of profile.manifest.skills) {
+    assertRelativeSkillPath(skill.relativePath);
+    const source = join(profile.sourceRoot, skill.relativePath);
+    const body = await readFile(join(source, 'SKILL.md'), 'utf8');
+    const name = frontmatterValue(body, 'name');
+    const description = frontmatterValue(body, 'description');
+    const bodySha256 = createHash('sha256').update(body).digest('hex');
+    if (name !== skill.name || !description || bodySha256 !== skill.bodySha256) {
+      throw new Error(`Reviewed source skill changed or is invalid: ${skill.relativePath}`);
+    }
+    if (packagedSkillNames.has(name)) {
+      throw new Error(`Duplicate packaged skill name: ${name}`);
+    }
+    packagedSkillNames.add(name);
+    profileSkillNames.push(name);
+    reviewedSkills.push({ source, name });
+    catalog.push({
+      name,
+      description,
+      source: profile.catalogSource,
+      sourceRevision: sourceTrack.revision,
+      license: sourceTrack.license,
+      loadPolicy: skill.loadPolicy,
+      riskTags: skill.riskTags,
+    });
   }
-  if (lifeSciencesSkillNames.includes(name)) {
-    throw new Error(`Duplicate profile skill name: ${name}`);
-  }
-  lifeSciencesSkillNames.push(name);
-  catalog.push({
-    name,
-    description,
-    source: 'bioSkills',
-    sourceRevision: lifeSciencesProfile.sourceTracks[0].revision,
-    license: lifeSciencesProfile.sourceTracks[0].license,
-    loadPolicy: skill.loadPolicy,
-    riskTags: skill.riskTags,
-  });
+  payloadProfiles[profile.manifest.name] = { skills: profileSkillNames };
 }
 
 await rm(payloadRoot, { recursive: true, force: true });
 await mkdir(payloadRoot, { recursive: true });
 await cp(sourceRoot, payloadSkills, { recursive: true });
-for (const skill of lifeSciencesProfile.skills) {
-  const source = join(root, 'sources', 'bioSkills', skill.relativePath);
+for (const skill of reviewedSkills) {
   const target = join(payloadSkills, skill.name);
   await mkdir(target, { recursive: true });
-  await cp(join(source, 'SKILL.md'), join(target, 'SKILL.md'));
+  await cp(join(skill.source, 'SKILL.md'), join(target, 'SKILL.md'));
 }
 await mkdir(join(payloadRoot, 'notices'), { recursive: true });
-await cp(join(root, lifeSciencesProfile.sourceTracks[0].notice), join(payloadRoot, 'notices', 'bioSkills-MIT.txt'));
-await writeFile(join(payloadRoot, 'profiles.json'), `${JSON.stringify({ version: 1, profiles: { core: { skills: coreSkillNames }, 'life-sciences-core': { skills: lifeSciencesSkillNames } } }, null, 2)}\n`);
+for (const profile of reviewedProfiles) {
+  await cp(join(root, profile.manifest.sourceTracks[0].notice), join(payloadRoot, 'notices', profile.noticeName));
+}
+await writeFile(join(payloadRoot, 'profiles.json'), `${JSON.stringify({ version: 1, profiles: payloadProfiles }, null, 2)}\n`);
 await writeFile(join(payloadRoot, 'catalog.json'), `${JSON.stringify({ version: 1, skills: catalog }, null, 2)}\n`);
 
 function frontmatterValue(body, key) {

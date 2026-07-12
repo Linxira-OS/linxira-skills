@@ -2,8 +2,8 @@
 
 ## Decision
 
-`profiles/html-reporting-core.json` defines a reviewed but not yet packaged
-optional profile. It extends `core` with three self-contained, Apache-2.0
+`profiles/html-reporting-core.json` defines a reviewed optional profile. It
+extends `core` with three self-contained, Apache-2.0
 `html-anything` skill bodies at revision
 `aea749837d780f1da6261f2ed777d7e107231f5f`:
 
@@ -47,8 +47,7 @@ the payload.
 
 ## Packaging Gate
 
-`PKG-009` must verify the three hashes during payload build, copy only their
-`SKILL.md` bodies, include the Apache-2.0 notice, and add a fixture proving
-`init --profile html-reporting-core` installs and uninstalls exactly these
-three additions. This profile remains opt-in and does not change the default
-`core` or `life-sciences-core` payloads.
+The payload builder verifies the three hashes, copies only their `SKILL.md`
+bodies, includes the Apache-2.0 notice, and has a fixture for the full
+`init --profile html-reporting-core` lifecycle. This profile remains opt-in
+and does not change the default `core` or `life-sciences-core` payloads.

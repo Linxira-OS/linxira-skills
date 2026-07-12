@@ -67,7 +67,7 @@ they are present in this repository.
 | `PKG-006` | done | Implement status, update, uninstall, and dry-run behavior. | Fixture tests prove divergence is reported, `--force` is required to replace it, and uninstall preserves unrelated `AGENTS.md` and `.agents` content. |
 | `PKG-007` | planned | Build and publish the first npm package. | Package-content check, clean install/update/uninstall smoke tests, versioned changelog, and npm provenance records pass. |
 | `PKG-008` | done | Materialize the reviewed `life-sciences-core` profile. | Payload verifies and copies only four hash-pinned MIT `SKILL.md` bodies, includes `bioSkills-MIT.txt`, and fixture tests prove 18-skill profile selection and ownership behavior. |
-| `PKG-009` | planned | Materialize the reviewed `html-reporting-core` profile. | Payload verifies and copies only three hash-pinned Apache-2.0 `SKILL.md` bodies, includes the Apache notice, and fixture tests prove opt-in lifecycle behavior. |
+| `PKG-009` | done | Materialize the reviewed `html-reporting-core` profile. | Payload verifies and copies only three hash-pinned Apache-2.0 `SKILL.md` bodies, includes `html-anything-Apache-2.0.txt`, and fixture tests prove 17-skill opt-in lifecycle behavior. |
 
 ## Horizontal Capability Packages
 
