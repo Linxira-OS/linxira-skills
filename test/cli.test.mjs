@@ -80,3 +80,29 @@ test('init never replaces a same-named user skill directory', async (context) =>
   assert.equal(await readFile(join(userSkill, 'SKILL.md'), 'utf8'), '# User-owned skill\n');
   assert.equal(existsSync(join(root, '.linxira', 'manifest.json')), false);
 });
+
+test('life-sciences-core materializes only its reviewed additions', async (context) => {
+  const root = await fixture();
+  context.after(() => rm(root, { recursive: true, force: true }));
+  const reviewedSkills = [
+    'bio-read-sequences',
+    'bio-sequence-statistics',
+    'bio-structural-biology-structure-navigation',
+    'bio-structural-biology-alphafold-predictions',
+  ];
+
+  assert.equal(await run(['init', '--profile', 'life-sciences-core'], root, output()), 0);
+  const manifestPath = join(root, '.linxira', 'manifest.json');
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+  assert.equal(manifest.profile, 'life-sciences-core');
+  assert.equal(Object.keys(manifest.skills).length, 18);
+  for (const skill of reviewedSkills) {
+    assert.equal(existsSync(join(root, '.agents', 'skills', skill, 'SKILL.md')), true);
+  }
+  assert.equal(existsSync(join(root, '.agents', 'skills', 'bio-read-sequences', 'examples')), false);
+  assert.equal(await run(['status'], root, output()), 0);
+  assert.equal(await run(['uninstall'], root, output()), 0);
+  for (const skill of reviewedSkills) {
+    assert.equal(existsSync(join(root, '.agents', 'skills', skill)), false);
+  }
+});

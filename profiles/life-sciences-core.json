@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "reviewed-not-packaged",
+  "status": "approved-for-packaging",
   "name": "life-sciences-core",
   "baseProfile": "core",
   "sourceTracks": [

@@ -31,9 +31,11 @@ tree:
 | `html-anything` bodies | Not by default | The root is Apache-2.0, but 22 templates cite external examples or inspiration. |
 | Proprietary/vendor reference material | No | It is reference-only or has incompatible terms. |
 
-The target first npm release ships the 14 metadata-audited first-party skills
-and a compact catalog of permitted metadata. It does not publish the full
-research archive merely because that archive exists in a development clone.
+The target first npm release ships the 14 metadata-audited first-party skills,
+the four hash-pinned MIT entries from `life-sciences-core`, their required MIT
+notice, and a compact catalog of permitted metadata. It does not publish the
+full research archive merely because that archive exists in a development
+clone.
 
 ## Package Shape
 
@@ -223,8 +225,8 @@ The repository root now contains the provisional
 `@linxira-science-skills/cli` package. It has no runtime dependencies and
 uses Node's built-in modules for profile materialization, manifest hashing,
 marker updates, and conflict checks. `scripts/build-payload.mjs` generates the
-ignored `payload/` directory from the 14 audited first-party skills before
-tests and packing.
+ignored `payload/` directory from 14 audited first-party skills plus the four
+hash-pinned MIT entries in `life-sciences-core` before tests and packing.
 
 The local Node 24 fixture suite verifies `init`, `status`, `update`,
 `uninstall`, dry runs, preserved `AGENTS.md` text, modified-skill protection,

@@ -7,9 +7,9 @@ life-science expansion. It extends the first-party `core` profile with four
 MIT-licensed `bioSkills` entries at source revision
 `24f0694a125e53f04a7c66a54ba9b81461b7227f`.
 
-The profile is **reviewed, not packaged**. It must not be materialized by the
-CLI until `PKG-008` copies exactly the listed bodies, verifies their hashes,
-and includes the upstream MIT notice in the npm payload.
+The profile is approved for packaging. The payload builder copies exactly the
+listed bodies, verifies their hashes, and includes the upstream MIT notice
+before the CLI materializes it.
 
 ## Included Skills
 
