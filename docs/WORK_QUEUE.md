@@ -48,8 +48,8 @@ dependency of this project.
 | ID | Status | Task | Completion evidence |
 | --- | --- | --- | --- |
 | `SRC-001` | done | Preserve `bioSkills`, `awesome-bio-agent-skills`, and `html-anything` as Git submodules with source revisions and sync reporting. | `scripts/sync-source-tracks.ps1` reports all three tracks and source worktrees are clean. |
-| `SRC-002` | planned | Build a generated descriptor catalog for all source tracks. | Catalog contains stable identity, source revision, frontmatter summary, license state, categories, risks, and body hash without loading all bodies into model context. |
-| `SRC-003` | planned | Review the first `life-sciences-core` profile. | Every selected skill has a source record, scientific/operational review, and safe fixture or smoke-test result. |
+| `SRC-002` | done | Build a generated descriptor catalog for all source tracks. | `catalog/source-skills.json` has 2,348 unique records across all three pinned revisions, with frontmatter summaries, license evidence, risk arrays, and SHA-256 body hashes. |
+| `SRC-003` | active | Review the first `life-sciences-core` profile. | Every selected skill has a source record, scientific/operational review, and safe fixture or smoke-test result. |
 | `SRC-004` | planned | Define the `html-anything` materialization profile. | Review its 81 skills and 22 externally cited entries; publish only entries with acceptable provenance and license state. |
 | `SRC-005` | planned | Establish discipline-pack expansion order after life sciences. | Each future discipline has a scope, source registry, capability matrix, and non-overlap boundary with horizontal packages. |
 
