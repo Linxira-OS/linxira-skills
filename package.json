@@ -1,0 +1,26 @@
+{
+  "name": "@linxira-science-skills/cli",
+  "version": "0.1.0",
+  "description": "Cross-runtime initializer for approved Linxira Science Skills profiles.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "linxira-skills": "./dist/linxira-skills.js"
+  },
+  "files": [
+    "dist/",
+    "payload/",
+    "templates/",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:payload": "node scripts/build-payload.mjs",
+    "prepack": "npm run build:payload",
+    "test": "npm run build:payload && node --test test/**/*.test.mjs",
+    "pack:check": "npm pack --dry-run"
+  }
+}

@@ -1,0 +1,7 @@
+<!-- linxira-skills:start -->
+## Linxira Skills
+
+Project-local skills are materialized under `.agents/skills/`. Use the runtime
+skill tool to load a matching skill on demand. Do not load every skill body;
+follow the selected skill's risk and completion requirements before action.
+<!-- linxira-skills:end -->

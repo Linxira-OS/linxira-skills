@@ -1,7 +1,7 @@
 # Installation Architecture
 
-> Status: proposed design. The npm package and `linxira-skills` CLI described
-> here do not exist yet.
+> Status: local implementation exists. The package has not been published and
+> its release test matrix still needs Linux and macOS verification.
 
 ## Decision
 
@@ -216,3 +216,20 @@ cross-runtime replacement or an explicit compatibility declaration.
 The first implementation target is the initializer contract, not browser,
 Google, AlphaFold, cloud, or other service connectors. Those remain separate
 capabilities and must not be smuggled into a generic installer.
+
+## Current Implementation
+
+The repository root now contains the provisional
+`@linxira-science-skills/cli` package. It has no runtime dependencies and
+uses Node's built-in modules for profile materialization, manifest hashing,
+marker updates, and conflict checks. `scripts/build-payload.mjs` generates the
+ignored `payload/` directory from the 14 audited first-party skills before
+tests and packing.
+
+The local Node 24 fixture suite verifies `init`, `status`, `update`,
+`uninstall`, dry runs, preserved `AGENTS.md` text, modified-skill protection,
+and non-managed directory protection. `npm pack --dry-run` verifies that the
+tarball contains only the CLI, generated first-party payload, template,
+README, and license. `.github/workflows/cli-validation.yml` runs the same
+fixture suite and package check on Windows, Linux, and macOS before a release
+is marked complete.

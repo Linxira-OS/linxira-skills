@@ -18,9 +18,9 @@ Status values:
 
 | ID | Status | Task | Completion evidence |
 | --- | --- | --- | --- |
-| `MIG-001` | active | Inventory useful skills from the previous `extendai-lab-v1` repository without modifying that repository. | A migration ledger identifies candidate path, original source, license, runtime dependencies, overlap, and disposition. |
-| `PKG-001` | planned | Implement the npm CLI initializer described in `INSTALLATION_ARCHITECTURE.md`. | Clean fixture repositories pass `init`, `status`, `update`, and `uninstall` on Windows, Linux, and macOS. |
-| `PKG-002` | planned | Define the first redistributable `core` payload and npm release manifest. | `npm pack --dry-run` contains only approved payload files, notices, and generated catalog metadata. |
+| `MIG-001` | done | Inventory useful skills from the previous `extendai-lab-v1` repository without modifying that repository. | `MIGRATION_LEDGER.md` inventories all 25 direct candidates at donor revision `254ec96361cc9d21b5bf9f8c471def93e377382c`; no donor body is approved for copying. |
+| `PKG-001` | blocked | Implement the npm CLI initializer described in `INSTALLATION_ARCHITECTURE.md`. | Local Node 24 fixtures pass `init`, `status`, `update`, and `uninstall`; `.github/workflows/cli-validation.yml` defines the required Windows, Linux, and macOS matrix. A pushed workflow run must pass before completion. |
+| `PKG-002` | done | Define the first redistributable `core` payload and npm release manifest. | `payload/` is generated from the 14 audited first-party skills; `npm pack --dry-run` reports only approved payload files, template, README, license, and CLI. |
 
 Only one item may be `active`. Move the next item to `active` before beginning
 work and update its row before ending a session.
@@ -37,11 +37,11 @@ dependency of this project.
 
 | ID | Status | Candidate group | Required review | Next action |
 | --- | --- | --- | --- | --- |
-| `MIG-002` | planned | Direct engineering skills under `src/skills/`: `simplify`, `codemap`, `test-driven-development`, `systematic-debugging`, `code-review`, `plan-protocol`, and related review/planning skills. | Original source, license, overlap with current `scientific-software-engineering`, token cost, and cross-runtime assumptions. | Create a per-skill migration ledger and select a small first batch. |
+| `MIG-002` | planned | First-party rewrites for useful direct engineering concepts: requirements discovery, plan review, code review, review-feedback handling, debugging, test-first implementation, and simplification. | Independent expression, token cost, overlap with `scientific-software-engineering`, and cross-runtime assumptions are reviewed. | Extract a small requirements-only first batch from `MIGRATION_LEDGER.md`; do not copy donor bodies. |
 | `MIG-003` | planned | Paper and research-writing candidates: `academic-writing`, `document-formatting`, and academic resource skills. | Original source, license, document tool dependencies, citation/integrity contract, and overlap with Nature/Open Science candidates. | Identify original repositories before copying any body. |
 | `MIG-004` | planned | Browser candidates: `agent-browser`, `playwright`, `playwright-cli`, and `dev-browser`. | Original repository, binary/MCP dependency, browser profile isolation, account and upload policy, and overlap with `research-web`. | Select one isolated automation path and one opt-in logged-in browser path. |
 | `MIG-005` | planned | UI and presentation skills: `frontend-ui-ux`, `frontend-philosophy`, `ai-slop-remover`, and slide/document helpers. | License, design-system scope, runtime assets, and overlap with `html-anything`. | Keep only skills with distinct reusable value. |
-| `MIG-006` | blocked | `karpathy-guidelines` migration. | The recalled upstream has no detected license. | Obtain an explicit reusable license or write a new first-party equivalent without copied expression. |
+| `MIG-006` | blocked | `karpathy-guidelines` migration. | Donor frontmatter claims MIT, but its cited upstream currently reports no repository license. | Obtain an explicit reusable license or write a new first-party equivalent without copied expression. |
 
 ## Source Tracks And Profiles
 
@@ -62,9 +62,9 @@ they are present in this repository.
 | ID | Status | Task | Completion evidence |
 | --- | --- | --- | --- |
 | `PKG-003` | done | Define cross-runtime materialization under `.agents/skills/`. | `INSTALLATION_ARCHITECTURE.md` records OpenCode/Codex discovery, marker updates, ownership manifest, profiles, and safe update behavior. |
-| `PKG-004` | planned | Create the CLI skeleton and marker-block updater. | A fixture test proves an existing `AGENTS.md` is updated idempotently without changing text outside Linxira markers. |
-| `PKG-005` | planned | Implement profile materialization and ownership manifest. | The initializer copies only the selected approved profile, records hashes in `.linxira/manifest.json`, and never overwrites user-owned skill directories. |
-| `PKG-006` | planned | Implement status, update, uninstall, and dry-run behavior. | Divergent local edits are reported; `--force` is required to replace them; uninstall leaves unrelated `.agents` content intact. |
+| `PKG-004` | done | Create the CLI skeleton and marker-block updater. | Node fixture tests prove marker upsert/remove preserve user text outside Linxira markers and malformed markers are rejected. |
+| `PKG-005` | done | Implement profile materialization and ownership manifest. | The initializer generates `core` from 14 audited first-party skills, records directory hashes in `.linxira/manifest.json`, and rejects same-named user directories. |
+| `PKG-006` | done | Implement status, update, uninstall, and dry-run behavior. | Fixture tests prove divergence is reported, `--force` is required to replace it, and uninstall preserves unrelated `AGENTS.md` and `.agents` content. |
 | `PKG-007` | planned | Build and publish the first npm package. | Package-content check, clean install/update/uninstall smoke tests, versioned changelog, and npm provenance records pass. |
 
 ## Horizontal Capability Packages
