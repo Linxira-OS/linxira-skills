@@ -1,0 +1,111 @@
+package: life-sciences
+status: full-source-catalog
+profile: core-bioinformatics
+source_tracks:
+  - id: bioskills
+    repository: GPTomics/bioSkills
+    url: https://github.com/GPTomics/bioSkills
+    local_fork: BOHUYESHAN-APB/bioSkills
+    local_path: sources/bioSkills
+    revision: 24f0694a125e53f04a7c66a54ba9b81461b7227f
+    retrieved: 2026-07-12
+    license: MIT
+    authors: GPTomics
+    discovery_glob: "**/SKILL.md"
+    physical_group: category
+    default_state: enabled
+  - id: awesome-bio-agent-skills
+    repository: BioTender-max/awesome-bio-agent-skills
+    url: https://github.com/BioTender-max/awesome-bio-agent-skills
+    local_fork: BOHUYESHAN-APB/awesome-bio-agent-skills
+    local_path: sources/awesome-bio-agent-skills/skills
+    revision: 8cbdd18837aa6296c4e77616a03b323bd69b57b1
+    retrieved: 2026-07-11
+    license: CC0-1.0 for collection/index; nested licenses vary
+    authors: BioTender-max and original nested projects
+    discovery_glob: "**/SKILL.md"
+    physical_group: source_repo
+    logical_index: sources/awesome-bio-agent-skills/bioskill_index_v3.csv
+    default_state: indexed-with-provenance-gate
+selection_rules:
+  - common-analysis-path
+  - focused-trigger-and-contract
+  - identifiable-tool-or-data-source
+  - non-clinical-first-release
+  - no-duplicate-project-capability
+candidates:
+  - path: sequence-io/read-sequences
+    role: FASTA/FASTQ/GenBank parsing
+    disposition: priority-review
+  - path: sequence-io/sequence-statistics
+    role: sequence collection QC and summary
+    disposition: priority-review
+  - path: read-qc/quality-reports
+    role: initial FASTQ QC and MultiQC interpretation
+    disposition: priority-review
+  - path: read-qc/fastp-workflow
+    role: integrated Illumina preprocessing
+    disposition: priority-review
+  - path: alignment-files/sam-bam-basics
+    role: SAM/BAM/CRAM inspection and conversion
+    disposition: priority-review
+  - path: alignment-files/alignment-validation
+    role: post-alignment QC
+    disposition: priority-review
+  - path: variant-calling/vcf-basics
+    role: VCF/BCF inspection and query
+    disposition: priority-review
+  - path: variant-calling/vcf-manipulation
+    role: VCF merge, intersection, and subset
+    disposition: priority-review
+  - path: variant-calling/variant-normalization
+    role: normalized variant representation
+    disposition: priority-review
+  - path: variant-calling/variant-annotation
+    role: research variant consequence annotation
+    disposition: priority-review
+  - path: rna-quantification/alignment-free-quant
+    role: Salmon or kallisto transcript quantification
+    disposition: priority-review
+  - path: rna-quantification/count-matrix-qc
+    role: count-matrix QC before DE
+    disposition: priority-review
+  - path: differential-expression/deseq2-basics
+    role: count-based differential expression
+    disposition: priority-review
+  - path: differential-expression/de-results
+    role: DE filtering, annotation, and export
+    disposition: priority-review
+  - path: pathway-analysis/gsea
+    role: ranked-list enrichment
+    disposition: priority-review
+  - path: single-cell/data-io
+    role: AnnData and Seurat object I/O
+    disposition: priority-review
+  - path: single-cell/preprocessing
+    role: scRNA-seq QC and normalization
+    disposition: priority-review
+  - path: single-cell/clustering
+    role: dimensional reduction and clustering
+    disposition: priority-review
+  - path: single-cell/markers-annotation
+    role: marker discovery and cell-type annotation
+    disposition: priority-review
+  - path: metagenomics/kraken-classification
+    role: shotgun metagenomic classification
+    disposition: priority-review
+  - path: metagenomics/abundance-estimation
+    role: Bracken abundance estimation
+    disposition: priority-review
+  - path: structural-biology/alphafold-predictions
+    role: AlphaFold DB retrieval and confidence interpretation
+    disposition: priority-review
+  - path: experimental-design/power-analysis
+    role: sequencing-study power and sample planning
+    disposition: priority-review
+  - path: workflow-management/snakemake-workflows
+    role: reproducible workflow construction
+    disposition: priority-review
+deferred:
+  - clinical-and-medical execution without a dedicated safety and provenance state
+  - paid, account-bound, or controlled-data services without explicit user approval

@@ -1,0 +1,12 @@
+[submodule "sources/bioSkills"]
+	path = sources/bioSkills
+	url = https://github.com/BOHUYESHAN-APB/bioSkills.git
+	branch = main
+[submodule "sources/awesome-bio-agent-skills"]
+	path = sources/awesome-bio-agent-skills
+	url = https://github.com/BOHUYESHAN-APB/awesome-bio-agent-skills.git
+	branch = main
+[submodule "sources/html-anything"]
+	path = sources/html-anything
+	url = https://github.com/nexu-io/html-anything.git
+	branch = main
