@@ -164,6 +164,14 @@ foreach ($track in $tracks) {
             RiskTags = Get-RiskTags $frontmatter $content $track.Id
             LicenseState = $license.State
             LicenseEvidence = $license.Evidence
+            ExampleSource = if ($frontmatter.Contains('example_source_url')) {
+                [ordered]@{
+                    Url = $frontmatter['example_source_url']
+                    Label = $frontmatter['example_source_label']
+                }
+            } else {
+                $null
+            }
             HasFrontmatter = ($frontmatter.Count -gt 0)
             BodySha256 = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
         }
@@ -171,7 +179,7 @@ foreach ($track in $tracks) {
 }
 
 $catalog = [ordered]@{
-    SchemaVersion = 1
+    SchemaVersion = 2
     Tracks = $trackDescriptors
     Skills = @($skills | Sort-Object Track, RelativePath)
 }

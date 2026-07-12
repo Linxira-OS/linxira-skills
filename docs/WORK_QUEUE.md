@@ -50,7 +50,7 @@ dependency of this project.
 | `SRC-001` | done | Preserve `bioSkills`, `awesome-bio-agent-skills`, and `html-anything` as Git submodules with source revisions and sync reporting. | `scripts/sync-source-tracks.ps1` reports all three tracks and source worktrees are clean. |
 | `SRC-002` | done | Build a generated descriptor catalog for all source tracks. | `catalog/source-skills.json` has 2,348 unique records across all three pinned revisions, with frontmatter summaries, license evidence, risk arrays, and SHA-256 body hashes. |
 | `SRC-003` | done | Review the first `life-sciences-core` profile. | `profiles/life-sciences-core.json` pins four MIT `bioSkills` bodies and hashes; `LIFE_SCIENCES_CORE_REVIEW.md` records scientific limits and safe smoke tests. |
-| `SRC-004` | planned | Define the `html-anything` materialization profile. | Review its 81 skills and 22 externally cited entries; publish only entries with acceptable provenance and license state. |
+| `SRC-004` | done | Define the `html-anything` materialization profile. | `HTML_ANYTHING_PROFILE_REVIEW.md` classifies all 81 entries; `html-reporting-core` pins three self-contained Apache-2.0 bodies, excludes 22 cited entries and one external-write template, and leaves 55 source-only. |
 | `SRC-005` | planned | Establish discipline-pack expansion order after life sciences. | Each future discipline has a scope, source registry, capability matrix, and non-overlap boundary with horizontal packages. |
 
 `awesome-bio-agent-skills` and unreviewed `html-anything` entries remain local
@@ -67,6 +67,7 @@ they are present in this repository.
 | `PKG-006` | done | Implement status, update, uninstall, and dry-run behavior. | Fixture tests prove divergence is reported, `--force` is required to replace it, and uninstall preserves unrelated `AGENTS.md` and `.agents` content. |
 | `PKG-007` | planned | Build and publish the first npm package. | Package-content check, clean install/update/uninstall smoke tests, versioned changelog, and npm provenance records pass. |
 | `PKG-008` | done | Materialize the reviewed `life-sciences-core` profile. | Payload verifies and copies only four hash-pinned MIT `SKILL.md` bodies, includes `bioSkills-MIT.txt`, and fixture tests prove 18-skill profile selection and ownership behavior. |
+| `PKG-009` | planned | Materialize the reviewed `html-reporting-core` profile. | Payload verifies and copies only three hash-pinned Apache-2.0 `SKILL.md` bodies, includes the Apache notice, and fixture tests prove opt-in lifecycle behavior. |
 
 ## Horizontal Capability Packages
 

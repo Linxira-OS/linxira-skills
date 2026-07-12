@@ -1,8 +1,9 @@
 # Source Catalog
 
 `source-skills.json` is generated, versioned metadata for the three pinned
-source tracks. It contains descriptors and SHA-256 body hashes, not skill
-bodies. Regenerate it after an approved source-track revision change:
+source tracks. It contains descriptors, declared example-source provenance, and
+SHA-256 body hashes, not skill bodies. Regenerate it after an approved
+source-track revision change:
 
 ```powershell
 pwsh -File scripts/build-source-catalog.ps1

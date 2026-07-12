@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "status": "reviewed-not-packaged",
+  "name": "html-reporting-core",
+  "baseProfile": "core",
+  "sourceTracks": [
+    {
+      "id": "html-anything",
+      "revision": "aea749837d780f1da6261f2ed777d7e107231f5f",
+      "license": "Apache-2.0",
+      "notice": "sources/html-anything/LICENSE"
+    }
+  ],
+  "skills": [
+    {
+      "name": "dashboard",
+      "relativePath": "dashboard",
+      "bodySha256": "703abde072a7da4fcce5890a15a7f130cd6e11ad22bb3def7af184a180422f70",
+      "loadPolicy": "conditional",
+      "riskTags": ["local-data"]
+    },
+    {
+      "name": "data-report",
+      "relativePath": "data-report",
+      "bodySha256": "7809a77921b2c4d33e70a4ad9fb2054baa3dbd2b997922b59abff19fec69d601",
+      "loadPolicy": "required",
+      "riskTags": ["local-data", "external-network-read-optional", "no-fabrication"]
+    },
+    {
+      "name": "docs-page",
+      "relativePath": "docs-page",
+      "bodySha256": "31177c1111b9b584011292c243afaed1da0b719973ce213b662a7c7675d39c36",
+      "loadPolicy": "conditional",
+      "riskTags": ["local-content"]
+    }
+  ]
+}
