@@ -1,6 +1,9 @@
 ---
 name: hpc-bioinformatics-operations
 description: Use when running, scaling, scheduling, monitoring, or troubleshooting bioinformatics and scientific workloads on Linux HPC clusters, Slurm, PBS, LSF, SGE, shared filesystems, modules, Conda, Apptainer/Singularity, GPUs, arrays, or workflow engines.
+skill_class: contract
+load_policy: required
+risk_tags: [expensive, privileged, remote-compute]
 ---
 
 # HPC Bioinformatics Operations

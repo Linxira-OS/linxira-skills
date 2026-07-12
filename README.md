@@ -42,7 +42,9 @@ Before packaging, the project will produce:
 See [`docs/PLAN.md`](docs/PLAN.md) for the staged plan and
 [`docs/THIRD_PARTY.md`](docs/THIRD_PARTY.md) for provenance requirements. The
 Linux package design is documented in
-[`docs/LINUX_PACKAGE.md`](docs/LINUX_PACKAGE.md).
+[`docs/LINUX_PACKAGE.md`](docs/LINUX_PACKAGE.md). Model-aware progressive
+disclosure and enforcement rules are documented in
+[`docs/SKILL_LOADING_POLICY.md`](docs/SKILL_LOADING_POLICY.md).
 
 ## Research Workspace
 

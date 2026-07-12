@@ -1,6 +1,9 @@
 ---
 name: linux-wsl
 description: Use when installing, configuring, diagnosing, or using Windows Subsystem for Linux, including WSL 2 distributions, Windows-to-Linux command boundaries, filesystem locations, networking, systemd, GPU use, SSH identities, VS Code, backups, export/import, and Windows or WSL interoperation.
+skill_class: workflow
+load_policy: conditional
+risk_tags: [privileged]
 ---
 
 # Linux WSL

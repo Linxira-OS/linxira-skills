@@ -1,6 +1,9 @@
 ---
 name: linux-system-administration
 description: Use when installing, configuring, securing, monitoring, troubleshooting, backing up, or operating Linux servers and services. Covers systemd, packages, users, storage, filesystems, networking, firewalls, SSH, logs, performance, containers, updates, backup, and incident response.
+skill_class: contract
+load_policy: required
+risk_tags: [destructive, privileged]
 ---
 
 # Linux System Administration

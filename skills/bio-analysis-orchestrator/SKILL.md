@@ -1,6 +1,9 @@
 ---
 name: bio-analysis-orchestrator
 description: Use when planning, selecting, connecting, or troubleshooting bioinformatics and biomedical analyses across sequencing, omics, genetics, structural biology, systems biology, imaging, clinical data, or public databases. Routes a scientific question to suitable methods, tools, checkpoints, and specialized skills.
+skill_class: workflow
+load_policy: conditional
+risk_tags: [clinical, controlled-data]
 ---
 
 # Bioinformatics Analysis Orchestrator

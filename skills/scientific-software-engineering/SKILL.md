@@ -1,6 +1,9 @@
 ---
 name: scientific-software-engineering
 description: Use when designing, implementing, testing, packaging, reviewing, or maintaining scientific and bioinformatics software, command-line tools, libraries, APIs, data parsers, workflow components, or research code in Python, R, Rust, Go, Java, or shell.
+skill_class: guard
+load_policy: conditional
+risk_tags: [controlled-data]
 ---
 
 # Scientific Software Engineering

@@ -1,6 +1,9 @@
 ---
 name: linux-session-persistence
 description: Use when an interactive Linux task must survive SSH disconnects, a non-interactive command needs durable logs, an unstable network requires mosh, or scientific work must be routed to a scheduler instead of a login-node terminal. Covers tmux, GNU screen, nohup, systemd user units, mosh, recovery, and boundaries with HPC schedulers.
+skill_class: workflow
+load_policy: conditional
+risk_tags: [remote-compute]
 ---
 
 # Linux Session Persistence

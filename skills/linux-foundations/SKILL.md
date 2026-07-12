@@ -1,6 +1,9 @@
 ---
 name: linux-foundations
 description: Use when working in a Linux shell or teaching Linux command-line usage, including files, directories, permissions, processes, pipes, text processing, archives, SSH, environment variables, package discovery, shell scripting, and troubleshooting common command failures.
+skill_class: reference
+load_policy: on-demand
+risk_tags: []
 ---
 
 # Linux Foundations

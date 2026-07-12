@@ -1,6 +1,9 @@
 ---
 name: linux-troubleshooting
 description: Use when a Linux command, service, package, SSH connection, WSL environment, storage path, network path, process, container, or scientific workload fails, behaves unexpectedly, or performs poorly. Provides an evidence-first diagnosis workflow with minimal reproduction, logs, layered checks, reversible changes, and completion verification.
+skill_class: guard
+load_policy: required
+risk_tags: [destructive, privileged]
 ---
 
 # Linux Troubleshooting

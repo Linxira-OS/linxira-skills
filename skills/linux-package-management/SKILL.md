@@ -1,6 +1,9 @@
 ---
 name: linux-package-management
 description: Use when installing, removing, upgrading, pinning, repairing, or investigating Linux packages and repositories on Debian, Ubuntu, Arch, CachyOS, or Linxira systems. Covers apt/dpkg, pacman, trusted repositories, package ownership, package conflicts, and safe system upgrades.
+skill_class: contract
+load_policy: required
+risk_tags: [destructive, privileged]
 ---
 
 # Linux Package Management

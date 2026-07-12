@@ -1,6 +1,9 @@
 ---
 name: bioinformatics-reproducibility
 description: Use when making bioinformatics, omics, statistical, or scientific analyses reproducible, auditable, portable, or publication-ready. Covers project layout, metadata, environments, containers, workflow engines, provenance, data integrity, validation, and reporting.
+skill_class: guard
+load_policy: required
+risk_tags: [controlled-data]
 ---
 
 # Bioinformatics Reproducibility

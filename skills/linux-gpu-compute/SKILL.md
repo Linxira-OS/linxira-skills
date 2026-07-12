@@ -1,6 +1,9 @@
 ---
 name: linux-gpu-compute
 description: Use when discovering, validating, allocating, diagnosing, or preparing Linux GPU compute hosts for scientific workloads on NVIDIA, AMD, or Intel hardware. Covers hardware detection, driver/runtime boundaries, scheduler-aware GPU use, containers, isolation, lightweight validation, and vendor-skill routing without performing unsafe driver changes by default.
+skill_class: workflow
+load_policy: conditional
+risk_tags: [privileged, remote-compute]
 ---
 
 # Linux GPU Compute

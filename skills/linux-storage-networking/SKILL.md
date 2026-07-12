@@ -1,6 +1,9 @@
 ---
 name: linux-storage-networking
 description: Use when inspecting, configuring, diagnosing, or planning Linux storage, filesystems, mounts, quotas, NFS/SMB access, disks, RAID/LVM layers, routing, DNS, ports, firewall reachability, or network performance on Debian/Ubuntu or Arch-family hosts.
+skill_class: contract
+load_policy: required
+risk_tags: [destructive, privileged]
 ---
 
 # Linux Storage And Networking

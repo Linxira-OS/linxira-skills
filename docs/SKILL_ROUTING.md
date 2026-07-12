@@ -136,6 +136,8 @@ license state, body hash, physical grouping, and logical categories. Category
 selection returns descriptors; routing selects one canonical descriptor; only
 then does the plugin mount or read its complete skill directory. Session caches
 store selected identities and source revisions, not unbounded category bodies.
+First-party model profiles and loading-policy semantics are defined in
+[`SKILL_LOADING_POLICY.md`](SKILL_LOADING_POLICY.md).
 
 ## Office And Document Routing
 

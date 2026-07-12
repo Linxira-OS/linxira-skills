@@ -1,6 +1,9 @@
 ---
 name: linux-file-transfer
 description: Use when moving, synchronizing, downloading, uploading, verifying, or recovering scientific files between Linux, Windows, WSL, HPC, cloud/object storage, SFTP servers, SMB shares, or institutional transfer services. Covers scp, sftp, rsync, rclone, Globus, WinSCP, FileZilla, checksums, manifests, and destructive sync safeguards.
+skill_class: contract
+load_policy: required
+risk_tags: [account-bound, controlled-data, destructive]
 ---
 
 # Linux File Transfer

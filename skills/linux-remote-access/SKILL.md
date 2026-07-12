@@ -1,6 +1,9 @@
 ---
 name: linux-remote-access
 description: Use when connecting to, configuring, diagnosing, or securely operating a Linux or Windows host over SSH, SFTP, a bastion, port forwarding, PowerShell remoting, or Remote Desktop. Covers client-target OS dispatch, SSH keys, host keys, jump hosts, tunnels, remote IDE access, and connection reliability.
+skill_class: contract
+load_policy: required
+risk_tags: [account-bound, privileged]
 ---
 
 # Linux Remote Access
