@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "status": "reviewed-not-packaged",
+  "name": "life-sciences-core",
+  "baseProfile": "core",
+  "sourceTracks": [
+    {
+      "id": "bioskills",
+      "revision": "24f0694a125e53f04a7c66a54ba9b81461b7227f",
+      "license": "MIT",
+      "notice": "sources/bioSkills/LICENSE"
+    }
+  ],
+  "skills": [
+    {
+      "name": "bio-read-sequences",
+      "relativePath": "sequence-io/read-sequences",
+      "bodySha256": "d3043a1ef895f5adbac75e84acff826623d524fb399aecd1e14905b5e67aca88",
+      "loadPolicy": "conditional",
+      "riskTags": ["local-file-read"]
+    },
+    {
+      "name": "bio-sequence-statistics",
+      "relativePath": "sequence-io/sequence-statistics",
+      "bodySha256": "1cdc2f60bd4e3d624ab84d1bf7b154c5cdb1e2cca2452e298033594aec52d7f2",
+      "loadPolicy": "conditional",
+      "riskTags": ["local-file-read"]
+    },
+    {
+      "name": "bio-structural-biology-structure-navigation",
+      "relativePath": "structural-biology/structure-navigation",
+      "bodySha256": "b523ce657622491f8d08ef469483e3b4b9d00bcfad2c2fcf456f0fa77300b6a1",
+      "loadPolicy": "conditional",
+      "riskTags": ["local-file-read"]
+    },
+    {
+      "name": "bio-structural-biology-alphafold-predictions",
+      "relativePath": "structural-biology/alphafold-predictions",
+      "bodySha256": "2ea5e57a54c18258c9eceb1b911a2e0a0ad327da61f2a6d280fa1da494f77c2c",
+      "loadPolicy": "required",
+      "riskTags": ["public-network-read", "external-reference"]
+    }
+  ]
+}
