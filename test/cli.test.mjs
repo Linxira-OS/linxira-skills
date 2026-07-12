@@ -1,11 +1,14 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 import { run } from '../dist/cli.js';
+
+const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 async function fixture() {
   const root = await mkdtemp(join(tmpdir(), 'linxira-skills-'));
@@ -126,4 +129,39 @@ test('html-reporting-core materializes only its reviewed additions', async (cont
   for (const skill of reviewedSkills) {
     assert.equal(existsSync(join(root, '.agents', 'skills', skill)), false);
   }
+});
+
+test('packed CLI installs and runs in a clean Git repository', async (context) => {
+  const root = await mkdtemp(join(tmpdir(), 'linxira-packed-'));
+  const tarballDirectory = join(root, 'tarballs');
+  const project = join(root, 'project');
+  context.after(() => rm(root, { recursive: true, force: true }));
+  await mkdir(tarballDirectory);
+  await mkdir(project);
+
+  const npmCli = process.env.npm_execpath;
+  assert.ok(npmCli, 'npm_execpath must be set by npm test');
+  execFileSync(process.execPath, [npmCli, 'pack', '--pack-destination', tarballDirectory], {
+    cwd: packageRoot,
+    stdio: 'pipe',
+  });
+  const tarballs = await readdir(tarballDirectory);
+  assert.equal(tarballs.length, 1);
+  const tarball = join(tarballDirectory, tarballs[0]);
+
+  execFileSync(process.execPath, [npmCli, 'install', '--ignore-scripts', '--no-package-lock', '--no-audit', '--no-fund', '--prefix', project, tarball], {
+    stdio: 'pipe',
+  });
+  execFileSync('git', ['init', '--quiet', project]);
+  const cli = join(project, 'node_modules', '@linxira-science-skills', 'cli', 'dist', 'linxira-skills.js');
+
+  execFileSync(process.execPath, [cli, 'init', '--profile', 'html-reporting-core'], { cwd: project, stdio: 'pipe' });
+  const manifest = JSON.parse(await readFile(join(project, '.linxira', 'manifest.json'), 'utf8'));
+  assert.equal(manifest.profile, 'html-reporting-core');
+  assert.equal(Object.keys(manifest.skills).length, 17);
+  execFileSync(process.execPath, [cli, 'status'], { cwd: project, stdio: 'pipe' });
+  execFileSync(process.execPath, [cli, 'update'], { cwd: project, stdio: 'pipe' });
+  execFileSync(process.execPath, [cli, 'uninstall'], { cwd: project, stdio: 'pipe' });
+  assert.equal(existsSync(join(project, '.linxira', 'manifest.json')), false);
+  assert.equal(existsSync(join(project, '.agents', 'skills', 'data-report')), false);
 });

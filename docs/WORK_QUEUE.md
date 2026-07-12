@@ -65,7 +65,7 @@ they are present in this repository.
 | `PKG-004` | done | Create the CLI skeleton and marker-block updater. | Node fixture tests prove marker upsert/remove preserve user text outside Linxira markers and malformed markers are rejected. |
 | `PKG-005` | done | Implement profile materialization and ownership manifest. | The initializer generates `core` from 14 audited first-party skills, records directory hashes in `.linxira/manifest.json`, and rejects same-named user directories. |
 | `PKG-006` | done | Implement status, update, uninstall, and dry-run behavior. | Fixture tests prove divergence is reported, `--force` is required to replace it, and uninstall preserves unrelated `AGENTS.md` and `.agents` content. |
-| `PKG-007` | planned | Build and publish the first npm package. | Package-content check, clean install/update/uninstall smoke tests, versioned changelog, and npm provenance records pass. |
+| `PKG-007` | blocked | Build and publish the first npm package. | Local package-content check, clean tarball lifecycle smoke test, and `CHANGELOG.md` pass. Await a successful pushed CI matrix, GitHub Release creation, and authorized `npm publish --provenance`. |
 | `PKG-008` | done | Materialize the reviewed `life-sciences-core` profile. | Payload verifies and copies only four hash-pinned MIT `SKILL.md` bodies, includes `bioSkills-MIT.txt`, and fixture tests prove 18-skill profile selection and ownership behavior. |
 | `PKG-009` | done | Materialize the reviewed `html-reporting-core` profile. | Payload verifies and copies only three hash-pinned Apache-2.0 `SKILL.md` bodies, includes `html-anything-Apache-2.0.txt`, and fixture tests prove 17-skill opt-in lifecycle behavior. |
 
