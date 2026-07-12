@@ -36,7 +36,7 @@ test('init, status, update, and uninstall preserve user-owned content', async (c
   const manifestPath = join(root, '.linxira', 'manifest.json');
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
   assert.equal(manifest.profile, 'core');
-  assert.equal(Object.keys(manifest.skills).length, 16);
+  assert.equal(Object.keys(manifest.skills).length, 17);
   assert.match(await readFile(join(root, 'AGENTS.md'), 'utf8'), /linxira-skills:start/);
   assert.match(await readFile(join(root, '.gitignore'), 'utf8'), /\.agents\/skills\//);
   assert.equal(await run(['status'], root, output()), 0);
@@ -98,7 +98,7 @@ test('life-sciences-core materializes only its reviewed additions', async (conte
   const manifestPath = join(root, '.linxira', 'manifest.json');
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
   assert.equal(manifest.profile, 'life-sciences-core');
-  assert.equal(Object.keys(manifest.skills).length, 20);
+  assert.equal(Object.keys(manifest.skills).length, 21);
   for (const skill of reviewedSkills) {
     assert.equal(existsSync(join(root, '.agents', 'skills', skill, 'SKILL.md')), true);
   }
@@ -119,7 +119,7 @@ test('html-reporting-core materializes only its reviewed additions', async (cont
   const manifestPath = join(root, '.linxira', 'manifest.json');
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
   assert.equal(manifest.profile, 'html-reporting-core');
-  assert.equal(Object.keys(manifest.skills).length, 19);
+  assert.equal(Object.keys(manifest.skills).length, 20);
   for (const skill of reviewedSkills) {
     assert.equal(existsSync(join(root, '.agents', 'skills', skill, 'SKILL.md')), true);
     assert.equal(existsSync(join(root, '.agents', 'skills', skill, 'example.html')), false);
@@ -158,7 +158,7 @@ test('packed CLI installs and runs in a clean Git repository', async (context) =
   execFileSync(process.execPath, [cli, 'init', '--profile', 'html-reporting-core'], { cwd: project, stdio: 'pipe' });
   const manifest = JSON.parse(await readFile(join(project, '.linxira', 'manifest.json'), 'utf8'));
   assert.equal(manifest.profile, 'html-reporting-core');
-  assert.equal(Object.keys(manifest.skills).length, 19);
+  assert.equal(Object.keys(manifest.skills).length, 20);
   execFileSync(process.execPath, [cli, 'status'], { cwd: project, stdio: 'pipe' });
   execFileSync(process.execPath, [cli, 'update'], { cwd: project, stdio: 'pipe' });
   execFileSync(process.execPath, [cli, 'uninstall'], { cwd: project, stdio: 'pipe' });

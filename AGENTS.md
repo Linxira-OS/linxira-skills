@@ -32,3 +32,11 @@ Both paths are generated runtime state and ignored by Git.
 `AGENTS.md` provides routing guidance. It does not itself register every skill
 with a runtime. Do not manually populate `.agents/skills`; use the initializer
 so updates and uninstall can preserve user-owned skills.
+
+## Browser Runtime Boundary
+
+Do not execute `agent-browser` from the current OpenCode session. It may be
+documented as an external, user-approved runtime dependency, but browser
+automation validation belongs in a separate terminal, CI worker, or other
+approved execution environment so a long-lived browser process cannot block the
+agent session.

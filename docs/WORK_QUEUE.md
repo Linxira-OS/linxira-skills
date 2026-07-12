@@ -20,7 +20,7 @@ Status values:
 | --- | --- | --- | --- |
 | `MIG-001` | done | Inventory useful skills from the previous `extendai-lab-v1` repository without modifying that repository. | `MIGRATION_LEDGER.md` inventories all 25 direct candidates at donor revision `254ec96361cc9d21b5bf9f8c471def93e377382c`; no donor body is approved for copying. |
 | `PKG-001` | blocked | Implement the npm CLI initializer described in `INSTALLATION_ARCHITECTURE.md`. | Local Node 24 fixtures pass `init`, `status`, `update`, and `uninstall`; `.github/workflows/cli-validation.yml` defines the required Windows, Linux, and macOS matrix. A pushed workflow run must pass before completion. |
-| `PKG-002` | done | Define the first redistributable `core` payload and npm release manifest. | `payload/` is generated from the 16 audited first-party skills; `npm pack --dry-run` reports only approved payload files, template, README, license, and CLI. |
+| `PKG-002` | done | Define the first redistributable `core` payload and npm release manifest. | `payload/` is generated from the 17 audited first-party skills; `npm pack --dry-run` reports only approved payload files, template, README, license, and CLI. |
 
 Only one item may be `active`. Move the next item to `active` before beginning
 work and update its row before ending a session.
@@ -39,7 +39,7 @@ dependency of this project.
 | --- | --- | --- | --- | --- |
 | `MIG-002` | done | First-party rewrites for useful direct engineering concepts: requirements discovery, plan review, code review, review-feedback handling, debugging, test-first implementation, and simplification. | `scientific-change-verification` independently implements the shared evidence and verification cycle; its scope and non-overlap are recorded in `RESEARCH_ENGINEERING_PROFILE_REVIEW.md`. | Do not copy donor bodies; add a focused first-party extension only when this guard is insufficient. |
 | `MIG-003` | done | Paper and research-writing candidates: `academic-writing`, `document-formatting`, and academic resource skills. | `RESEARCH_MANUSCRIPT_PROFILE_REVIEW.md` records donor/upstream license boundaries and the independent first-party `research-manuscript-integrity` replacement. | Do not copy donor or recursively referenced upstream bodies. |
-| `MIG-004` | planned | Browser candidates: `agent-browser`, `playwright`, `playwright-cli`, and `dev-browser`. | Original repository, binary/MCP dependency, browser profile isolation, account and upload policy, and overlap with `research-web`. | Select one isolated automation path and one opt-in logged-in browser path. |
+| `MIG-004` | done | Browser candidates: `agent-browser`, `playwright`, `playwright-cli`, and `dev-browser`. | `RESEARCH_WEB_POLICY.md` records licenses, rejects donor runtime assumptions, and defines isolated and user-approved logged-in modes without migrating a donor body. | Validate selected runtime only in an external approved environment. |
 | `MIG-005` | planned | UI and presentation skills: `frontend-ui-ux`, `frontend-philosophy`, `ai-slop-remover`, and slide/document helpers. | License, design-system scope, runtime assets, and overlap with `html-anything`. | Keep only skills with distinct reusable value. |
 | `MIG-006` | blocked | `karpathy-guidelines` migration. | Donor frontmatter claims MIT, but its cited upstream currently reports no repository license. | Obtain an explicit reusable license or write a new first-party equivalent without copied expression. |
 
@@ -63,7 +63,7 @@ they are present in this repository.
 | --- | --- | --- | --- |
 | `PKG-003` | done | Define cross-runtime materialization under `.agents/skills/`. | `INSTALLATION_ARCHITECTURE.md` records OpenCode/Codex discovery, marker updates, ownership manifest, profiles, and safe update behavior. |
 | `PKG-004` | done | Create the CLI skeleton and marker-block updater. | Node fixture tests prove marker upsert/remove preserve user text outside Linxira markers and malformed markers are rejected. |
-| `PKG-005` | done | Implement profile materialization and ownership manifest. | The initializer generates `core` from 16 audited first-party skills, records directory hashes in `.linxira/manifest.json`, and rejects same-named user directories. |
+| `PKG-005` | done | Implement profile materialization and ownership manifest. | The initializer generates `core` from 17 audited first-party skills, records directory hashes in `.linxira/manifest.json`, and rejects same-named user directories. |
 | `PKG-006` | done | Implement status, update, uninstall, and dry-run behavior. | Fixture tests prove divergence is reported, `--force` is required to replace it, and uninstall preserves unrelated `AGENTS.md` and `.agents` content. |
 | `PKG-007` | blocked | Build and publish the first npm package. | Local package-content check, clean tarball lifecycle smoke test, and `CHANGELOG.md` pass. Await a successful pushed CI matrix, GitHub Release creation, and authorized `npm publish --provenance`. |
 | `PKG-008` | done | Materialize the reviewed `life-sciences-core` profile. | Payload verifies and copies only four hash-pinned MIT `SKILL.md` bodies, includes `bioSkills-MIT.txt`, and fixture tests prove 18-skill profile selection and ownership behavior. |
@@ -73,10 +73,10 @@ they are present in this repository.
 
 | ID | Status | Task | Completion evidence |
 | --- | --- | --- | --- |
-| `LIN-001` | done | Draft first-party Linux, WSL, SSH, transfer, GPU, storage/networking, and troubleshooting skills. | 16 first-party skills have audited loading metadata; Linux scope is documented in `LINUX_PACKAGE.md`. |
+| `LIN-001` | done | Draft first-party Linux, WSL, SSH, transfer, GPU, storage/networking, and troubleshooting skills. | 17 first-party skills have audited loading metadata; Linux scope is documented in `LINUX_PACKAGE.md`. |
 | `LIN-002` | planned | Add executable Linux verification fixtures and distribution adapters. | Debian/Ubuntu and Arch-family fixtures verify dispatch, safe commands, and expected failure handling. |
-| `WEB-001` | planned | Define `research-web` browser modes. | Isolated automation, opted-in logged-in browser, cloud browser, and prohibited anti-bot/account behaviors each have explicit contracts. |
-| `WEB-002` | planned | Review and select browser runtime dependencies. | One browser automation implementation passes security, profile isolation, file upload, download, and human-handoff checks. |
+| `WEB-001` | done | Define `research-web` browser modes. | `RESEARCH_WEB_POLICY.md` defines isolated automation, user-approved logged-in browser, execution boundary, and prohibited behavior. |
+| `WEB-002` | blocked | Review and select browser runtime dependencies. | `agent-browser` is the Apache-2.0 isolated-runtime candidate, but user policy prohibits execution in this OpenCode session. Validate it in an approved external environment. |
 | `CLOUD-001` | planned | Define `compute-cloud` provider, SSH, HPC, and cost-control contracts. | Remote creation, billing, credential, data transfer, and teardown gates are specified and testable. |
 | `AI-001` | planned | Define `scientific-ai` model training and evaluation capability boundaries. | GPU/vendor skill selection and evaluation artifact/provenance requirements are recorded. |
 | `ENG-001` | planned | Build `research-engineering` profiles for reproducibility, software quality, paper writing, figures, and reports. | Reviewed skill set has clear inputs, outputs, evidence checks, and package dependencies. |
