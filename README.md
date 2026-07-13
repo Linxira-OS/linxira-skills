@@ -1,86 +1,108 @@
 # Linxira Science Skills
 
-Linxira Science Skills is a planned family of independently installable Agent
-Skills packages for scientific research. The first package will focus on life
-sciences, including bioinformatics, biomedical research, relevant chemistry,
-and limited biophysics.
+Linxira Science Skills is a cross-runtime skill library for scientific research.
+This repository builds the first npm-deliverable package and keeps its reviewed
+source tracks, payload definitions, and contract skills in one place.
 
-This repository is in research and early authoring. It is not yet an installable
-OpenCode package, and no project OpenCode configuration is enabled.
+The first package targets OpenCode and other runtimes that discover
+project-local skills under `.agents/skills/`.
 
-## Planned Packages
+Chinese overview: [README.zh-CN.md](README.zh-CN.md)
 
-| Package | Scope |
+## Package
+
+- npm package: `@linxira-science-skills/cli`
+- executable: `linxira-skills`
+- install model: materialize reviewed skill profiles into a target repository
+
+Current profile counts in the package build:
+
+| Profile | Contents |
 | --- | --- |
-| `life-sciences` | Biology, medicine, bioinformatics, biostatistics, relevant chemistry, and biophysics |
-| `research-web` | Browser automation, Computer Use, scientific search, databases, downloads, uploads, accounts, and citations |
-| `linux` | Dual-family Linux skills for Debian/Ubuntu and Arch/CachyOS/Linxira, plus WSL, SSH, remote sessions, transfers, operations, and GPU hosts |
-| `compute-cloud` | SSH, file transfer, containers, GPU servers, cloud instances, HPC, Slurm, and cost control |
-| `scientific-ai` | Model use, training, fine-tuning, distributed training, evaluation, and experiment tracking |
-| `research-engineering` | Scientific software, workflows, testing, packaging, provenance, and reproducibility |
+| `core` | 21 first-party contract, guard, workflow, and reference skills |
+| `life-sciences-core` | `core` plus 4 reviewed MIT `bioSkills` entries |
+| `html-reporting-core` | `core` plus 3 reviewed Apache-2.0 `html-anything` entries |
 
-Packages must remain independently installable. A life-science workflow may
-declare optional capabilities from `research-web`, `linux`, `compute-cloud`, or
-`scientific-ai`, but it must not duplicate those skills.
+Reviewed connector profiles such as AlphaFold DB public access are tracked in
+this repository, but are not separate packaged payloads yet.
 
-## First Milestone
+## Third-Party And Adaptation
 
-The first release milestone is the `life-sciences` package. `GPTomics/bioSkills`
-is the initial high-quality backbone. Linux core skills are being authored now
-to establish execution boundaries for later scientific workflows. Broader
-collections and agent projects are used as discovery sources, not copied
-wholesale.
+Reviewed third-party material is included only when its source revision,
+license, notice, and payload boundary are pinned explicitly.
 
-Before packaging, the project will produce:
+- `life-sciences-core` includes 4 reviewed MIT `bioSkills` bodies.
+- `html-reporting-core` includes 3 reviewed Apache-2.0 `html-anything` bodies.
+- externally cited `html-anything` templates remain source-only.
+- `awesome-bio-agent-skills` remains an indexed research source, not a public
+  payload.
+- donor content from the previous repository is used for audit and rewrite
+  requirements, not wholesale reuse.
 
-1. A capability coverage matrix.
-2. A repository and skill source registry.
-3. A repeatable quality and risk scoring rubric.
-4. Duplicate and overlap reports.
-5. A reviewed shortlist for the first package.
+See [THIRD_PARTY.md](docs/THIRD_PARTY.md) for provenance policy and the profile
+review documents for concrete inclusion and modification boundaries.
 
-See [`docs/PLAN.md`](docs/PLAN.md) for the staged plan and
-[`docs/THIRD_PARTY.md`](docs/THIRD_PARTY.md) for provenance requirements. The
-Linux package design is documented in
-[`docs/LINUX_PACKAGE.md`](docs/LINUX_PACKAGE.md). Model-aware progressive
-disclosure and enforcement rules are documented in
-[`docs/SKILL_LOADING_POLICY.md`](docs/SKILL_LOADING_POLICY.md). The cross-runtime
-npm initializer architecture is documented in
-[`docs/INSTALLATION_ARCHITECTURE.md`](docs/INSTALLATION_ARCHITECTURE.md).
-
-## Research Workspace
-
-Temporary shallow clones are stored under `.research-temp/`, which is ignored
-by Git. Research clones should use only the latest default-branch snapshot:
+## Install
 
 ```bash
-git clone --depth 1 --single-branch <url> .research-temp/<name>
+npm install --save-dev @linxira-science-skills/cli
+npx linxira-skills init
 ```
 
-Temporary clones are evidence for review and are not part of the distributable
-package.
+Profile selection:
 
-## Upstream Material
+```bash
+npx linxira-skills init --profile core
+npx linxira-skills init --profile life-sciences-core
+npx linxira-skills init --profile html-reporting-core
+```
 
-The current local research set includes the user's forks of:
+Lifecycle commands:
 
-- `GPTomics/bioSkills`
-- `BioTender-max/awesome-bio-agent-skills`
+```bash
+npx linxira-skills status
+npx linxira-skills update
+npx linxira-skills uninstall
+```
 
-It also retains `nexu-io/html-anything` as an optional Apache-2.0 template
-source track. Its externally cited template examples remain provenance-gated and
-are not default-routed.
+## What Is Included
 
-The second project aggregates many repositories with mixed provenance and
-quality. Its entries must be traced back to their original upstream project
-before reuse.
+First-party skills provide execution boundaries for:
 
-No third-party skill will be presented as original work. Adapted skills will
-retain source repository, source path, source revision, license, modification
-summary, and attribution.
+- scientific software and change verification
+- manuscript integrity and research reporting
+- browser, cloud, and AI safety contracts
+- Linux, SSH, file transfer, GPU, and HPC operations
 
-## Installation Status
+## Repository Layout
 
-OpenCode is the priority target, followed by other Agent Skills compatible
-runtimes. Installation design starts only after the first package taxonomy,
-source registry, and quality gates are approved.
+- `skills/`: first-party skills that may be packaged directly
+- `profiles/`: reviewed profile manifests and pinned source hashes
+- `sources/`: pinned upstream source tracks for audit and selection
+- `scripts/`: payload and catalog builders plus audits
+- `docs/`: packaging, policy, profile-review, and provenance documents
+
+## Key Docs
+
+- [INSTALLATION_ARCHITECTURE.md](docs/INSTALLATION_ARCHITECTURE.md)
+- [SKILL_LOADING_POLICY.md](docs/SKILL_LOADING_POLICY.md)
+- [THIRD_PARTY.md](docs/THIRD_PARTY.md)
+- [SOURCES.md](docs/SOURCES.md)
+- [LIFE_SCIENCES_CORE_REVIEW.md](docs/LIFE_SCIENCES_CORE_REVIEW.md)
+- [HTML_ANYTHING_PROFILE_REVIEW.md](docs/HTML_ANYTHING_PROFILE_REVIEW.md)
+- [ALPHAFOLD_DB_PUBLIC_PROFILE.md](docs/ALPHAFOLD_DB_PUBLIC_PROFILE.md)
+- [GOOGLE_WORKSPACE_OAUTH_POLICY.md](docs/GOOGLE_WORKSPACE_OAUTH_POLICY.md)
+- [GOOGLE_CLOUD_VERTEX_POLICY.md](docs/GOOGLE_CLOUD_VERTEX_POLICY.md)
+
+## Validation
+
+Local validation currently covers:
+
+- first-party metadata audit
+- profile materialization lifecycle tests
+- packed tarball install smoke test in a clean Git repository
+- package-content inspection with `npm pack --dry-run`
+
+GitHub Actions runs the same validation matrix on Ubuntu, Windows, and macOS.
+
+An additional Arch Linux WSL smoke pass was run locally before release drafting.
