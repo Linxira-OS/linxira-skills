@@ -51,7 +51,7 @@ dependency of this project.
 | `SRC-002` | done | Build a generated descriptor catalog for all source tracks. | `catalog/source-skills.json` has 2,348 unique records across all three pinned revisions, with frontmatter summaries, license evidence, risk arrays, and SHA-256 body hashes. |
 | `SRC-003` | done | Review the first `life-sciences-core` profile. | `profiles/life-sciences-core.json` pins four MIT `bioSkills` bodies and hashes; `LIFE_SCIENCES_CORE_REVIEW.md` records scientific limits and safe smoke tests. |
 | `SRC-004` | done | Define the `html-anything` materialization profile. | `HTML_ANYTHING_PROFILE_REVIEW.md` classifies all 81 entries; `html-reporting-core` pins three self-contained Apache-2.0 bodies, excludes 22 cited entries and one external-write template, and leaves 55 source-only. |
-| `SRC-005` | planned | Establish discipline-pack expansion order after life sciences. | Each future discipline has a scope, source registry, capability matrix, and non-overlap boundary with horizontal packages. |
+| `SRC-005` | done | Establish discipline-pack expansion order after life sciences. | `DISCIPLINE_EXPANSION_ORDER.md` records the dependency-first order, non-overlap rule, and source-intake sequence for future domain packs. |
 
 `awesome-bio-agent-skills` and unreviewed `html-anything` entries remain local
 research/index sources. They must not enter a public npm payload merely because
