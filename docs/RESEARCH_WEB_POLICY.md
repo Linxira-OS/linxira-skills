@@ -3,8 +3,10 @@
 ## Decision
 
 Browser capability is split into two modes and governed by the first-party
-`research-web` contract. Neither mode may run `agent-browser` in the current
-OpenCode session; long-lived browser processes are an external runtime concern.
+`research-web` contract. OpenCode can support browser automation in some
+terminal-driven environments, but the current web UI does not reliably carry
+the interactive state and follow-up messages this workflow needs. Browser
+runtime validation is therefore an external runtime concern here.
 
 | Mode | Intended use | Account state | Current status |
 | --- | --- | --- | --- |
@@ -16,7 +18,7 @@ OpenCode session; long-lived browser processes are an external runtime concern.
 
 | Candidate | License | Decision |
 | --- | --- | --- |
-| `vercel-labs/agent-browser` | Apache-2.0 | Selected future isolated-runtime candidate. Do not execute from this OpenCode session. |
+| `vercel-labs/agent-browser` | Apache-2.0 | Selected future isolated-runtime candidate. Do not validate it from the current OpenCode web UI session. |
 | `microsoft/playwright-cli` | Apache-2.0 | Retain as an alternative external runner; not selected as the default contract. |
 | Donor Playwright MCP skill | Runtime-specific MCP dependency. | Reject. Its `browser_puppeteer` contract is not available cross-runtime. |
 | `SawyerHood/dev-browser` | MIT | Reject. Persistent server, extension, and browser-state assumptions are unsuitable as a default. |

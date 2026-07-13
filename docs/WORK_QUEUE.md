@@ -76,10 +76,10 @@ they are present in this repository.
 | `LIN-001` | done | Draft first-party Linux, WSL, SSH, transfer, GPU, storage/networking, and troubleshooting skills. | 17 first-party skills have audited loading metadata; Linux scope is documented in `LINUX_PACKAGE.md`. |
 | `LIN-002` | planned | Add executable Linux verification fixtures and distribution adapters. | Debian/Ubuntu and Arch-family fixtures verify dispatch, safe commands, and expected failure handling. |
 | `WEB-001` | done | Define `research-web` browser modes. | `RESEARCH_WEB_POLICY.md` defines isolated automation, user-approved logged-in browser, execution boundary, and prohibited behavior. |
-| `WEB-002` | blocked | Review and select browser runtime dependencies. | `agent-browser` is the Apache-2.0 isolated-runtime candidate, but user policy prohibits execution in this OpenCode session. Validate it in an approved external environment. |
+| `WEB-002` | blocked | Review and select browser runtime dependencies. | `agent-browser` is the Apache-2.0 isolated-runtime candidate, but the current OpenCode web UI does not reliably support its interactive message flow. Validate it in an approved external terminal or CI environment. |
+| `ENG-001` | done | Build `research-engineering` profiles for reproducibility, software quality, paper writing, figures, and reports. | `RESEARCH_ENGINEERING_PROFILES.md` defines `research-engineering-core`, `research-reporting`, and `life-sciences-reporting`, with explicit composition and non-overlap boundaries. |
 | `CLOUD-001` | planned | Define `compute-cloud` provider, SSH, HPC, and cost-control contracts. | Remote creation, billing, credential, data transfer, and teardown gates are specified and testable. |
 | `AI-001` | planned | Define `scientific-ai` model training and evaluation capability boundaries. | GPU/vendor skill selection and evaluation artifact/provenance requirements are recorded. |
-| `ENG-001` | planned | Build `research-engineering` profiles for reproducibility, software quality, paper writing, figures, and reports. | Reviewed skill set has clear inputs, outputs, evidence checks, and package dependencies. |
 
 ## Platform And Service Connectors
 

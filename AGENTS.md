@@ -35,8 +35,8 @@ so updates and uninstall can preserve user-owned skills.
 
 ## Browser Runtime Boundary
 
-Do not execute `agent-browser` from the current OpenCode session. It may be
-documented as an external, user-approved runtime dependency, but browser
-automation validation belongs in a separate terminal, CI worker, or other
-approved execution environment so a long-lived browser process cannot block the
-agent session.
+Do not execute `agent-browser` from the current OpenCode web UI session.
+OpenCode can support it in terminal-driven environments, but the current web UI
+does not reliably carry the interactive state and follow-up messages this
+workflow needs. Browser automation validation therefore belongs in a separate
+terminal, CI worker, or other approved execution environment.
