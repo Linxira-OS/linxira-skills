@@ -12,8 +12,6 @@ library. It is not itself a flattened runtime installation.
   gates.
 - `docs/INSTALLATION_ARCHITECTURE.md` defines the npm CLI initializer and
   release boundary.
-- `docs/WORK_QUEUE.md` is the persistent cross-session task ledger. Update it
-  before ending substantial work.
 
 ## Reading Discipline
 

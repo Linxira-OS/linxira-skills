@@ -46,8 +46,7 @@ Linux package design is documented in
 disclosure and enforcement rules are documented in
 [`docs/SKILL_LOADING_POLICY.md`](docs/SKILL_LOADING_POLICY.md). The cross-runtime
 npm initializer architecture is documented in
-[`docs/INSTALLATION_ARCHITECTURE.md`](docs/INSTALLATION_ARCHITECTURE.md). The
-current and planned work is tracked in [`docs/WORK_QUEUE.md`](docs/WORK_QUEUE.md).
+[`docs/INSTALLATION_ARCHITECTURE.md`](docs/INSTALLATION_ARCHITECTURE.md).
 
 ## Research Workspace
 
