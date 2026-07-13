@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "status": "reviewed-not-packaged",
+  "name": "alphafold-db-public",
+  "baseProfile": "life-sciences-core",
+  "sourceTracks": [
+    {
+      "id": "bioskills",
+      "revision": "24f0694a125e53f04a7c66a54ba9b81461b7227f",
+      "license": "MIT",
+      "notice": "sources/bioSkills/LICENSE"
+    }
+  ],
+  "skills": [
+    {
+      "name": "bio-structural-biology-alphafold-predictions",
+      "relativePath": "structural-biology/alphafold-predictions",
+      "bodySha256": "2ea5e57a54c18258c9eceb1b911a2e0a0ad327da61f2a6d280fa1da494f77c2c",
+      "loadPolicy": "required",
+      "riskTags": ["public-network-read", "external-reference"]
+    }
+  ]
+}

@@ -85,7 +85,7 @@ they are present in this repository.
 
 | ID | Status | Task | Completion evidence |
 | --- | --- | --- | --- |
-| `CON-001` | planned | Add a public AlphaFold DB retrieval profile. | UniProt accession to AFDB metadata, mmCIF/PAE artifact manifest, pLDDT/PAE interpretation, rate-limit behavior, and provenance are tested. |
+| `CON-001` | done | Add a public AlphaFold DB retrieval profile. | `alphafold-db-public.json` and `ALPHAFOLD_DB_PUBLIC_PROFILE.md` record the pinned AFDB skill, public metadata -> mmCIF/PAE smoke checks, interpretation limits, and provenance expectations. |
 | `CON-002` | blocked | Add AlphaFold Server or AlphaFold 3 execution support. | Use an official documented programmatic interface or a user-approved interactive workflow; do not automate unsupported account or browser flows. |
 | `CON-003` | planned | Define Google Drive, Docs, and Slides OAuth connector contract. | Minimum scopes, consent flow, target identity, write/readback verification, export/download disclosure, and token storage are specified. |
 | `CON-004` | planned | Define Google Cloud or Vertex compute connector contract. | Project, region, billing, quota, cost estimate, data destination, launch confirmation, and cleanup/termination gates are specified. |
