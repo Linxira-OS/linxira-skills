@@ -20,7 +20,7 @@ Status values:
 | --- | --- | --- | --- |
 | `MIG-001` | done | Inventory useful skills from the previous `extendai-lab-v1` repository without modifying that repository. | `MIGRATION_LEDGER.md` inventories all 25 direct candidates at donor revision `254ec96361cc9d21b5bf9f8c471def93e377382c`; no donor body is approved for copying. |
 | `PKG-001` | blocked | Implement the npm CLI initializer described in `INSTALLATION_ARCHITECTURE.md`. | Local Node 24 fixtures pass `init`, `status`, `update`, and `uninstall`; `.github/workflows/cli-validation.yml` defines the required Windows, Linux, and macOS matrix. A pushed workflow run must pass before completion. |
-| `PKG-002` | done | Define the first redistributable `core` payload and npm release manifest. | `payload/` is generated from the 17 audited first-party skills; `npm pack --dry-run` reports only approved payload files, template, README, license, and CLI. |
+| `PKG-002` | done | Define the first redistributable `core` payload and npm release manifest. | `payload/` is generated from the 19 audited first-party skills; `npm pack --dry-run` reports only approved payload files, template, README, license, and CLI. |
 
 Only one item may be `active`. Move the next item to `active` before beginning
 work and update its row before ending a session.
@@ -63,7 +63,7 @@ they are present in this repository.
 | --- | --- | --- | --- |
 | `PKG-003` | done | Define cross-runtime materialization under `.agents/skills/`. | `INSTALLATION_ARCHITECTURE.md` records OpenCode/Codex discovery, marker updates, ownership manifest, profiles, and safe update behavior. |
 | `PKG-004` | done | Create the CLI skeleton and marker-block updater. | Node fixture tests prove marker upsert/remove preserve user text outside Linxira markers and malformed markers are rejected. |
-| `PKG-005` | done | Implement profile materialization and ownership manifest. | The initializer generates `core` from 17 audited first-party skills, records directory hashes in `.linxira/manifest.json`, and rejects same-named user directories. |
+| `PKG-005` | done | Implement profile materialization and ownership manifest. | The initializer generates `core` from 19 audited first-party skills, records directory hashes in `.linxira/manifest.json`, and rejects same-named user directories. |
 | `PKG-006` | done | Implement status, update, uninstall, and dry-run behavior. | Fixture tests prove divergence is reported, `--force` is required to replace it, and uninstall preserves unrelated `AGENTS.md` and `.agents` content. |
 | `PKG-007` | blocked | Build and publish the first npm package. | Local package-content check, clean tarball lifecycle smoke test, and `CHANGELOG.md` pass. Await a successful pushed CI matrix, GitHub Release creation, and authorized `npm publish --provenance`. |
 | `PKG-008` | done | Materialize the reviewed `life-sciences-core` profile. | Payload verifies and copies only four hash-pinned MIT `SKILL.md` bodies, includes `bioSkills-MIT.txt`, and fixture tests prove 18-skill profile selection and ownership behavior. |
@@ -73,13 +73,13 @@ they are present in this repository.
 
 | ID | Status | Task | Completion evidence |
 | --- | --- | --- | --- |
-| `LIN-001` | done | Draft first-party Linux, WSL, SSH, transfer, GPU, storage/networking, and troubleshooting skills. | 17 first-party skills have audited loading metadata; Linux scope is documented in `LINUX_PACKAGE.md`. |
+| `LIN-001` | done | Draft first-party Linux, WSL, SSH, transfer, GPU, storage/networking, and troubleshooting skills. | 19 first-party skills have audited loading metadata; Linux scope is documented in `LINUX_PACKAGE.md`. |
 | `LIN-002` | planned | Add executable Linux verification fixtures and distribution adapters. | Debian/Ubuntu and Arch-family fixtures verify dispatch, safe commands, and expected failure handling. |
 | `WEB-001` | done | Define `research-web` browser modes. | `RESEARCH_WEB_POLICY.md` defines isolated automation, user-approved logged-in browser, execution boundary, and prohibited behavior. |
-| `WEB-002` | blocked | Review and select browser runtime dependencies. | `agent-browser` is the Apache-2.0 isolated-runtime candidate, but the current OpenCode web UI does not reliably support its interactive message flow. Validate it in an approved external terminal or CI environment. |
-| `ENG-001` | done | Build `research-engineering` profiles for reproducibility, software quality, paper writing, figures, and reports. | `RESEARCH_ENGINEERING_PROFILES.md` defines `research-engineering-core`, `research-reporting`, and `life-sciences-reporting`, with explicit composition and non-overlap boundaries. |
-| `CLOUD-001` | planned | Define `compute-cloud` provider, SSH, HPC, and cost-control contracts. | Remote creation, billing, credential, data transfer, and teardown gates are specified and testable. |
-| `AI-001` | planned | Define `scientific-ai` model training and evaluation capability boundaries. | GPU/vendor skill selection and evaluation artifact/provenance requirements are recorded. |
+| `WEB-002` | blocked | Review and select browser runtime dependencies. | `agent-browser` is the Apache-2.0 isolated-runtime candidate, but the current Web UI does not reliably carry its interactive state. Validate it in an approved environment or a session path that supports stateful browser handoff. |
+| `CLOUD-001` | done | Define `compute-cloud` provider, SSH, HPC, and cost-control contracts. | `compute-cloud` and `COMPUTE_CLOUD_POLICY.md` define launch approval, billing, credential, data-transfer, and teardown gates reusable by future connectors. |
+| `AI-001` | done | Define `scientific-ai` model training and evaluation capability boundaries. | `scientific-ai` and `SCIENTIFIC_AI_POLICY.md` record dataset, model, compute, baseline, metric, and artifact requirements for model-centric research work. |
+| `ENG-001` | planned | Build `research-engineering` profiles for reproducibility, software quality, paper writing, figures, and reports. | Reviewed skill set has clear inputs, outputs, evidence checks, and package dependencies. |
 
 ## Platform And Service Connectors
 

@@ -15,12 +15,12 @@ browser handoff, upload, download, form submission, or web-based data capture.
 
 ## Current Execution Boundary
 
-Do not launch `agent-browser` from the current OpenCode web UI session.
-Terminal-driven OpenCode environments may support it, but the current web UI
-does not reliably preserve the interactive state and follow-up messages this
-workflow needs. Browser automation therefore belongs in an external approved
-terminal, CI worker, or user-managed environment here. This skill defines the
-contract for that environment; it does not authorize a browser launch here.
+`agent-browser` is a valid OpenCode-compatible browser runtime, but in the
+current Web UI path its interactive state and follow-up information are not a
+reliable primary workflow. Treat it as available but non-preferred here.
+Browser automation should normally run in an external approved terminal, CI
+worker, or other user-managed environment unless the current interface proves it
+can preserve the full interaction loop.
 
 ## Preflight
 
@@ -53,9 +53,9 @@ public page, extracting explicitly allowed metadata, or capturing a screenshot.
 - Close the external browser session and report the observed URL, timestamp,
   extraction method, and any uncertainty when finished.
 
-`agent-browser` is the selected future isolated-runtime candidate because its
-upstream is Apache-2.0, but it remains unvalidated in the current OpenCode web
-UI environment.
+`agent-browser` is the selected isolated-runtime candidate because its upstream
+is Apache-2.0, but it remains non-preferred in this Web UI until interactive
+state transfer is validated.
 
 ## User-Approved Logged-In Mode
 

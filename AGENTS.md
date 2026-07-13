@@ -35,8 +35,9 @@ so updates and uninstall can preserve user-owned skills.
 
 ## Browser Runtime Boundary
 
-Do not execute `agent-browser` from the current OpenCode web UI session.
-OpenCode can support it in terminal-driven environments, but the current web UI
-does not reliably carry the interactive state and follow-up messages this
-workflow needs. Browser automation validation therefore belongs in a separate
-terminal, CI worker, or other approved execution environment.
+`agent-browser` may exist as an OpenCode-compatible browser runtime, but the
+current Web UI path does not reliably carry its interactive state and follow-up
+information between turns. Do not treat it as a preferred execution path here.
+Use a separate terminal, CI worker, or other approved execution environment for
+browser automation validation unless the current session explicitly proves it
+can support that interaction model end to end.
