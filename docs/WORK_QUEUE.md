@@ -20,7 +20,7 @@ Status values:
 | --- | --- | --- | --- |
 | `MIG-001` | done | Inventory useful skills from the previous `extendai-lab-v1` repository without modifying that repository. | `MIGRATION_LEDGER.md` inventories all 25 direct candidates at donor revision `254ec96361cc9d21b5bf9f8c471def93e377382c`; no donor body is approved for copying. |
 | `PKG-001` | blocked | Implement the npm CLI initializer described in `INSTALLATION_ARCHITECTURE.md`. | Local Node 24 fixtures pass `init`, `status`, `update`, and `uninstall`; `.github/workflows/cli-validation.yml` defines the required Windows, Linux, and macOS matrix. A pushed workflow run must pass before completion. |
-| `PKG-002` | done | Define the first redistributable `core` payload and npm release manifest. | `payload/` is generated from the 20 audited first-party skills; `npm pack --dry-run` reports only approved payload files, template, README, license, and CLI. |
+| `PKG-002` | done | Define the first redistributable `core` payload and npm release manifest. | `payload/` is generated from the 21 audited first-party skills; `npm pack --dry-run` reports only approved payload files, template, README, license, and CLI. |
 
 Only one item may be `active`. Move the next item to `active` before beginning
 work and update its row before ending a session.
@@ -63,7 +63,7 @@ they are present in this repository.
 | --- | --- | --- | --- |
 | `PKG-003` | done | Define cross-runtime materialization under `.agents/skills/`. | `INSTALLATION_ARCHITECTURE.md` records OpenCode/Codex discovery, marker updates, ownership manifest, profiles, and safe update behavior. |
 | `PKG-004` | done | Create the CLI skeleton and marker-block updater. | Node fixture tests prove marker upsert/remove preserve user text outside Linxira markers and malformed markers are rejected. |
-| `PKG-005` | done | Implement profile materialization and ownership manifest. | The initializer generates `core` from 20 audited first-party skills, records directory hashes in `.linxira/manifest.json`, and rejects same-named user directories. |
+| `PKG-005` | done | Implement profile materialization and ownership manifest. | The initializer generates `core` from 21 audited first-party skills, records directory hashes in `.linxira/manifest.json`, and rejects same-named user directories. |
 | `PKG-006` | done | Implement status, update, uninstall, and dry-run behavior. | Fixture tests prove divergence is reported, `--force` is required to replace it, and uninstall preserves unrelated `AGENTS.md` and `.agents` content. |
 | `PKG-007` | blocked | Build and publish the first npm package. | Local package-content check, clean tarball lifecycle smoke test, and `CHANGELOG.md` pass. Await a successful pushed CI matrix, GitHub Release creation, and authorized `npm publish --provenance`. |
 | `PKG-008` | done | Materialize the reviewed `life-sciences-core` profile. | Payload verifies and copies only four hash-pinned MIT `SKILL.md` bodies, includes `bioSkills-MIT.txt`, and fixture tests prove 18-skill profile selection and ownership behavior. |
@@ -73,7 +73,7 @@ they are present in this repository.
 
 | ID | Status | Task | Completion evidence |
 | --- | --- | --- | --- |
-| `LIN-001` | done | Draft first-party Linux, WSL, SSH, transfer, GPU, storage/networking, and troubleshooting skills. | 20 first-party skills have audited loading metadata; Linux scope is documented in `LINUX_PACKAGE.md`. |
+| `LIN-001` | done | Draft first-party Linux, WSL, SSH, transfer, GPU, storage/networking, and troubleshooting skills. | 21 first-party skills have audited loading metadata; Linux scope is documented in `LINUX_PACKAGE.md`. |
 | `LIN-002` | planned | Add executable Linux verification fixtures and distribution adapters. | Debian/Ubuntu and Arch-family fixtures verify dispatch, safe commands, and expected failure handling. |
 | `WEB-001` | done | Define `research-web` browser modes. | `RESEARCH_WEB_POLICY.md` defines isolated automation, user-approved logged-in browser, execution boundary, and prohibited behavior. |
 | `WEB-002` | blocked | Review and select browser runtime dependencies. | `agent-browser` is the Apache-2.0 isolated-runtime candidate, but the current Web UI does not reliably carry its interactive state. Validate it in an approved environment or a session path that supports stateful browser handoff. |
@@ -88,7 +88,7 @@ they are present in this repository.
 | `CON-001` | done | Add a public AlphaFold DB retrieval profile. | `alphafold-db-public.json` and `ALPHAFOLD_DB_PUBLIC_PROFILE.md` record the pinned AFDB skill, public metadata -> mmCIF/PAE smoke checks, interpretation limits, and provenance expectations. |
 | `CON-002` | blocked | Add AlphaFold Server or AlphaFold 3 execution support. | Use an official documented programmatic interface or a user-approved interactive workflow; do not automate unsupported account or browser flows. |
 | `CON-003` | done | Define Google Drive, Docs, and Slides OAuth connector contract. | `google-workspace-oauth` and `GOOGLE_WORKSPACE_OAUTH_POLICY.md` define minimum scopes, consent identity, write verification, export disclosure, and token-storage rules. |
-| `CON-004` | planned | Define Google Cloud or Vertex compute connector contract. | Project, region, billing, quota, cost estimate, data destination, launch confirmation, and cleanup/termination gates are specified. |
+| `CON-004` | done | Define Google Cloud or Vertex compute connector contract. | `google-cloud-vertex` and `GOOGLE_CLOUD_VERTEX_POLICY.md` define project, region, billing, identity, quota, artifact, and teardown requirements for future Google compute integrations. |
 | `CON-005` | planned | Add public life-science database connector profiles. | UniProt, PDB, and related API skills use documented APIs, cache/provenance records, and rate-limit/error handling. |
 
 Google Docs and Slides examples in `openai/plugins` are Codex-runtime references,
