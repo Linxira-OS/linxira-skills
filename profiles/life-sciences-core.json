@@ -15,28 +15,28 @@
     {
       "name": "bio-read-sequences",
       "relativePath": "sequence-io/read-sequences",
-      "bodySha256": "d3043a1ef895f5adbac75e84acff826623d524fb399aecd1e14905b5e67aca88",
+      "bodySha256": "9971236cdade2e348a5749a873f2bbb34a0699a60ba34455c7f9945c1a5eea88",
       "loadPolicy": "conditional",
       "riskTags": ["local-file-read"]
     },
     {
       "name": "bio-sequence-statistics",
       "relativePath": "sequence-io/sequence-statistics",
-      "bodySha256": "1cdc2f60bd4e3d624ab84d1bf7b154c5cdb1e2cca2452e298033594aec52d7f2",
+      "bodySha256": "8a56b8eb7854d3a6c3a13778e8bf97d0e2ec3f193a7818309bafc508bafbf514",
       "loadPolicy": "conditional",
       "riskTags": ["local-file-read"]
     },
     {
       "name": "bio-structural-biology-structure-navigation",
       "relativePath": "structural-biology/structure-navigation",
-      "bodySha256": "b523ce657622491f8d08ef469483e3b4b9d00bcfad2c2fcf456f0fa77300b6a1",
+      "bodySha256": "8e11a18fa908cddd80adccfc12e53086056bc2a704a5e75de633326e8f65e0b9",
       "loadPolicy": "conditional",
       "riskTags": ["local-file-read"]
     },
     {
       "name": "bio-structural-biology-alphafold-predictions",
       "relativePath": "structural-biology/alphafold-predictions",
-      "bodySha256": "2ea5e57a54c18258c9eceb1b911a2e0a0ad327da61f2a6d280fa1da494f77c2c",
+      "bodySha256": "106c074dd3374c691d90aa3340e3203d3c0ceefea9b340f4f100fe883400a782",
       "loadPolicy": "required",
       "riskTags": ["public-network-read", "external-reference"]
     }

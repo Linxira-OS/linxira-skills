@@ -15,7 +15,7 @@
     {
       "name": "bio-structural-biology-alphafold-predictions",
       "relativePath": "structural-biology/alphafold-predictions",
-      "bodySha256": "2ea5e57a54c18258c9eceb1b911a2e0a0ad327da61f2a6d280fa1da494f77c2c",
+      "bodySha256": "106c074dd3374c691d90aa3340e3203d3c0ceefea9b340f4f100fe883400a782",
       "loadPolicy": "required",
       "riskTags": ["public-network-read", "external-reference"]
     }

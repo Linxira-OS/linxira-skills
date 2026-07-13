@@ -58,7 +58,7 @@ for (const profile of reviewedProfiles) {
     const body = await readFile(join(source, 'SKILL.md'), 'utf8');
     const name = frontmatterValue(body, 'name');
     const description = frontmatterValue(body, 'description');
-    const bodySha256 = createHash('sha256').update(body).digest('hex');
+    const bodySha256 = normalizedTextHash(body);
     if (name !== skill.name || !description || bodySha256 !== skill.bodySha256) {
       throw new Error(`Reviewed source skill changed or is invalid: ${skill.relativePath}`);
     }
@@ -99,6 +99,10 @@ await writeFile(join(payloadRoot, 'catalog.json'), `${JSON.stringify({ version: 
 function frontmatterValue(body, key) {
   const match = body.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
   return match?.[1]?.trim().replace(/^['"]|['"]$/g, '');
+}
+
+function normalizedTextHash(body) {
+  return createHash('sha256').update(body.replace(/\r\n/g, '\n')).digest('hex');
 }
 
 function assertRelativeSkillPath(value) {

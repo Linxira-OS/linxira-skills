@@ -15,21 +15,21 @@
     {
       "name": "dashboard",
       "relativePath": "dashboard",
-      "bodySha256": "703abde072a7da4fcce5890a15a7f130cd6e11ad22bb3def7af184a180422f70",
+      "bodySha256": "3f244f2565bcf0fd2ab3ca84e37f50d0cde0527eef641dbab1909b9ecf089ee8",
       "loadPolicy": "conditional",
       "riskTags": ["local-data"]
     },
     {
       "name": "data-report",
       "relativePath": "data-report",
-      "bodySha256": "7809a77921b2c4d33e70a4ad9fb2054baa3dbd2b997922b59abff19fec69d601",
+      "bodySha256": "188e3d69adc8694bafa8db18664b33b6ccebaa4880231a40a7f6dc6bac64532c",
       "loadPolicy": "required",
       "riskTags": ["local-data", "external-network-read-optional", "no-fabrication"]
     },
     {
       "name": "docs-page",
       "relativePath": "docs-page",
-      "bodySha256": "31177c1111b9b584011292c243afaed1da0b719973ce213b662a7c7675d39c36",
+      "bodySha256": "0fd23b8a02cb2ec6385a35af22964b48dd5119b47fe48c77f4e64e3baa06b606",
       "loadPolicy": "conditional",
       "riskTags": ["local-content"]
     }
