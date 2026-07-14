@@ -1,7 +1,12 @@
 <!-- linxira-skills:start -->
 ## Linxira Skills
 
-Project-local skills are materialized under `.agents/skills/`. Use the runtime
-skill tool to load a matching skill on demand. Do not load every skill body;
-follow the selected skill's risk and completion requirements before action.
+Project-local Linxira content is materialized as a progressive routing tree under
+`.agents/skills/`. Read only one matching top-level router first:
+
+{{routes}}
+
+Follow that router to one second-level index, then load only the exact leaf skill
+required by the task. Do not scan or preload the complete tree. Follow the
+selected leaf's risk and completion requirements before action.
 <!-- linxira-skills:end -->

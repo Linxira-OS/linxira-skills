@@ -8,8 +8,8 @@ The repository is both the source workspace and release boundary for the CLI,
 first-party skills, reviewed third-party material, profile definitions, and
 provenance records.
 
-The first package targets OpenCode and other runtimes that discover
-project-local skills under `.agents/skills/`.
+The first package targets OpenCode and other runtimes that use project-local
+instructions under `.agents/skills/` and `AGENTS.md`.
 
 Chinese overview: [README.zh-CN.md](README.zh-CN.md)
 
@@ -29,6 +29,23 @@ Current profile counts in the package build:
 
 Reviewed connector profiles such as AlphaFold DB public access are tracked in
 this repository, but are not separate packaged payloads yet.
+
+## Progressive Routing
+
+Installed profiles use a three-level tree instead of exposing every leaf skill
+at the root:
+
+```text
+.agents/skills/
+  engineering/                 top-level router
+    native-performance/        second-level index
+      <exact-skill>/SKILL.md    third-level leaf
+```
+
+The generated `AGENTS.md` block lists only installed top-level routers. An agent
+reads one router, follows one matching index, and then reads the exact leaf
+needed for the task. Current roots are `research`, `engineering`, `systems`,
+`integrations`, and `delivery`; profiles install only the roots they use.
 
 ## Content Model
 
@@ -96,6 +113,8 @@ First-party skills provide execution boundaries for:
 ## Repository Layout
 
 - `skills/`: first-party skills that may be packaged directly
+- `routes/`: top-level routers and second-level indexes for progressive loading
+- `catalog/first-party-layout.json`: stable skill IDs mapped to three-level install paths
 - `profiles/`: reviewed profile manifests and pinned source hashes
 - `sources/`: pinned upstream source tracks for audit and selection
 - `scripts/`: payload and catalog builders plus audits

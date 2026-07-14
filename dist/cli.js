@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const markerStart = '<!-- linxira-skills:start -->';
 const markerEnd = '<!-- linxira-skills:end -->';
-const markerBlock = (await readFile(join(packageRoot, 'templates', 'AGENTS.md.fragment'), 'utf8')).trimEnd();
+const markerTemplate = (await readFile(join(packageRoot, 'templates', 'AGENTS.md.fragment'), 'utf8')).trimEnd();
 const requiredIgnoreEntries = ['.agents/skills/', '.linxira/'];
 
 class CliError extends Error {}
@@ -106,8 +106,8 @@ async function initialize(root, options, io) {
   }
 
   const profile = options.profile ?? 'core';
-  const sources = await profileSources(profile);
-  const targets = sources.map(({ name }) => join(root, '.agents', 'skills', name));
+  const profileData = await profileEntries(profile);
+  const targets = profileData.entries.map(({ target }) => join(root, '.agents', 'skills', target));
 
   for (const target of targets) {
     if (existsSync(target)) {
@@ -115,23 +115,23 @@ async function initialize(root, options, io) {
     }
   }
 
-  const agentsPlan = await markerPlan(root, 'upsert');
+  const agentsPlan = await markerPlan(root, 'upsert', markerBlock(profileData.agentRoutes));
   const ignorePlan = await gitignorePlan(root);
-  const manifest = await buildManifest(profile, sources);
+  const manifest = await buildManifest(profile, profileData.entries);
 
   if (options.dryRun) {
-    reportInitPlan(profile, sources, agentsPlan, ignorePlan, io);
+    reportInitPlan(profile, profileData.entries, agentsPlan, ignorePlan, io);
     return 0;
   }
 
   await mkdir(join(root, '.agents', 'skills'), { recursive: true });
-  for (const { name, source } of sources) {
-    await cp(source, join(root, '.agents', 'skills', name), { recursive: true, errorOnExist: true });
+  for (const entry of profileData.entries) {
+    await copyEntry(entry, join(root, '.agents', 'skills', entry.target));
   }
   await applyPlan(agentsPlan);
   await applyPlan(ignorePlan);
   await writeManifest(root, manifest);
-  io.log(`Initialized ${profile} profile with ${sources.length} skills.`);
+  io.log(`Initialized ${profile} profile with ${profileData.entries.length} managed entries.`);
   return 0;
 }
 
@@ -144,8 +144,8 @@ async function showStatus(root, io) {
 
   const statuses = await managedStatuses(root, manifest);
   io.log(`Profile: ${manifest.profile}`);
-  for (const { name, state } of statuses) {
-    io.log(`${name}: ${state}`);
+  for (const { id, state } of statuses) {
+    io.log(`${id}: ${state}`);
   }
 
   return statuses.some(({ state }) => state !== 'ok') ? 1 : 0;
@@ -157,46 +157,49 @@ async function update(root, options, io) {
     throw new CliError('No Linxira manifest found. Run init first.');
   }
 
-  const sources = await profileSources(manifest.profile);
+  const profileData = await profileEntries(manifest.profile);
   const currentStatuses = await managedStatuses(root, manifest);
   const divergent = currentStatuses.filter(({ state }) => state !== 'ok');
   if (divergent.length > 0 && !options.force) {
-    throw new CliError(`Refusing to replace modified managed skills: ${divergent.map(({ name }) => name).join(', ')}. Re-run with --force after review.`);
+    throw new CliError(`Refusing to replace modified managed entries: ${divergent.map(({ id }) => id).join(', ')}. Re-run with --force after review.`);
   }
 
-  const managed = new Set(Object.keys(manifest.skills));
-  const desired = new Set(sources.map(({ name }) => name));
-  for (const { name } of sources) {
-    const target = join(root, '.agents', 'skills', name);
-    if (existsSync(target) && !managed.has(name)) {
-      throw new CliError(`Refusing to overwrite non-managed skill directory: ${relative(root, target)}`);
+  const managedTargets = new Set(Object.values(manifest.entries).map(({ path }) => path));
+  const desiredEntries = new Map(profileData.entries.map((entry) => [entry.id, entry]));
+  for (const { id, target } of profileData.entries) {
+    const targetPath = join(root, '.agents', 'skills', target);
+    if (existsSync(targetPath) && !managedTargets.has(target)) {
+      throw new CliError(`Refusing to overwrite non-managed Linxira path: ${relative(root, targetPath)}`);
     }
   }
 
-  const agentsPlan = await markerPlan(root, 'upsert');
+  const agentsPlan = await markerPlan(root, 'upsert', markerBlock(profileData.agentRoutes));
   const ignorePlan = await gitignorePlan(root);
-  const nextManifest = await buildManifest(manifest.profile, sources);
-  const removals = [...managed].filter((name) => !desired.has(name));
+  const nextManifest = await buildManifest(manifest.profile, profileData.entries);
+  const removals = Object.entries(manifest.entries).filter(([id, record]) => {
+    const desired = desiredEntries.get(id);
+    return !desired || desired.target !== record.path;
+  });
 
   if (options.dryRun) {
-    for (const { name } of sources) {
-      io.log(`[dry-run] refresh .agents/skills/${name}`);
+    for (const { target } of profileData.entries) {
+      io.log(`[dry-run] refresh .agents/skills/${target}`);
     }
-    for (const name of removals) {
-      io.log(`[dry-run] remove .agents/skills/${name}`);
+    for (const [, record] of removals) {
+      io.log(`[dry-run] remove .agents/skills/${record.path}`);
     }
     reportPlans(agentsPlan, ignorePlan, io);
     io.log('[dry-run] write .linxira/manifest.json');
     return 0;
   }
 
-  for (const name of removals) {
-    await rm(join(root, '.agents', 'skills', name), { recursive: true, force: true });
+  for (const [, record] of removals) {
+    await rm(join(root, '.agents', 'skills', record.path), { recursive: true, force: true });
   }
-  for (const { name, source } of sources) {
-    const target = join(root, '.agents', 'skills', name);
+  for (const entry of profileData.entries) {
+    const target = join(root, '.agents', 'skills', entry.target);
     await rm(target, { recursive: true, force: true });
-    await cp(source, target, { recursive: true, errorOnExist: true });
+    await copyEntry(entry, target);
   }
   await applyPlan(agentsPlan);
   await applyPlan(ignorePlan);
@@ -214,21 +217,21 @@ async function uninstall(root, options, io) {
   const statuses = await managedStatuses(root, manifest);
   const divergent = statuses.filter(({ state }) => state !== 'ok');
   if (divergent.length > 0 && !options.force) {
-    throw new CliError(`Refusing to remove modified managed skills: ${divergent.map(({ name }) => name).join(', ')}. Re-run with --force after review.`);
+    throw new CliError(`Refusing to remove modified managed entries: ${divergent.map(({ id }) => id).join(', ')}. Re-run with --force after review.`);
   }
 
   const agentsPlan = await markerPlan(root, 'remove');
   if (options.dryRun) {
-    for (const { name } of statuses) {
-      io.log(`[dry-run] remove .agents/skills/${name}`);
+    for (const { path } of statuses) {
+      io.log(`[dry-run] remove .agents/skills/${path}`);
     }
     reportPlans(agentsPlan, undefined, io);
     io.log('[dry-run] remove .linxira/manifest.json');
     return 0;
   }
 
-  for (const { name } of statuses) {
-    await rm(join(root, '.agents', 'skills', name), { recursive: true, force: true });
+  for (const { path } of statuses) {
+    await rm(join(root, '.agents', 'skills', path), { recursive: true, force: true });
   }
   await applyPlan(agentsPlan);
   await rm(manifestPath(root), { force: true });
@@ -236,28 +239,62 @@ async function uninstall(root, options, io) {
   return 0;
 }
 
-async function profileSources(profileName) {
+async function profileEntries(profileName) {
   const profiles = JSON.parse(await readFile(join(packageRoot, 'payload', 'profiles.json'), 'utf8'));
   const profile = profiles.profiles?.[profileName];
   if (!profile) {
     throw new CliError(`Unknown profile: ${profileName}`);
   }
 
-  const sources = [];
-  for (const name of profile.skills) {
-    assertSkillName(name);
-    const source = join(packageRoot, 'payload', 'skills', name);
-    if (!existsSync(source)) {
-      throw new CliError(`Packaged skill is missing: ${name}`);
-    }
-    sources.push({ name, source });
+  if (!Array.isArray(profile.entries) || !Array.isArray(profile.agentRoutes)) {
+    throw new CliError(`Packaged profile has an unsupported shape: ${profileName}`);
   }
-  return sources;
+  const entries = [];
+  const ids = new Set();
+  const targets = new Set();
+  for (const entry of profile.entries) {
+    assertEntry(entry);
+    if (ids.has(entry.id) || targets.has(entry.target)) {
+      throw new CliError(`Packaged profile contains a duplicate entry: ${entry.id}`);
+    }
+    ids.add(entry.id);
+    targets.add(entry.target);
+    const source = join(packageRoot, 'payload', ...entry.source.split('/'));
+    if (!existsSync(source)) {
+      throw new CliError(`Packaged entry is missing: ${entry.id}`);
+    }
+    entries.push({ ...entry, source });
+  }
+  for (const route of profile.agentRoutes) {
+    if (!route || typeof route.path !== 'string' || typeof route.description !== 'string') {
+      throw new CliError(`Packaged profile contains an invalid agent route: ${profileName}`);
+    }
+    assertManagedPath(route.path);
+  }
+  return { entries, agentRoutes: profile.agentRoutes };
 }
 
-function assertSkillName(name) {
-  if (typeof name !== 'string' || !/^[a-z0-9][a-z0-9-]*$/.test(name)) {
-    throw new CliError(`Invalid skill name in package payload: ${String(name)}`);
+function assertEntry(entry) {
+  if (!entry) {
+    throw new CliError(`Invalid entry id in package payload: ${String(entry?.id)}`);
+  }
+  assertEntryId(entry.id);
+  if (entry.kind !== 'file' && entry.kind !== 'directory') {
+    throw new CliError(`Invalid entry kind in package payload: ${String(entry.kind)}`);
+  }
+  assertManagedPath(entry.source);
+  assertManagedPath(entry.target);
+}
+
+function assertEntryId(value) {
+  if (typeof value !== 'string' || !/^[a-z0-9][a-z0-9-]*$/.test(value)) {
+    throw new CliError(`Invalid entry id in package payload: ${String(value)}`);
+  }
+}
+
+function assertManagedPath(value) {
+  if (typeof value !== 'string' || !/^[a-z0-9][a-z0-9.-]*(?:\/[a-zA-Z0-9][a-zA-Z0-9.-]*)*$/.test(value)) {
+    throw new CliError(`Invalid managed path in package payload: ${String(value)}`);
   }
 }
 
@@ -274,14 +311,15 @@ async function readManifest(root) {
     throw new CliError('The Linxira manifest is not valid JSON. Repair or remove it before continuing.');
   }
 
-  if (!manifest || typeof manifest.profile !== 'string' || !manifest.skills || typeof manifest.skills !== 'object') {
+  if (!manifest || manifest.schemaVersion !== 2 || typeof manifest.profile !== 'string' || !manifest.entries || typeof manifest.entries !== 'object') {
     throw new CliError('The Linxira manifest has an unsupported shape.');
   }
-  for (const [name, record] of Object.entries(manifest.skills)) {
-    assertSkillName(name);
-    if (!record || typeof record.hash !== 'string') {
-      throw new CliError(`The Linxira manifest entry for ${name} is invalid.`);
+  for (const [id, record] of Object.entries(manifest.entries)) {
+    assertEntryId(id);
+    if (!record || typeof record.hash !== 'string' || (record.kind !== 'file' && record.kind !== 'directory')) {
+      throw new CliError(`The Linxira manifest entry for ${id} is invalid.`);
     }
+    assertManagedPath(record.path);
   }
   return manifest;
 }
@@ -292,17 +330,17 @@ function manifestPath(root) {
 
 async function buildManifest(profile, sources) {
   const packageInfo = JSON.parse(await readFile(join(packageRoot, 'package.json'), 'utf8'));
-  const skills = {};
-  for (const { name, source } of sources) {
-    skills[name] = { hash: await directoryHash(source) };
+  const entries = {};
+  for (const { id, source, target, kind } of sources) {
+    entries[id] = { path: target, kind, hash: await entryHash(source, kind) };
   }
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     installerVersion: packageInfo.version,
     payloadVersion: packageInfo.version,
     profile,
-    skills,
+    entries,
   };
 }
 
@@ -313,14 +351,14 @@ async function writeManifest(root, manifest) {
 
 async function managedStatuses(root, manifest) {
   const statuses = [];
-  for (const [name, record] of Object.entries(manifest.skills).sort(([left], [right]) => left.localeCompare(right))) {
-    const target = join(root, '.agents', 'skills', name);
+  for (const [id, record] of Object.entries(manifest.entries).sort(([left], [right]) => left.localeCompare(right))) {
+    const target = join(root, '.agents', 'skills', record.path);
     let state = 'ok';
     if (!existsSync(target)) {
       state = 'missing';
     } else {
       try {
-        if ((await stat(target)).isDirectory() && await directoryHash(target) === record.hash) {
+        if (await entryHash(target, record.kind) === record.hash) {
           state = 'ok';
         } else {
           state = 'modified';
@@ -329,9 +367,28 @@ async function managedStatuses(root, manifest) {
         state = 'modified';
       }
     }
-    statuses.push({ name, state });
+    statuses.push({ id, path: record.path, state });
   }
   return statuses;
+}
+
+async function copyEntry(entry, target) {
+  await mkdir(dirname(target), { recursive: true });
+  await cp(entry.source, target, { recursive: entry.kind === 'directory', errorOnExist: true });
+}
+
+async function entryHash(path, kind) {
+  const details = await stat(path);
+  if (kind === 'file') {
+    if (!details.isFile()) {
+      throw new CliError(`Managed entry is not a file: ${path}`);
+    }
+    return createHash('sha256').update(await readFile(path)).digest('hex');
+  }
+  if (!details.isDirectory()) {
+    throw new CliError(`Managed entry is not a directory: ${path}`);
+  }
+  return directoryHash(path);
 }
 
 async function directoryHash(directory) {
@@ -358,23 +415,30 @@ async function directoryHash(directory) {
   return hash.digest('hex');
 }
 
-async function markerPlan(root, action) {
+function markerBlock(routes) {
+  const routeLines = routes
+    .map(({ path, description }) => `- ${description}\n  Read \`.agents/skills/${path}\`.`)
+    .join('\n');
+  return markerTemplate.replace('{{routes}}', routeLines);
+}
+
+async function markerPlan(root, action, block = '') {
   const path = join(root, 'AGENTS.md');
   const before = existsSync(path) ? await readFile(path, 'utf8') : '';
-  const after = action === 'upsert' ? upsertMarker(before) : removeMarker(before);
+  const after = action === 'upsert' ? upsertMarker(before, block) : removeMarker(before);
   return { path, before, after, label: 'AGENTS.md marker block' };
 }
 
-function upsertMarker(content) {
+function upsertMarker(content, block) {
   const bounds = markerBounds(content);
   if (!bounds) {
     if (!content) {
-      return markerBlock;
+      return block;
     }
     const separator = content.endsWith('\n') ? '' : '\n';
-    return `${content}${separator}${markerBlock}`;
+    return `${content}${separator}${block}`;
   }
-  return `${content.slice(0, bounds.start)}${markerBlock}${content.slice(bounds.afterEnd)}`;
+  return `${content.slice(0, bounds.start)}${block}${content.slice(bounds.afterEnd)}`;
 }
 
 function removeMarker(content) {
@@ -417,8 +481,8 @@ async function applyPlan(plan) {
 }
 
 function reportInitPlan(profile, sources, agentsPlan, ignorePlan, io) {
-  for (const { name } of sources) {
-    io.log(`[dry-run] copy .agents/skills/${name}`);
+  for (const { target } of sources) {
+    io.log(`[dry-run] copy .agents/skills/${target}`);
   }
   reportPlans(agentsPlan, ignorePlan, io);
   io.log(`[dry-run] write .linxira/manifest.json for ${profile}`);

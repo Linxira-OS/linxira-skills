@@ -7,15 +7,16 @@
 
 The primary delivery mechanism is an npm CLI initializer, not an OpenCode-only
 runtime plugin. It materializes a selected skill profile into a project's
-`.agents/skills/` directory, which both OpenCode and Codex discover natively.
+`.agents/skills/` directory as a progressive three-level routing tree.
 The command also maintains a small marked section in the target repository's
 `AGENTS.md` so any compatible agent understands the library's scope and
 progressive-loading rules.
 
-OpenCode is the first supported runtime. Its current skill discovery includes
-project-local `.agents/skills/<name>/SKILL.md`; Codex also scans that compatible
-location. A project can therefore use the same installed profile without a
-second runtime-specific plugin.
+OpenCode is the first supported runtime. OpenCode and Codex discover the
+top-level router skills. The generated `AGENTS.md` block directs compatible
+agents from one router to one second-level index and then to one exact leaf.
+A project can therefore use the same installed profile without a second
+runtime-specific plugin or a flat root containing every leaf skill.
 
 ## What Is And Is Not Installed
 
@@ -49,6 +50,7 @@ linxira-skills
   dist/                 CLI implementation
   payload/
     skills/             Redistributable skill directories only
+    routes/             Top-level routers and second-level indexes
     catalog.json        Compact descriptors and source revisions
     profiles.json       Named materialization profiles
   templates/
@@ -76,7 +78,18 @@ target-repository/
   AGENTS.md                 Existing file, updated through a marker block
   .agents/
     skills/
-      <selected-skill>/SKILL.md
+      engineering/
+        SKILL.md
+        software/
+          INDEX.md
+          scientific-software-engineering/
+            SKILL.md
+      systems/
+        SKILL.md
+        linux/
+          INDEX.md
+          linux-foundations/
+            SKILL.md
   .linxira/
     manifest.json
 ```
@@ -88,15 +101,13 @@ The initializer adds these exact ignore entries if absent:
 .linxira/
 ```
 
-`.agents/skills/` contains copied skill directories by default. Copying is more
-reliable than symlinks on Windows and keeps the runtime independent of an npm
-cache eviction. A future `--link` option may be offered only as an explicit
-local-development optimization.
+`.agents/skills/` contains copied router files, indexes, and leaf skill
+directories. Copying is more reliable than symlinks on Windows and keeps the
+runtime independent of an npm cache eviction.
 
-`.linxira/manifest.json` records the installer version, selected profile, source
-payload version, managed directories, and file hashes. It is local state, not a
-team lockfile. A tracked lockfile can be added later only when teams need
-reproducible shared project profiles.
+`.linxira/manifest.json` schema v2 records the installer version, selected
+profile, source payload version, and each managed entry's stable ID, relative
+path, kind, and hash. It is local state, not a team lockfile.
 
 ## AGENTS.md Marker Block
 
@@ -106,9 +117,14 @@ The CLI must upsert, rather than append repeatedly, this bounded block:
 <!-- linxira-skills:start -->
 ## Linxira Skills
 
-Project-local skills are materialized under `.agents/skills/`. Use the runtime
-skill tool to load a matching skill on demand. Do not load every skill body;
-follow the selected skill's risk and completion requirements before action.
+Project-local Linxira content is materialized as a progressive routing tree
+under `.agents/skills/`. Read only one matching top-level router first:
+
+- Route software and performance work through `.agents/skills/engineering/SKILL.md`.
+- Route Linux and compute work through `.agents/skills/systems/SKILL.md`.
+
+Follow that router to one second-level index, then load only the exact leaf skill
+required by the task.
 <!-- linxira-skills:end -->
 ```
 
@@ -116,9 +132,9 @@ If `AGENTS.md` does not exist, initialization creates it with the block. If it
 exists, all text outside the markers is preserved byte-for-byte. The command
 fails instead of guessing when marker pairs are malformed or duplicated.
 
-`AGENTS.md` guides agents but is not a native skill registry by itself. The
-physical `.agents/skills/` directory is what makes the profile discoverable to
-OpenCode and Codex.
+The route list is generated from the selected profile, so unused roots are not
+advertised. Top-level `SKILL.md` files remain discoverable router skills; nested
+indexes and leaves are reached through their explicit repository paths.
 
 ## CLI Contract
 
@@ -140,9 +156,9 @@ Command behavior is intentionally conservative:
 | Command | Required behavior |
 | --- | --- |
 | `init` | Locate the target Git root, validate the profile, write generated state, upsert the marker block, and never overwrite a non-managed skill directory. |
-| `status` | Compare the manifest, installed payload, managed directories, and local modifications without changing files. |
-| `update` | Update only manifest-owned, unmodified directories. Report divergent user edits and require `--force` before replacing them. |
-| `uninstall` | Remove only unchanged manifest-owned directories, remove the marker block, and preserve unrelated `.agents` content. |
+| `status` | Compare the manifest, installed payload, managed files and directories, and local modifications without changing files. |
+| `update` | Update only manifest-owned, unmodified entries. Report divergent user edits and require `--force` before replacing them. |
+| `uninstall` | Remove only unchanged manifest-owned entries, remove the marker block, and preserve unrelated `.agents` content. |
 
 All mutating commands support `--dry-run`. None run `git add`, modify source
 submodules, fetch an upstream repository, request credentials, or send data to a
@@ -227,11 +243,12 @@ uses Node's built-in modules for profile materialization, manifest hashing,
 marker updates, and conflict checks. `scripts/build-payload.mjs` generates the
 ignored `payload/` directory from 21 audited first-party skills plus the seven
 hash-pinned third-party entries in `life-sciences-core` and
-`html-reporting-core` before tests and packing.
+`html-reporting-core`, maps every leaf to a three-level target path, and includes
+only the routers and indexes needed by each profile before tests and packing.
 
 The local Node 24 fixture suite verifies `init`, `status`, `update`,
-`uninstall`, dry runs, preserved `AGENTS.md` text, modified-skill protection,
-and non-managed directory protection. `npm pack --dry-run` verifies that the
+`uninstall`, dry runs, progressive route generation, preserved `AGENTS.md` text,
+modified-entry protection, and non-managed path protection. `npm pack --dry-run` verifies that the
 tarball contains only the CLI, generated first-party payload, template,
 README, and license. `.github/workflows/cli-validation.yml` runs the same
 fixture suite and package check on Windows, Linux, and macOS before a release

@@ -22,10 +22,12 @@ provenance and risk state allow it.
 
 ## Runtime Compatibility
 
-OpenCode and Codex discover project-local skills under
-`.agents/skills/<name>/SKILL.md`. The `linxira-skills init` command
-materializes a selected profile there and records ownership in `.linxira/`.
-Both paths are generated runtime state and ignored by Git.
+The `linxira-skills init` command materializes a selected profile as a
+three-level routing tree under `.agents/skills/` and records ownership in
+`.linxira/`. OpenCode and Codex discover the top-level router skills; the
+generated `AGENTS.md` block directs agents from one router to one index and then
+to the exact leaf skill. Both paths are generated runtime state and ignored by
+Git.
 
 `AGENTS.md` provides routing guidance. It does not itself register every skill
 with a runtime. Do not manually populate `.agents/skills`; use the initializer
