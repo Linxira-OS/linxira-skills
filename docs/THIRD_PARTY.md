@@ -26,7 +26,7 @@ source:
   discovered_via: optional aggregator repository and path
 adaptation:
   status: unmodified | adapted | merged | inspired
-  modified_by: Linxira Science Skills contributors
+  modified_by: Linxira Skills contributors
   summary:
     - concrete change
 ```

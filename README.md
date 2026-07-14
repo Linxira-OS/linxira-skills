@@ -1,8 +1,12 @@
-# Linxira Science Skills
+# Linxira Skills
 
-Linxira Science Skills is a cross-runtime skill library for scientific research.
-This repository builds the first npm-deliverable package and keeps its reviewed
-source tracks, payload definitions, and contract skills in one place.
+Linxira Skills is a cross-runtime skill platform for research, engineering, and
+execution workflows. It packages reviewed skills and profiles without limiting
+the project to a single discipline, toolchain, or runtime.
+
+The repository is both the source workspace and release boundary for the CLI,
+first-party skills, reviewed third-party material, profile definitions, and
+provenance records.
 
 The first package targets OpenCode and other runtimes that discover
 project-local skills under `.agents/skills/`.
@@ -11,7 +15,7 @@ Chinese overview: [README.zh-CN.md](README.zh-CN.md)
 
 ## Package
 
-- npm package: `@linxira-science-skills/cli`
+- npm package: `linxira-skills`
 - executable: `linxira-skills`
 - install model: materialize reviewed skill profiles into a target repository
 
@@ -25,6 +29,21 @@ Current profile counts in the package build:
 
 Reviewed connector profiles such as AlphaFold DB public access are tracked in
 this repository, but are not separate packaged payloads yet.
+
+## Content Model
+
+The platform separates reusable capabilities from domain-specific knowledge:
+
+- **Platform foundations:** software verification, Linux, SSH, remote compute,
+  browser operations, cloud safety, AI workflows, and integrity contracts.
+- **Domain profiles:** reviewed methods and terminology for fields such as life
+  sciences, with additional disciplines added through the same review process.
+- **Reporting profiles:** reusable document, figure, and presentation workflows.
+- **Connectors:** explicit contracts for databases, cloud providers, and
+  authenticated external systems.
+
+Linux is an execution foundation shared by profiles, not a discipline package.
+`life-sciences-core` is the first domain profile, not the platform boundary.
 
 ## Third-Party And Adaptation
 
@@ -45,7 +64,7 @@ review documents for concrete inclusion and modification boundaries.
 ## Install
 
 ```bash
-npm install --save-dev @linxira-science-skills/cli
+npm install --save-dev linxira-skills
 npx linxira-skills init
 ```
 
@@ -69,8 +88,8 @@ npx linxira-skills uninstall
 
 First-party skills provide execution boundaries for:
 
-- scientific software and change verification
-- manuscript integrity and research reporting
+- software engineering and change verification
+- research integrity and reporting
 - browser, cloud, and AI safety contracts
 - Linux, SSH, file transfer, GPU, and HPC operations
 

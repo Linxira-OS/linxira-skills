@@ -196,9 +196,9 @@ not redistributed text or scripts:
 
 ## Coverage Model
 
-Linxira Science Skills organizes work into six independently installable
-packages and connects them through declared capability dependencies. See
-`docs/PLAN.md` for the current package model and review phases.
+Linxira Skills organizes work into reusable platform capabilities and reviewed
+domain, reporting, and connector profiles. See `docs/PLAN.md` for the current
+content model and review phases.
 
 New curated skills must fill a demonstrated capability gap. A different tool is
 not by itself a reason for a second skill when a decision table can route among

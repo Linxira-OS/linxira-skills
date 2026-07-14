@@ -1,7 +1,7 @@
 {
-  "name": "@linxira-science-skills/cli",
+  "name": "linxira-skills",
   "version": "0.1.0",
-  "description": "Cross-runtime initializer for approved Linxira Science Skills profiles.",
+  "description": "Cross-runtime initializer for reviewed research, engineering, and execution skill profiles.",
   "license": "MIT",
   "type": "module",
   "bin": {

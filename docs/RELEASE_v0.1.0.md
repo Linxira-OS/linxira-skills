@@ -2,10 +2,10 @@
 
 ## Summary
 
-First public package candidate for Linxira Science Skills.
+First public package candidate for Linxira Skills.
 
 This release introduces the cross-runtime `linxira-skills` initializer and the
-first reviewed profiles for scientific work:
+first reviewed profiles for research, engineering, and reporting work:
 
 - `core`
 - `life-sciences-core`
@@ -13,7 +13,7 @@ first reviewed profiles for scientific work:
 
 ## Included
 
-- 21 first-party skills for scientific software, manuscript integrity, web and
+- 21 first-party skills for software verification, manuscript integrity, web and
   cloud safety, Linux/HPC operations, and AI execution boundaries.
 - 4 reviewed MIT `bioSkills` bodies in `life-sciences-core`.
 - 3 reviewed Apache-2.0 `html-anything` bodies in `html-reporting-core`.

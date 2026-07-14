@@ -1,4 +1,4 @@
-# Linxira Science Skills
+# Linxira Skills
 
 This repository is the source and release workspace for a cross-runtime skill
 library. It is not itself a flattened runtime installation.
@@ -23,8 +23,8 @@ provenance and risk state allow it.
 ## Runtime Compatibility
 
 OpenCode and Codex discover project-local skills under
-`.agents/skills/<name>/SKILL.md`. The future `linxira-skills init` command will
-materialize a selected profile there and record ownership in `.linxira/`.
+`.agents/skills/<name>/SKILL.md`. The `linxira-skills init` command
+materializes a selected profile there and records ownership in `.linxira/`.
 Both paths are generated runtime state and ignored by Git.
 
 `AGENTS.md` provides routing guidance. It does not itself register every skill

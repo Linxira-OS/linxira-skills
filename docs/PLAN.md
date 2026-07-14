@@ -2,10 +2,12 @@
 
 ## Goal
 
-Build an independently installable family of high-quality scientific Agent
-Skills. The first deliverable gives an AI broad life-science capability from
-question formulation through data acquisition, computation, validation,
-interpretation, and reporting.
+Build an independently installable family of high-quality Agent Skills for
+research, engineering, and execution workflows. The platform combines reusable
+foundations with reviewed domain, reporting, and connector profiles. The first
+domain deliverable provides broad life-science capability from question
+formulation through data acquisition, computation, validation, interpretation,
+and reporting.
 
 The project optimizes and validates skills; it does not merely aggregate them
 and does not fine-tune a model.
@@ -13,7 +15,8 @@ and does not fine-tune a model.
 ## Package Boundaries
 
 ```text
-Linxira Science Skills
+Linxira Skills
+  core-platform
   life-sciences
   research-web
   linux
@@ -22,8 +25,10 @@ Linxira Science Skills
   research-engineering
 ```
 
-`life-sciences` is first. Other packages are designed now only to define clean
-interfaces and prevent domain skills from absorbing generic system operations.
+`linux`, `research-web`, `compute-cloud`, `scientific-ai`, and
+`research-engineering` are horizontal capabilities. `life-sciences` is the first
+domain profile. This separation prevents domain skills from absorbing generic
+system operations and leaves room for code, engineering, and future disciplines.
 
 ## Phase 0: Governance And Evidence
 

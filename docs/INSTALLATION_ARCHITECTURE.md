@@ -1,7 +1,7 @@
 # Installation Architecture
 
-> Status: local implementation exists. The package has not been published and
-> its release test matrix still needs Linux and macOS verification.
+> Status: local implementation and cross-platform validation exist. The package
+> has not been published to npm.
 
 ## Decision
 
@@ -40,12 +40,12 @@ archive merely because that archive exists in a development clone.
 ## Package Shape
 
 The initial distribution is one package, provisionally named
-`@linxira-science-skills/cli`, with the executable `linxira-skills`. Splitting
+`linxira-skills`, with the executable `linxira-skills`. Splitting
 the CLI and resource packs is deferred until the approved resource payload makes
 the single package impractical.
 
 ```text
-@linxira-science-skills/cli
+linxira-skills
   dist/                 CLI implementation
   payload/
     skills/             Redistributable skill directories only
@@ -123,7 +123,7 @@ OpenCode and Codex.
 ## CLI Contract
 
 ```text
-npm install --save-dev @linxira-science-skills/cli
+npm install --save-dev linxira-skills
 npx linxira-skills init [--profile core] [--dry-run]
 npx linxira-skills status
 npx linxira-skills update [--dry-run]
@@ -184,7 +184,7 @@ the following release pipeline:
 Users update only from a published package version:
 
 ```text
-npm update @linxira-science-skills/cli
+npm update linxira-skills
 npx linxira-skills update
 ```
 
@@ -221,8 +221,8 @@ capabilities and must not be smuggled into a generic installer.
 
 ## Current Implementation
 
-The repository root now contains the provisional
-`@linxira-science-skills/cli` package. It has no runtime dependencies and
+The repository root now contains the provisional `linxira-skills` package. It
+has no runtime dependencies and
 uses Node's built-in modules for profile materialization, manifest hashing,
 marker updates, and conflict checks. `scripts/build-payload.mjs` generates the
 ignored `payload/` directory from 21 audited first-party skills plus the seven

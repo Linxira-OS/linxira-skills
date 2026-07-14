@@ -1,13 +1,14 @@
-# Linxira Science Skills
+# Linxira Skills
 
-这是 `@linxira-science-skills/cli` 的中文概览页。项目正文文档保持英文，便于
+这是 `linxira-skills` 的中文概览页。项目正文文档保持英文，便于
 发布、审计和跨运行时复用。
 
 English README: [README.md](README.md)
 
 ## 这是什么
 
-Linxira Science Skills 是一个面向科学研究的跨运行时技能库。
+Linxira Skills 是一个面向研究、工程和执行工作流的跨运行时技能平台。它不限定
+在单一学科、工具链或 Agent 运行时内。
 当前仓库用于构建首个 npm 交付包，并保存：
 
 - 一方技能
@@ -15,6 +16,16 @@ Linxira Science Skills 是一个面向科学研究的跨运行时技能库。
 - 上游来源轨道
 - 安装器与验证脚本
 - 第三方来源与修改边界文档
+
+## 内容结构
+
+- **平台基础能力**：软件验证、Linux、SSH、远程计算、浏览器、云和 AI 工作流
+- **领域 profile**：生命科学等领域的方法、术语和分析工作流
+- **报告 profile**：文档、图表、网页和演示交付能力
+- **连接器**：数据库、云服务和需要认证的外部系统契约
+
+Linux 是所有 profile 可复用的执行基础层，不是一个学科包。
+`life-sciences-core` 是第一个领域 profile，但不代表平台的范围边界。
 
 ## 当前可安装内容
 
@@ -30,7 +41,7 @@ Linxira Science Skills 是一个面向科学研究的跨运行时技能库。
 ## 安装
 
 ```bash
-npm install --save-dev @linxira-science-skills/cli
+npm install --save-dev linxira-skills
 npx linxira-skills init
 ```
 

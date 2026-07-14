@@ -153,7 +153,7 @@ test('packed CLI installs and runs in a clean Git repository', async (context) =
     stdio: 'pipe',
   });
   execFileSync('git', ['init', '--quiet', project]);
-  const cli = join(project, 'node_modules', '@linxira-science-skills', 'cli', 'dist', 'linxira-skills.js');
+  const cli = join(project, 'node_modules', 'linxira-skills', 'dist', 'linxira-skills.js');
 
   execFileSync(process.execPath, [cli, 'init', '--profile', 'html-reporting-core'], { cwd: project, stdio: 'pipe' });
   const manifest = JSON.parse(await readFile(join(project, '.linxira', 'manifest.json'), 'utf8'));
