@@ -251,5 +251,8 @@ The local Node 24 fixture suite verifies `init`, `status`, `update`,
 modified-entry protection, and non-managed path protection. `npm pack --dry-run` verifies that the
 tarball contains only the CLI, generated first-party payload, template,
 README, and license. `.github/workflows/cli-validation.yml` runs the same
-fixture suite and package check on Windows, Linux, and macOS before a release
-is marked complete.
+fixture suite and package check on Windows, macOS, Ubuntu, Debian 12, Fedora 42,
+and Arch Linux before a release is marked complete. The distribution containers
+validate user-space installation, path, process, and packaging behavior. Kernel,
+DKMS, NVIDIA driver, scheduler, and hardware claims require a dedicated host;
+CachyOS is therefore not treated as fully validated by an Arch container alone.

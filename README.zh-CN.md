@@ -97,5 +97,8 @@ payload：
 - 打包 tarball 安装烟测
 - `npm pack --dry-run` 包内容检查
 - GitHub Actions 在 Ubuntu / Windows / macOS 上的矩阵验证
+- Debian 12 / Fedora 42 / Arch Linux 容器验证
 
 Arch Linux WSL 路径也做过一轮本地 smoke 验证，用于补充 Linux 侧信心。
+CachyOS 的用户态兼容性由 Arch job 覆盖；内核、调度器、DKMS、NVIDIA 驱动和
+具体硬件行为仍需要真实 CachyOS 主机或 self-hosted runner，不能由容器代替。

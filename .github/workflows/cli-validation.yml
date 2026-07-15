@@ -25,3 +25,34 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm test
       - run: npm run pack:check
+
+  linux-distributions:
+    name: ${{ matrix.name }} / Node 24
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Debian 12
+            image: debian:12-slim
+            bootstrap: apt-get update && apt-get install -y ca-certificates git
+          - name: Fedora 42
+            image: fedora:42
+            bootstrap: dnf install -y ca-certificates git
+          - name: Arch Linux
+            image: archlinux:base
+            bootstrap: pacman -Syu --noconfirm ca-certificates git
+    steps:
+      - name: Install checkout prerequisites
+        run: ${{ matrix.bootstrap }}
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --version
+      - run: npm test
+      - run: npm run pack:check

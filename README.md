@@ -141,6 +141,10 @@ Local validation currently covers:
 - packed tarball install smoke test in a clean Git repository
 - package-content inspection with `npm pack --dry-run`
 
-GitHub Actions runs the same validation matrix on Ubuntu, Windows, and macOS.
+GitHub Actions runs the same validation on Ubuntu, Windows, and macOS, plus
+container jobs for Debian 12, Fedora 42, and Arch Linux.
 
 An additional Arch Linux WSL smoke pass was run locally before release drafting.
+CachyOS user-space compatibility is represented by the Arch job. CachyOS kernel,
+scheduler, DKMS, NVIDIA driver, and hardware behavior requires a dedicated host
+or self-hosted runner and is not claimed by container validation.
