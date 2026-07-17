@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 2,
+  "status": "approved-for-packaging",
+  "name": "biology-research-core",
+  "baseProfile": "bioinformatics-core",
+  "firstPartySkills": [
+    "academic-artifact-validation",
+    "academic-delivery-planning",
+    "academic-document-formatting",
+    "academic-document-generation",
+    "academic-presentation-design",
+    "academic-presentation-generation",
+    "academic-visual-evidence",
+    "biological-evidence-synthesis",
+    "biological-experimental-design",
+    "biological-research-ideation",
+    "biological-study-statistics",
+    "citation-and-reference-formatting",
+    "life-science-literature-search",
+    "literature-screening-and-extraction",
+    "latex-academic-authoring",
+    "manuscript-structure-and-argument",
+    "research-web",
+    "scientific-figures-and-tables",
+    "wet-lab-experiment-planning"
+  ],
+  "sourceTracks": [],
+  "skills": []
+}

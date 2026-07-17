@@ -20,6 +20,7 @@ const allowedProfileStatuses = new Set([
 ]);
 const allowedRiskTags = new Set([
   'account-bound',
+  'biosafety',
   'clinical',
   'controlled-data',
   'destructive',
@@ -30,6 +31,7 @@ const allowedRiskTags = new Set([
 ]);
 
 const firstPartyLayout = JSON.parse(await readFile(join(root, 'catalog', 'first-party-layout.json'), 'utf8'));
+const firstPartyInfluences = await loadFirstPartyInfluences();
 const firstPartyDescriptors = await loadFirstPartyDescriptors();
 const manifests = await loadProfileManifests();
 const approvedProfiles = [...manifests.values()]
@@ -109,6 +111,7 @@ const catalog = [...packagedDescriptors.values()]
     sourceRevision: descriptor.sourceRevision,
     license: descriptor.license,
     noticeSha256: descriptor.noticeSha256,
+    influences: descriptor.influences,
     targetPath: descriptor.targetPath,
     bodySha256: descriptor.bodySha256,
     profiles: descriptorProfiles.get(descriptor.id).sort((left, right) => left.localeCompare(right)),
@@ -126,6 +129,11 @@ async function loadFirstPartyDescriptors() {
   const layoutNames = Object.keys(firstPartyLayout.skills).sort((left, right) => left.localeCompare(right));
   if (JSON.stringify(layoutNames) !== JSON.stringify(skillDirectories)) {
     throw new Error('catalog/first-party-layout.json must map every first-party skill exactly once.');
+  }
+  for (const name of Object.keys(firstPartyInfluences)) {
+    if (!skillDirectories.includes(name)) {
+      throw new Error(`Unknown first-party influence target: ${name}`);
+    }
   }
 
   const descriptors = new Map();
@@ -154,12 +162,25 @@ async function loadFirstPartyDescriptors() {
       license: 'MIT',
       notice: null,
       noticeTarget: null,
+      influences: validateInfluences(firstPartyInfluences[metadata.name] ?? [], `skills/${directory}/SKILL.md`),
       targetPath,
       bodySha256: normalizedTextHash(body),
       sourcePath,
     });
   }
   return descriptors;
+}
+
+async function loadFirstPartyInfluences() {
+  const path = join(root, 'catalog', 'first-party-influences.json');
+  if (!existsSync(path)) {
+    return {};
+  }
+  const registry = JSON.parse(await readFile(path, 'utf8'));
+  if (registry?.schemaVersion !== 1 || !registry.skills || typeof registry.skills !== 'object' || Array.isArray(registry.skills)) {
+    throw new Error('Unsupported first-party influence registry.');
+  }
+  return registry.skills;
 }
 
 async function loadProfileManifests() {
@@ -269,6 +290,7 @@ async function reviewedDescriptor(profileName, track, skill) {
     noticeTarget: track.noticeTarget,
     noticeBody,
     noticeSha256: createHash('sha256').update(noticeBody).digest('hex'),
+    influences: [],
     targetPath: skill.targetPath,
     bodySha256,
     body,
@@ -487,6 +509,26 @@ function validateRiskTags(value, label) {
   return [...value];
 }
 
+function validateInfluences(value, label) {
+  if (!Array.isArray(value)) {
+    throw new Error(`Invalid first-party influences: ${label}`);
+  }
+  for (const influence of value) {
+    if (!influence || typeof influence !== 'object'
+      || !influence.repository || !influence.url || !influence.path
+      || !/^[0-9a-f]{40}$/.test(influence.revision ?? '')
+      || !/^\d{4}-\d{2}-\d{2}$/.test(influence.retrieved ?? '')
+      || !influence.license || !influence.authors
+      || influence.adaptation?.status !== 'inspired'
+      || !Array.isArray(influence.adaptation.summary)
+      || influence.adaptation.summary.length === 0
+      || influence.adaptation.summary.some((item) => typeof item !== 'string' || !item.trim())) {
+      throw new Error(`Invalid first-party influence record: ${label}`);
+    }
+  }
+  return structuredClone(value);
+}
+
 function sameDescriptor(left, right) {
   return left.id === right.id
     && left.name === right.name
@@ -503,6 +545,7 @@ function sameDescriptor(left, right) {
     && left.notice === right.notice
     && left.noticeTarget === right.noticeTarget
     && left.noticeSha256 === right.noticeSha256
+    && JSON.stringify(left.influences) === JSON.stringify(right.influences)
     && left.sourcePath === right.sourcePath;
 }
 

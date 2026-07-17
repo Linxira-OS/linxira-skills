@@ -25,6 +25,7 @@ Current profile counts in the package build:
 | --- | --- |
 | `core` | 10 first-party software, integrity, Linux, transfer, and compute skills |
 | `bioinformatics-core` | `core` plus 10 first-party bioinformatics and bulk RNA-seq workflow skills |
+| `biology-research-core` | `bioinformatics-core` plus 19 first-party biological discovery, experimental design, wet-lab governance, and complete academic delivery skills |
 | `research-communication-core` | `core` plus 11 first-party manuscript, citation, formatting, figure, image, document, LaTeX, presentation, and rendered-artifact validation skills |
 
 Reviewed connector profiles such as AlphaFold DB public access are tracked in
@@ -65,7 +66,9 @@ The platform separates reusable capabilities from domain-specific knowledge:
   authenticated external systems.
 
 Linux is an execution foundation shared by profiles, not a discipline package.
-`bioinformatics-core` is the first domain profile, not the platform boundary.
+`biology-research-core` makes biology broader than computational analysis: it
+connects research questions and literature to experimental design, evidence
+synthesis, statistical planning, wet-lab governance, and publication.
 
 ## Third-Party And Adaptation
 
@@ -100,6 +103,7 @@ Profile selection:
 ```bash
 npx linxira-skills init --profile core
 npx linxira-skills init --profile bioinformatics-core
+npx linxira-skills init --profile biology-research-core
 npx linxira-skills init --profile research-communication-core
 ```
 
@@ -120,6 +124,8 @@ First-party skills provide execution boundaries for:
 - Linux, SSH, file transfer, storage/networking, and cloud-compute contracts
 - bulk RNA-seq QC, Salmon/tximport, count QC, DESeq2, result interpretation,
   ranked enrichment, HPC handoff, and reproducibility
+- biological hypothesis development, literature search and screening, evidence
+  synthesis, experimental design, study statistics, and authorized wet-lab planning
 - manuscript structure, reference formatting, scientific figure/table design,
   and academic slide deck design
 

@@ -1,5 +1,8 @@
 # Life Sciences
 
+- Biological experimental units, controls, allocation, blocking, and batches: `biological-experimental-design/SKILL.md`
+- Estimands, endpoints, power, models, missingness, and multiplicity: `biological-study-statistics/SKILL.md`
+- Authorized wet-lab SOP, approval, hazard, provenance, and checkpoint planning: `wet-lab-experiment-planning/SKILL.md`
 - Broad analysis planning and method routing: `bio-analysis-orchestrator/SKILL.md`
 - Reproducible bioinformatics environments and artifacts: `bioinformatics-reproducibility/SKILL.md`
 - Full or multi-stage bulk RNA-seq workflow: `bulk-rnaseq-analysis/SKILL.md`

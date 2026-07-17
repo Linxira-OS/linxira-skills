@@ -26,7 +26,7 @@ name: example-skill
 description: Use for the fixture task and not for unrelated work.
 skill_class: workflow
 load_policy: conditional
-risk_tags: []
+risk_tags: ${options.riskTags ?? '[]'}
 ---
 
 # Example
@@ -75,6 +75,50 @@ test('payload builder accepts a minimal valid profile', async (context) => {
   runBuild(root);
   const profiles = JSON.parse(await readFile(join(root, 'payload', 'profiles.json'), 'utf8'));
   assert.deepEqual(Object.keys(profiles.profiles), ['core']);
+});
+
+test('payload builder accepts biosafety and rejects unknown risk tags', async (context) => {
+  const biosafetyRoot = await buildFixture(context, { riskTags: '[biosafety]' });
+  runBuild(biosafetyRoot);
+  const catalog = JSON.parse(await readFile(join(biosafetyRoot, 'payload', 'catalog.json'), 'utf8'));
+  assert.deepEqual(catalog.skills[0].riskTags, ['biosafety']);
+
+  const invalidRoot = await buildFixture(context, { riskTags: '[laboratory]' });
+  assert.throws(() => runBuild(invalidRoot), /Invalid risk tags/);
+});
+
+test('biology payload preserves wet-lab action gates', async () => {
+  const catalog = JSON.parse(await readFile(join(packageRoot, 'payload', 'catalog.json'), 'utf8'));
+  const wetLab = catalog.skills.find(({ id }) => id === 'wet-lab-experiment-planning');
+  assert.ok(wetLab);
+  assert.equal(wetLab.loadPolicy, 'required');
+  assert.deepEqual(wetLab.riskTags, ['biosafety', 'controlled-data']);
+  assert.ok(wetLab.profiles.includes('biology-research-core'));
+  const literature = catalog.skills.find(({ id }) => id === 'life-science-literature-search');
+  assert.deepEqual(literature.influences.map(({ revision }) => revision), [
+    '6b44f57d1274eb38a6c79dc29c2d21e5e0a225a9',
+  ]);
+
+  const profiles = JSON.parse(await readFile(join(packageRoot, 'payload', 'profiles.json'), 'utf8'));
+  const entries = profiles.profiles['biology-research-core'].entries;
+  const skillIds = entries.filter(({ kind }) => kind === 'directory').map(({ id }) => id);
+  assert.equal(skillIds.length, 39);
+  for (const id of [
+    'academic-artifact-validation',
+    'academic-document-generation',
+    'academic-presentation-generation',
+    'academic-visual-evidence',
+    'biological-evidence-synthesis',
+    'biological-experimental-design',
+    'biological-research-ideation',
+    'biological-study-statistics',
+    'life-science-literature-search',
+    'literature-screening-and-extraction',
+    'research-web',
+    'wet-lab-experiment-planning',
+  ]) {
+    assert.ok(skillIds.includes(id), `missing biology profile skill: ${id}`);
+  }
 });
 
 test('payload builder rejects invalid status and escaping paths', async (context) => {

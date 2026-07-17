@@ -32,9 +32,10 @@ tree:
 | `html-anything` bodies | Not by default | The root is Apache-2.0, but 22 templates cite external examples or inspiration. |
 | Proprietary/vendor reference material | No | It is reference-only or has incompatible terms. |
 
-The target first npm release ships 24 first-party skills across `core`,
-`bioinformatics-core`, and `research-communication-core`, plus a compact
-generated descriptor catalog. Seven bulk RNA-seq skills are adapted from
+The target first npm release ships 39 unique first-party skills across `core`,
+`bioinformatics-core`, `biology-research-core`, and
+`research-communication-core`, plus a compact generated descriptor catalog.
+Seven bulk RNA-seq skills are adapted from
 reviewed ideas in a pinned MIT `bioSkills` revision and record their source
 paths and corrections in-body. No upstream skill body or full research archive
 is published merely because it exists in a development clone.
@@ -154,6 +155,9 @@ bulk RNA-seq analysis path. `research-communication-core` adds 11 first-party
 skills for manuscript structure, citation formatting, Chinese academic body
 formatting, DOCX/LaTeX delivery, scientific figures/tables, image-evidence
 boundaries, academic presentation generation, and rendered-artifact validation.
+`biology-research-core` extends `bioinformatics-core` with 19 first-party skills
+for research ideation, literature evidence, experimental and statistical design,
+wet-lab planning, and publication handoff.
 Other profiles remain non-installable until
 every included body passes license, provenance, quality, and risk review.
 

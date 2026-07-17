@@ -182,6 +182,41 @@ test('bioinformatics-core materializes the bulk RNA-seq route', async (context) 
   assert.equal(await run(['uninstall'], root, output()), 0);
 });
 
+test('biology-research-core materializes experimental and evidence routes', async (context) => {
+  const root = await fixture();
+  context.after(() => rm(root, { recursive: true, force: true }));
+  const discoverySkills = [
+    'biological-research-ideation',
+    'life-science-literature-search',
+    'literature-screening-and-extraction',
+    'biological-evidence-synthesis',
+  ];
+  const designSkills = [
+    'biological-experimental-design',
+    'biological-study-statistics',
+    'wet-lab-experiment-planning',
+  ];
+
+  assert.equal(await run(['init', '--profile', 'biology-research-core'], root, output()), 0);
+  const manifest = JSON.parse(await readFile(join(root, '.linxira', 'manifest.json'), 'utf8'));
+  assert.equal(manifest.profile, 'biology-research-core');
+  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 39);
+  assert.match(await readFile(join(root, 'AGENTS.md'), 'utf8'), /delivery\/SKILL\.md/);
+  assert.match(await readFile(join(root, 'AGENTS.md'), 'utf8'), /integrations\/SKILL\.md/);
+  for (const skill of discoverySkills) {
+    assert.equal(existsSync(join(root, '.agents', 'skills', 'research', 'discovery', skill, 'SKILL.md')), true);
+  }
+  for (const skill of designSkills) {
+    assert.equal(existsSync(join(root, '.agents', 'skills', 'research', 'life-sciences', skill, 'SKILL.md')), true);
+  }
+  assert.equal(existsSync(join(root, '.agents', 'skills', 'integrations', 'web', 'research-web', 'SKILL.md')), true);
+  assert.equal(existsSync(join(root, '.agents', 'skills', 'delivery', 'writing', 'manuscript-structure-and-argument', 'SKILL.md')), true);
+  await assertInstalledRoutes(root);
+  assert.equal(await run(['status'], root, output()), 0);
+  assert.equal(await run(['update'], root, output()), 0);
+  assert.equal(await run(['uninstall'], root, output()), 0);
+});
+
 test('research-communication-core materializes delivery skills', async (context) => {
   const root = await fixture();
   context.after(() => rm(root, { recursive: true, force: true }));
@@ -272,6 +307,15 @@ test('packed CLI contains only release material and runs in a clean Git reposito
   execFileSync(process.execPath, [cli, 'uninstall'], { cwd: project, stdio: 'pipe' });
   assert.equal(existsSync(join(project, '.linxira', 'manifest.json')), false);
   assert.equal(existsSync(join(project, '.agents', 'skills', 'research', 'life-sciences', 'bulk-rnaseq-analysis')), false);
+
+  execFileSync(process.execPath, [cli, 'init', '--profile', 'biology-research-core'], { cwd: project, stdio: 'pipe' });
+  const biologyManifest = JSON.parse(await readFile(join(project, '.linxira', 'manifest.json'), 'utf8'));
+  assert.equal(biologyManifest.profile, 'biology-research-core');
+  assert.equal(Object.values(biologyManifest.entries).filter(({ kind }) => kind === 'directory').length, 39);
+  assert.equal(existsSync(join(project, '.agents', 'skills', 'research', 'discovery', 'life-science-literature-search', 'SKILL.md')), true);
+  assert.equal(existsSync(join(project, '.agents', 'skills', 'research', 'life-sciences', 'wet-lab-experiment-planning', 'SKILL.md')), true);
+  execFileSync(process.execPath, [cli, 'status'], { cwd: project, stdio: 'pipe' });
+  execFileSync(process.execPath, [cli, 'uninstall'], { cwd: project, stdio: 'pipe' });
 
   execFileSync(process.execPath, [cli, 'init'], { cwd: project, stdio: 'pipe' });
   const coreManifest = JSON.parse(await readFile(join(project, '.linxira', 'manifest.json'), 'utf8'));

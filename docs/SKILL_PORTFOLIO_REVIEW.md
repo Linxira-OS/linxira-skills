@@ -8,9 +8,13 @@ vendor, browser, GPU, and WSL-specific content is not forced into every project.
 `bioinformatics-core` adds 10 domain skills for analysis routing,
 reproducibility, bulk RNA-seq, and HPC handoff.
 
-`research-communication-core` adds four delivery skills for manuscript
-structure, reference formatting, scientific figures/tables, and academic slide
-decks.
+`biology-research-core` extends that computational base with 19 skills for
+biological ideation, literature evidence, experimental and statistical design,
+governed wet-lab planning, and the complete academic delivery chain.
+
+`research-communication-core` adds 11 delivery skills for manuscript structure,
+reference formatting, figures, evidence-bound images, documents, LaTeX,
+presentations, and rendered-artifact validation.
 
 ## Consolidated Skills
 
@@ -28,7 +32,7 @@ decks.
 | `linux-wsl` | Useful only for Windows/WSL projects; retained after text repair for a future optional profile. |
 | `google-cloud-vertex` | Contract exists, but no concrete connector implementation is packaged. |
 | `google-workspace-oauth` | Requires an implemented consent/token/export lifecycle. |
-| `research-web` | Public evidence and logged-in browser behavior need separate runtime-validated profiles. |
+| `research-web` | Packaged only through `biology-research-core`, where literature access requires its explicit external-action contract. |
 
 The previous `life-sciences-core` and `html-reporting-core` upstream-body
 profiles are also retained as review records but excluded from payload

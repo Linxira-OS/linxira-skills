@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "skills": {
+    "biological-experimental-design": [
+      {
+        "repository": "Light0305/Light-skills",
+        "url": "https://github.com/Light0305/Light-skills",
+        "path": "skills/light-research-plan",
+        "revision": "6b44f57d1274eb38a6c79dc29c2d21e5e0a225a9",
+        "retrieved": "2026-07-17",
+        "license": "MIT",
+        "authors": "Light0305",
+        "adaptation": {
+          "status": "inspired",
+          "summary": [
+            "Replaced computational-research planning with biological unit, control, allocation, batch, and pseudoreplication contracts.",
+            "Added biosafety and institutional wet-lab handoff boundaries without copying upstream text or scripts."
+          ]
+        }
+      }
+    ],
+    "biological-research-ideation": [
+      {
+        "repository": "Light0305/Light-skills",
+        "url": "https://github.com/Light0305/Light-skills",
+        "path": "skills/light-idea-generation",
+        "revision": "6b44f57d1274eb38a6c79dc29c2d21e5e0a225a9",
+        "retrieved": "2026-07-17",
+        "license": "MIT",
+        "authors": "Light0305",
+        "adaptation": {
+          "status": "inspired",
+          "summary": [
+            "Retained only general gap and competing-explanation concepts in a clean-room implementation.",
+            "Replaced conference novelty scoring with biological falsifiability, predictions, discriminating tests, and safety gates."
+          ]
+        }
+      }
+    ],
+    "biological-study-statistics": [
+      {
+        "repository": "Light0305/Light-skills",
+        "url": "https://github.com/Light0305/Light-skills",
+        "path": "skills/light-research-plan",
+        "revision": "6b44f57d1274eb38a6c79dc29c2d21e5e0a225a9",
+        "retrieved": "2026-07-17",
+        "license": "MIT",
+        "authors": "Light0305",
+        "adaptation": {
+          "status": "inspired",
+          "summary": [
+            "Retained general estimand, power-assumption, and falsifier concepts without copying upstream expression.",
+            "Added Linxira-native dependence, missingness, multiplicity, diagnostics, sensitivity, and no-auto-test-selection contracts."
+          ]
+        }
+      }
+    ],
+    "life-science-literature-search": [
+      {
+        "repository": "Light0305/Light-skills",
+        "url": "https://github.com/Light0305/Light-skills",
+        "path": "skills/light-literature-search",
+        "revision": "6b44f57d1274eb38a6c79dc29c2d21e5e0a225a9",
+        "retrieved": "2026-07-17",
+        "license": "MIT",
+        "authors": "Light0305",
+        "adaptation": {
+          "status": "inspired",
+          "summary": [
+            "Retained general reproducible-search and coverage-reporting concepts without copying upstream bodies, scripts, templates, or query code.",
+            "Added Linxira-native controlled-vocabulary, privacy, screening-handoff, and research-web action contracts."
+          ]
+        }
+      }
+    ]
+  }
+}

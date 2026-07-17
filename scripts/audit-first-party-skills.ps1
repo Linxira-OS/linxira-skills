@@ -7,6 +7,7 @@ $allowedClasses = @('reference', 'workflow', 'guard', 'contract')
 $allowedPolicies = @('on-demand', 'conditional', 'required')
 $allowedRiskTags = @(
     'account-bound',
+    'biosafety',
     'clinical',
     'controlled-data',
     'destructive',

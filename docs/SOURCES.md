@@ -61,6 +61,7 @@ These projects were identified with GitHub CLI and are not vendored by default:
 | `multica-ai/andrej-karpathy-skills` | Compact coding-agent behavior guidelines |
 | `Yuan1z0825/nature-skills` | Apache-2.0 manuscript, figure, and editorial extension candidate |
 | `nexu-io/html-anything` | Apache-2.0 HTML deliverable and presentation-template candidate |
+| `Light0305/Light-skills` | MIT research-workflow reference at `6b44f57d1274eb38a6c79dc29c2d21e5e0a225a9`; clean-room adaptation only because some files cite incompletely attributed CC BY-NC-derived material |
 | `anthropics/skills` | Do-not-ingest document-skill reference; reviewed terms prohibit outside-service retention, copying, derivatives, and distribution |
 | `openai/plugins` | Current Codex plugin examples; license and dependency review per plugin |
 

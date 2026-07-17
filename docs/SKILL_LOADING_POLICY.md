@@ -37,8 +37,13 @@ Every first-party `SKILL.md` declares these fields in addition to `name` and
 | `load_policy` | `on-demand`, `conditional`, `required` | States when the body may enter context. |
 | `risk_tags` | Approved compact risk list | Enables approval and tool gates without loading the body. |
 
-Approved `risk_tags` are `account-bound`, `clinical`, `controlled-data`,
-`destructive`, `expensive`, `paid`, `privileged`, and `remote-compute`.
+Approved `risk_tags` are `account-bound`, `biosafety`, `clinical`,
+`controlled-data`, `destructive`, `expensive`, `paid`, `privileged`, and
+`remote-compute`.
+
+`biosafety` covers planning or action that depends on institutional containment,
+training, approvals, controlled SOPs, hazard response, or waste handling. It does
+not authorize laboratory execution and must not be collapsed into `clinical`.
 
 `reference` skills explain broadly useful material. `workflow` skills organize
 multi-step work. `guard` skills impose evidence, validation, safety, or

@@ -8,6 +8,9 @@ All notable changes to this package are documented in this file.
 
 - Cross-runtime `linxira-skills` CLI with safe profile lifecycle commands.
 - Lean `core` and first-party `bioinformatics-core` payload profiles.
+- First-party `biology-research-core` profile for biological ideation,
+  literature search and collection, evidence synthesis, experimental design,
+  statistical planning, governed wet-lab planning, and manuscript preparation.
 - First-party `research-communication-core` profile for manuscript structure,
   reference formatting, Chinese academic body formatting, document/LaTeX
   delivery, scientific figures, image-evidence boundaries, and academic slides.

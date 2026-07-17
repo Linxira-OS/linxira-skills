@@ -7,7 +7,9 @@ their skills into one directory. The first profile highlights common
 bioinformatics analysis paths, but it does not limit which `bioSkills` folders
 are available to a source-aware plugin.
 
-The initial profile must support these routes:
+The source curation program targets these routes. The installable profiles expose
+only reviewed first-party subsets, while the complete source tracks remain for
+discovery:
 
 1. Raw sequence data to QC, alignment-file inspection, and validated artifacts.
 2. BAM/CRAM to normalized, annotated VCF/BCF for research use.
@@ -15,7 +17,15 @@ The initial profile must support these routes:
 4. scRNA-seq object handling, QC, clustering, and marker-based annotation.
 5. Shotgun metagenomic taxonomic classification and abundance estimation.
 6. Protein structure retrieval/prediction interpretation.
-7. Experimental design, workflow execution, reproducibility, and reporting.
+7. Experimental design, statistical planning, governed wet-lab planning,
+   reproducibility, and reporting.
+
+`biology-research-core` now packages the non-computational research chain:
+ideation, literature search, screening and extraction, evidence synthesis,
+experimental design, study statistics, and authorized SOP-based wet-lab
+planning. The broader sequence, variant, single-cell, metagenomics, and
+structural-biology list below remains a source curation target, not a claim that
+every route is present in an installable profile.
 
 Clinical diagnosis, therapeutic recommendations, protected-data handling, and
 automated publication are not part of this first profile. Such skills need

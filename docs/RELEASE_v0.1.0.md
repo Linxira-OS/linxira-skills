@@ -10,6 +10,7 @@ bioinformatics, and academic communication work:
 
 - `core`
 - `bioinformatics-core`
+- `biology-research-core`
 - `research-communication-core`
 
 ## Included
@@ -18,6 +19,9 @@ bioinformatics, and academic communication work:
   Linux operations, transfer, storage/networking, and remote compute.
 - 10 additional first-party bioinformatics skills for analysis routing,
   reproducibility, bulk RNA-seq, and HPC execution boundaries.
+- 19 additional profile skills for biological ideation, literature search and
+  screening, evidence synthesis, experimental and statistical design, governed
+  wet-lab planning, and complete publication delivery.
 - 11 first-party academic communication skills for manuscript structure,
   reference formatting, Chinese body formatting, DOCX/LaTeX delivery,
   figure/table review, image-evidence boundaries, and slide deck generation.

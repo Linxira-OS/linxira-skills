@@ -1,6 +1,10 @@
 {
   "schemaVersion": 1,
   "skills": {
+    "biological-evidence-synthesis": "research/discovery/biological-evidence-synthesis",
+    "biological-experimental-design": "research/life-sciences/biological-experimental-design",
+    "biological-research-ideation": "research/discovery/biological-research-ideation",
+    "biological-study-statistics": "research/life-sciences/biological-study-statistics",
     "bio-analysis-orchestrator": "research/life-sciences/bio-analysis-orchestrator",
     "bioinformatics-reproducibility": "research/life-sciences/bioinformatics-reproducibility",
     "bulk-rnaseq-analysis": "research/life-sciences/bulk-rnaseq-analysis",
@@ -37,6 +41,9 @@
     "linux-wsl": "systems/linux/linux-wsl",
     "google-cloud-vertex": "integrations/google/google-cloud-vertex",
     "google-workspace-oauth": "integrations/google/google-workspace-oauth",
-    "research-web": "integrations/web/research-web"
+    "life-science-literature-search": "research/discovery/life-science-literature-search",
+    "literature-screening-and-extraction": "research/discovery/literature-screening-and-extraction",
+    "research-web": "integrations/web/research-web",
+    "wet-lab-experiment-planning": "research/life-sciences/wet-lab-experiment-planning"
   }
 }
