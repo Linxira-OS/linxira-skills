@@ -200,6 +200,21 @@ test('document renderer plans every declared Pandoc output and LaTeX prerequisit
   const latexPlan = JSON.parse(run(documentRenderer, ['plan', latexManifest], root));
   assert.match(latexPlan.commands[0].arguments.join(' '), /-outdir=/);
   assert.deepEqual(latexPlan.requiredTools.sort(), ['bibtex', 'latexmk', 'xelatex']);
+
+  const biberManifest = join(root, 'biber-outputs.json');
+  await writeFile(biberManifest, `${JSON.stringify({
+    artifact: 'paper',
+    language: 'en-US',
+    outputs: ['pdf', 'tex'],
+    authoringStack: 'latex-biblatex',
+    citationStyle: 'numeric-fixture',
+    source: 'main.tex',
+    outputDirectory: 'biber-dist',
+    images: { assets: [] },
+  }, null, 2)}\n`);
+  const biberPlan = JSON.parse(run(documentRenderer, ['plan', biberManifest], root));
+  assert.ok(biberPlan.commands[0].arguments.includes('-bibtex'));
+  assert.deepEqual(biberPlan.requiredTools.sort(), ['biber', 'latexmk', 'xelatex']);
 });
 
 test('document renderer rejects unresolved citation warnings before recording success', async (context) => {

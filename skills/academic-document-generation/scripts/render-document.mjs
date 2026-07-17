@@ -84,11 +84,10 @@ function buildPlan(manifest, baseDirectory) {
     if (!manifest.outputs.includes('pdf')) {
       fail('LaTeX authoring requires pdf output; the TeX source remains the declared source artifact.');
     }
-    const backend = manifest.authoringStack === 'latex-bibtex' ? '-bibtex' : '-use-biber';
     const pdfPath = join(outputDirectory, `${basename(source, extname(source))}.pdf`);
     commands.push({
       executable: 'latexmk',
-      arguments: ['-xelatex', backend, `-outdir=${outputDirectory}`, '-interaction=nonstopmode', '-halt-on-error', source],
+      arguments: ['-xelatex', '-bibtex', `-outdir=${outputDirectory}`, '-interaction=nonstopmode', '-halt-on-error', source],
     });
     outputFiles.push({ kind: 'pdf', path: pdfPath, generated: true });
     if (manifest.outputs.includes('tex')) {

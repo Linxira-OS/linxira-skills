@@ -50,7 +50,7 @@ latexmk -xelatex -bibtex -interaction=nonstopmode -halt-on-error main.tex
 For a biblatex/Biber project:
 
 ```bash
-latexmk -xelatex -use-biber -interaction=nonstopmode -halt-on-error main.tex
+latexmk -xelatex -bibtex -interaction=nonstopmode -halt-on-error main.tex
 ```
 
 Run from a dedicated build directory where the template supports it. Preserve
