@@ -42,10 +42,18 @@ background fact into a result. Ask for the source or mark the gap.
 - Cite a source only for the claim it actually supports. A topical citation is
   not evidence for a specific quantitative, causal, or methodological claim.
 - Keep primary sources, reviews, preprints, and unverified references distinct.
+- Verify retraction, withdrawal, correction, and expression-of-concern status
+  before relying on a paper for a substantive conclusion.
+- Do not run broad public-opinion searches for authors. Use publisher notices,
+  bibliographic status records, and identified formal institutional or
+  regulatory findings; treat informal allegations only as unverified leads.
 - When metadata or full text is unavailable, use a visible placeholder such as
   `citation to verify` rather than a fabricated formatted reference.
 - Preserve the user's existing citation keys and reference format unless a
   verified style requirement calls for a change.
+- Do not assign credibility from publication language, author nationality,
+  institution, country, or study location. Apply the same claim-support and
+  study-quality checks to every source.
 
 ## Draft With Claim-Evidence Structure
 

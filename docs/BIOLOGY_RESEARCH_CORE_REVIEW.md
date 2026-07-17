@@ -60,6 +60,12 @@ decisions; screening remains separate from synthesis; and synthesis may pool
 results only when estimands, units, designs, and effect measures are coherent.
 Claims must retain source and uncertainty through manuscript preparation.
 
+All eligible papers receive equal baseline treatment. Language, nationality,
+institution, country, and study location are coverage or applicability fields,
+not automatic credibility weights. `BIOLOGICAL_EVIDENCE_ACCEPTANCE_POLICY.md`
+defines claim-level citation checks and the versioned evidence required for any
+future paper-, author-, or institution-specific source action.
+
 ## Validation
 
 Release requires:

@@ -25,6 +25,23 @@ Require:
 Stop and reconcile missing denominators, incompatible units, duplicate samples,
 or unclear experimental units before quantitative work.
 
+## Publication And Claim Verification
+
+Before a paper contributes to a conclusion:
+
+1. Verify its stable identity and distinguish preprint, accepted manuscript, and
+   version of record.
+2. Check current retraction, withdrawal, correction, and expression-of-concern
+   status from authoritative publisher or index records.
+3. Bind the extracted claim to a source passage, table, figure, or reported result.
+4. Separate metadata verification from claim support: a real DOI does not prove
+   that the paper supports the proposed statement.
+5. Record unresolved status or inaccessible support as uncertainty, not acceptance.
+
+Give eligible studies equal baseline treatment regardless of language, author
+nationality, institution, country, or study location. Change confidence only from
+documented study-level evidence, applicability, and bias assessment.
+
 ## Map The Evidence
 
 Group studies by biological question, design, model system, population, exposure
@@ -98,6 +115,17 @@ For disagreements among studies:
 Do not resolve conflict by vote counting, prestige, publication date, or selecting
 the result that matches the preferred mechanism.
 
+Do not resolve conflict through a country, language, institution, or author
+penalty. Formal source actions may exclude a specific version only when a
+versioned record cites an authoritative retraction, withdrawal, regulatory or
+institutional finding, or another reviewable basis and defines its scope and date.
+
+Exclude a retracted or withdrawn version from positive support. Treat an
+expression of concern, unresolved major correction, or documented ongoing formal
+investigation as an enhanced-verification flag and do not rely on it alone for a
+material conclusion. Informal allegations, social-media posts, news commentary,
+and reputation claims do not trigger automatic exclusion.
+
 ## Rate Certainty
 
 Use an explicit framework appropriate to the evidence type. Address risk of bias,
@@ -120,6 +148,7 @@ outcome-level certainty table, limitations, and prioritized evidence gaps.
 - Do not make clinical recommendations beyond the review's evidence and mandate.
 - Do not expose controlled or personal study data in synthesis artifacts.
 - Do not conceal protocol deviations or post hoc analyses.
+- Do not hardcode author or institution exclusions in this skill body.
 
 ## Completion Criteria
 

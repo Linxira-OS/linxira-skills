@@ -43,6 +43,18 @@ For each source record:
 
 Do not claim comprehensive coverage from a single database without justification.
 
+## Neutral Source Treatment
+
+Start every eligible record with the same prior weight. Do not adjust credibility
+because of publication language, author nationality, institution, country, or
+study location. Record those fields for coverage, applicability, and heterogeneity
+analysis, not as automatic quality scores.
+
+Evaluate each paper later from its own publication status, design, experimental
+unit, controls, sample support, bias, reporting completeness, data and code
+availability, preregistration, conflicts, and independent replication. Search rank,
+journal prestige, citation count, and database membership are not acceptance votes.
+
 ## Concept And Vocabulary Map
 
 Create concept blocks before writing database syntax:
@@ -115,6 +127,8 @@ to `literature-screening-and-extraction` without making eligibility decisions.
 - Do not fabricate records, identifiers, result counts, access dates, or coverage.
 - Do not bypass paywalls, access controls, API limits, or account restrictions.
 - Do not treat search rank as study quality or evidence strength.
+- Do not exclude or down-weight a record solely by language, nationality,
+  institution, country, or study location.
 - Do not expose controlled, personal, or unpublished query content externally.
 
 ## Completion Criteria

@@ -38,6 +38,9 @@ Verify whenever available:
 - venue or publisher
 - volume, issue, and page or article number
 - DOI, PMID, accession, URL, or version/release
+- publication status, including current retraction, withdrawal, correction, or
+  expression-of-concern records from publisher, bibliographic, or identified
+  formal institutional sources when the source supports a material claim
 - access date for changing web resources
 
 If metadata is incomplete, keep an explicit marker such as `citation to verify`
@@ -93,6 +96,9 @@ the metadata service used, and refuses to overwrite an existing output.
 Use `scripts/csl-json-to-bibtex.mjs references.json references.bib` to turn the
 result into a reviewable BibTeX file, then run `validate-bibtex.mjs`. Verify
 resolved records against the cited source before treating metadata as final.
+Identifier resolution proves record identity, not claim support. Use
+`research-manuscript-integrity` and the source text to verify that the paper
+actually supports the sentence or conclusion attached to the citation.
 
 ## Inline Citation Rules
 

@@ -37,6 +37,22 @@ Create four separate lists:
 Do not move an item between these lists without stating the evidence that
 justifies the change. Mark contradictions and ambiguous measurements explicitly.
 
+## External Evidence Gate
+
+When the user requests literature-grounded planning, a review, or conclusions:
+
+- Bind every substantive background fact and prior-work claim to a real,
+  verified paper or authoritative record.
+- Preserve DOI, PMID, registry identifier, accession, or another stable identity.
+- Verify that the cited source supports the specific claim, not merely the topic.
+- Mark an unsupported premise as `evidence needed`; do not use it to define a
+  conclusion or rank a hypothesis as established.
+- Keep generated hypotheses and proposed tests labeled as proposals even when
+  their premises have citations.
+
+Planning may continue around an explicit evidence gap, but the gap cannot be
+silently converted into a literature-supported conclusion.
+
 ## Generate Competing Hypotheses
 
 Produce at least two materially different explanations when the evidence permits.
@@ -108,7 +124,8 @@ Deliver:
 Complete only when observations and speculation are distinct, multiple plausible
 hypotheses have falsifiers, predictions are explicit, at least one test can
 discriminate among hypotheses, assumptions and constraints are visible, and the
-remaining evidence gaps are prioritized.
+remaining evidence gaps are prioritized. Literature-grounded outputs must also
+have verified identifiers and claim-level support for every factual conclusion.
 
 ## Design Influence
 
