@@ -22,7 +22,7 @@ if ([...options].some((option) => option !== '--require-all')) {
   const missing = results.filter(({ available }) => !available).map(({ command }) => command);
   const resources = [
     inspectResource('fontspec.sty', 'kpsewhich', ['fontspec.sty'], (output) => output.trim().endsWith('fontspec.sty')),
-    inspectResource('Latin Modern Roman', 'fc-match', ['-f', '%{family}', 'Latin Modern Roman'], (output) => /Latin Modern Roman/i.test(output)),
+    inspectResource('Latin Modern Roman', 'fc-match', ['-f', '%{family}', 'LM Roman 10'], (output) => /(?:Latin Modern Roman|LM Roman 10)/i.test(output)),
   ];
   const missingResources = resources.filter(({ available }) => !available).map(({ resource }) => resource);
   const platform = await platformDetails();
