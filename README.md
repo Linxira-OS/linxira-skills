@@ -23,12 +23,17 @@ Current profile counts in the package build:
 
 | Profile | Contents |
 | --- | --- |
-| `core` | 21 first-party contract, guard, workflow, and reference skills |
-| `life-sciences-core` | `core` plus 4 reviewed MIT `bioSkills` entries |
-| `html-reporting-core` | `core` plus 3 reviewed Apache-2.0 `html-anything` entries |
+| `core` | 10 first-party software, integrity, Linux, transfer, and compute skills |
+| `bioinformatics-core` | `core` plus 10 first-party bioinformatics and bulk RNA-seq workflow skills |
+| `research-communication-core` | `core` plus 11 first-party manuscript, citation, formatting, figure, image, document, LaTeX, presentation, and rendered-artifact validation skills |
 
 Reviewed connector profiles such as AlphaFold DB public access are tracked in
 this repository, but are not separate packaged payloads yet.
+
+Academic artifact generation treats Arch Linux (including Arch-derived Linxira
+and CachyOS environments) and Ubuntu as primary execution targets. CI runs the
+same DOCX, PPTX, XeLaTeX/BibTeX, XeLaTeX/Biber, LibreOffice, and Poppler fixture
+suite against native `pacman` and `apt` toolchains.
 
 ## Progressive Routing
 
@@ -60,15 +65,20 @@ The platform separates reusable capabilities from domain-specific knowledge:
   authenticated external systems.
 
 Linux is an execution foundation shared by profiles, not a discipline package.
-`life-sciences-core` is the first domain profile, not the platform boundary.
+`bioinformatics-core` is the first domain profile, not the platform boundary.
 
 ## Third-Party And Adaptation
 
 Reviewed third-party material is included only when its source revision,
-license, notice, and payload boundary are pinned explicitly.
+license, notice, and payload boundary are pinned explicitly. The current public
+payload contains no third-party skill bodies.
 
-- `life-sciences-core` includes 4 reviewed MIT `bioSkills` bodies.
-- `html-reporting-core` includes 3 reviewed Apache-2.0 `html-anything` bodies.
+- `bioinformatics-core` contains first-party adaptations informed by pinned MIT
+  `bioSkills` paths, with provenance and concrete corrections recorded in each
+  adapted skill.
+- The former `life-sciences-core` and `html-reporting-core` selections remain
+  review records but are not installable because their upstream bodies require
+  further correction or asset validation.
 - externally cited `html-anything` templates remain source-only.
 - `awesome-bio-agent-skills` remains an indexed research source, not a public
   payload.
@@ -89,8 +99,8 @@ Profile selection:
 
 ```bash
 npx linxira-skills init --profile core
-npx linxira-skills init --profile life-sciences-core
-npx linxira-skills init --profile html-reporting-core
+npx linxira-skills init --profile bioinformatics-core
+npx linxira-skills init --profile research-communication-core
 ```
 
 Lifecycle commands:
@@ -107,8 +117,18 @@ First-party skills provide execution boundaries for:
 
 - software engineering and change verification
 - research integrity and reporting
-- browser, cloud, and AI safety contracts
-- Linux, SSH, file transfer, GPU, and HPC operations
+- Linux, SSH, file transfer, storage/networking, and cloud-compute contracts
+- bulk RNA-seq QC, Salmon/tximport, count QC, DESeq2, result interpretation,
+  ranked enrichment, HPC handoff, and reproducibility
+- manuscript structure, reference formatting, scientific figure/table design,
+  and academic slide deck design
+
+## Citation
+
+If a manuscript, benchmark, workflow paper, or another skill library uses this
+repository or one of its adapted scientific skills, cite the repository release
+and the exact skill path. See [SKILL_CITATION_POLICY.md](docs/SKILL_CITATION_POLICY.md)
+and [CITATION.cff](CITATION.cff).
 
 ## Repository Layout
 
@@ -125,7 +145,12 @@ First-party skills provide execution boundaries for:
 - [INSTALLATION_ARCHITECTURE.md](docs/INSTALLATION_ARCHITECTURE.md)
 - [SKILL_LOADING_POLICY.md](docs/SKILL_LOADING_POLICY.md)
 - [THIRD_PARTY.md](docs/THIRD_PARTY.md)
+- [SKILL_CITATION_POLICY.md](docs/SKILL_CITATION_POLICY.md)
 - [SOURCES.md](docs/SOURCES.md)
+- [BIOINFORMATICS_CORE_REVIEW.md](docs/BIOINFORMATICS_CORE_REVIEW.md)
+- [RESEARCH_COMMUNICATION_CORE_REVIEW.md](docs/RESEARCH_COMMUNICATION_CORE_REVIEW.md)
+- [ACADEMIC_DELIVERY_STANDARD.md](docs/ACADEMIC_DELIVERY_STANDARD.md)
+- [SKILL_PORTFOLIO_REVIEW.md](docs/SKILL_PORTFOLIO_REVIEW.md)
 - [LIFE_SCIENCES_CORE_REVIEW.md](docs/LIFE_SCIENCES_CORE_REVIEW.md)
 - [HTML_ANYTHING_PROFILE_REVIEW.md](docs/HTML_ANYTHING_PROFILE_REVIEW.md)
 - [ALPHAFOLD_DB_PUBLIC_PROFILE.md](docs/ALPHAFOLD_DB_PUBLIC_PROFILE.md)
@@ -138,8 +163,9 @@ Local validation currently covers:
 
 - first-party metadata audit
 - profile materialization lifecycle tests
+- profile-specific route resolution tests
 - packed tarball install smoke test in a clean Git repository
-- package-content inspection with `npm pack --dry-run`
+- package-content inspection that rejects development and source-track paths
 
 GitHub Actions runs the same validation on Ubuntu, Windows, and macOS, plus
 container jobs for Debian 12, Fedora 42, and Arch Linux.

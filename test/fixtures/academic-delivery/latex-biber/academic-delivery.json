@@ -1,0 +1,14 @@
+{
+  "artifact": "paper",
+  "language": "en-US",
+  "outputs": ["pdf", "tex"],
+  "authoringStack": "latex-biblatex",
+  "citationStyle": "biblatex-numeric-fixture",
+  "source": "main.tex",
+  "outputDirectory": "dist",
+  "images": {
+    "requireRealEvidence": true,
+    "allowAiIllustration": false,
+    "assets": []
+  }
+}

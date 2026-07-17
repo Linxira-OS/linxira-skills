@@ -1,0 +1,16 @@
+{
+  "artifact": "paper",
+  "language": "en-US",
+  "outputs": ["docx"],
+  "authoringStack": "pandoc-docx",
+  "citationStyle": "numeric-fixture",
+  "source": "manuscript.md",
+  "bibliography": "references.bib",
+  "csl": "numeric.csl",
+  "outputDirectory": "dist",
+  "images": {
+    "requireRealEvidence": true,
+    "allowAiIllustration": false,
+    "assets": []
+  }
+}

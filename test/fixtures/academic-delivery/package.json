@@ -1,0 +1,8 @@
+{
+  "name": "linxira-academic-delivery-fixture",
+  "private": true,
+  "version": "0.0.0",
+  "devDependencies": {
+    "pptxgenjs": "3.12.0"
+  }
+}

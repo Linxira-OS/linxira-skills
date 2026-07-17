@@ -1,0 +1,32 @@
+{
+  "artifact": "paper",
+  "language": "zh-CN",
+  "outputs": ["docx", "pdf", "tex"],
+  "authoringStack": "pandoc-docx",
+  "citationStyle": "gb-t-7714-2015-numeric",
+  "source": "manuscript.md",
+  "bibliography": "references/references.bib",
+  "csl": "styles/gb-t-7714-2015-numeric.csl",
+  "referenceDoc": "templates/reference.docx",
+  "outputDirectory": "dist",
+  "images": {
+    "requireRealEvidence": true,
+    "allowAiIllustration": true,
+    "assets": [
+      {
+        "id": "figure-1",
+        "class": "evidence",
+        "source": "analysis",
+        "path": "images/figure-1.png",
+        "label": "Observed result from the declared analysis"
+      },
+      {
+        "id": "concept-1",
+        "class": "schematic",
+        "source": "ai-generated",
+        "path": "images/concept-1.png",
+        "label": "AI-generated illustration"
+      }
+    ]
+  }
+}

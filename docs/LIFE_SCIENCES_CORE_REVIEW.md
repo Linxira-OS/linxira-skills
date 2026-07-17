@@ -1,13 +1,17 @@
 # Life Sciences Core Review
 
+> Status: superseded and not packaged. The unmodified upstream-body selection
+> was replaced by the corrected first-party `bioinformatics-core` profile. This
+> document remains as an audit record for the earlier review decision.
+
 ## Decision
 
-`profiles/life-sciences-core.json` is the reviewed definition of the first
+`profiles/life-sciences-core.json` was the reviewed definition of the first
 life-science expansion. It extends the first-party `core` profile with four
 MIT-licensed `bioSkills` entries at source revision
 `24f0694a125e53f04a7c66a54ba9b81461b7227f`.
 
-The profile is approved for packaging. The payload builder copies exactly the
+The profile is no longer approved for packaging. The earlier builder copied the
 listed bodies, verifies their hashes, and includes the upstream MIT notice
 before the CLI materializes it.
 

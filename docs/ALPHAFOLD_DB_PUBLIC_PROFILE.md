@@ -4,7 +4,9 @@
 
 `profiles/alphafold-db-public.json` is a reviewed connector profile for public
 AlphaFold Protein Structure Database access. It does not introduce a new npm
-payload because the required skill is already present in `life-sciences-core`.
+payload. The previously reviewed upstream body is held out until its network
+timeouts, response validation, filename handling, and interpretation contract
+are adapted and revalidated.
 
 The profile pins one MIT `bioSkills` body at revision
 `24f0694a125e53f04a7c66a54ba9b81461b7227f`:

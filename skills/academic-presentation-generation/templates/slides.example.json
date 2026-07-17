@@ -1,0 +1,39 @@
+{
+  "title": "Example Research Presentation",
+  "author": "Author Name",
+  "language": "en-US",
+  "aspectRatio": "wide",
+  "slides": [
+    {
+      "kind": "title",
+      "title": "Example Research Presentation",
+      "subtitle": "Question, method, and bounded contribution"
+    },
+    {
+      "kind": "content",
+      "title": "The main result in one sentence",
+      "body": [
+        "State the observed effect and comparison.",
+        "Name uncertainty or a major limitation."
+      ],
+      "citation": "[1]",
+      "image": {
+        "path": "images/result-figure.png",
+        "class": "evidence",
+        "source": "analysis",
+        "label": "Observed result from the declared analysis"
+      }
+    },
+    {
+      "kind": "content",
+      "title": "A conceptual mechanism",
+      "body": ["Illustrative model, not experimental evidence."],
+      "image": {
+        "path": "images/concept.png",
+        "class": "schematic",
+        "source": "ai-generated",
+        "label": "AI-generated illustration"
+      }
+    }
+  ]
+}

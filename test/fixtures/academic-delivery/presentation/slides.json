@@ -1,0 +1,36 @@
+{
+  "title": "Fixture Presentation",
+  "author": "Linxira Fixture",
+  "language": "en-US",
+  "aspectRatio": "standard",
+  "slides": [
+    {
+      "kind": "title",
+      "title": "Fixture Presentation",
+      "subtitle": "A generated academic artifact",
+      "image": {
+        "path": "images/fixture.png",
+        "class": "decorative",
+        "source": "external",
+        "citationKey": "Fixture source [1]",
+        "label": "Fixture image"
+      }
+    },
+    {
+      "kind": "content",
+      "title": "Evidence and Attribution",
+      "body": [
+        "The image is a local fixture used to validate PPTX creation.",
+        "Its external source attribution must remain visible."
+      ],
+      "citation": "[1]",
+      "image": {
+        "path": "images/fixture.png",
+        "class": "schematic",
+        "source": "external",
+        "citationKey": "Fixture source [1]",
+        "label": "Fixture image"
+      }
+    }
+  ]
+}

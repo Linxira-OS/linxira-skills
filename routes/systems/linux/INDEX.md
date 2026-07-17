@@ -4,7 +4,6 @@
 - WSL environments: `linux-wsl/SKILL.md`
 - Package changes: `linux-package-management/SKILL.md`
 - Remote login: `linux-remote-access/SKILL.md`
-- Persistent sessions: `linux-session-persistence/SKILL.md`
 - File transfer: `linux-file-transfer/SKILL.md`
 - Storage and networking: `linux-storage-networking/SKILL.md`
 - GPU hosts: `linux-gpu-compute/SKILL.md`

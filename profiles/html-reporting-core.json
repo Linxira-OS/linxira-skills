@@ -1,40 +1,50 @@
 {
-  "schemaVersion": 1,
-  "status": "approved-for-packaging",
+  "schemaVersion": 2,
+  "status": "reviewed-not-packaged",
   "name": "html-reporting-core",
   "baseProfile": "core",
+  "firstPartySkills": [],
   "sourceTracks": [
     {
       "id": "html-anything",
+      "repositoryPath": "sources/html-anything",
+      "skillRoot": "sources/html-anything/next/src/lib/templates/skills",
       "revision": "aea749837d780f1da6261f2ed777d7e107231f5f",
       "license": "Apache-2.0",
-      "notice": "sources/html-anything/LICENSE"
+      "notice": "sources/html-anything/LICENSE",
+      "noticeTarget": "html-anything-Apache-2.0.txt"
     }
   ],
   "skills": [
     {
       "name": "dashboard",
+      "sourceTrack": "html-anything",
       "relativePath": "dashboard",
       "targetPath": "delivery/reporting/dashboard",
       "bodySha256": "3f244f2565bcf0fd2ab3ca84e37f50d0cde0527eef641dbab1909b9ecf089ee8",
+      "skillClass": "workflow",
       "loadPolicy": "conditional",
-      "riskTags": ["local-data"]
+      "riskTags": []
     },
     {
       "name": "data-report",
+      "sourceTrack": "html-anything",
       "relativePath": "data-report",
       "targetPath": "delivery/reporting/data-report",
       "bodySha256": "188e3d69adc8694bafa8db18664b33b6ccebaa4880231a40a7f6dc6bac64532c",
-      "loadPolicy": "required",
-      "riskTags": ["local-data", "external-network-read-optional", "no-fabrication"]
+      "skillClass": "guard",
+      "loadPolicy": "conditional",
+      "riskTags": ["controlled-data"]
     },
     {
       "name": "docs-page",
+      "sourceTrack": "html-anything",
       "relativePath": "docs-page",
       "targetPath": "delivery/reporting/docs-page",
       "bodySha256": "0fd23b8a02cb2ec6385a35af22964b48dd5119b47fe48c77f4e64e3baa06b606",
+      "skillClass": "workflow",
       "loadPolicy": "conditional",
-      "riskTags": ["local-content"]
+      "riskTags": []
     }
   ]
 }

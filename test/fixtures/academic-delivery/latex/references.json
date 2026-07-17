@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "records": [
+    {
+      "id": "fixture-latex",
+      "type": "article-journal",
+      "title": "Fixture {DNA} Reference & 50%",
+      "author": [
+        { "family": "Fixture", "given": "Author" }
+      ],
+      "container-title": "Fixture Journal",
+      "issued": { "date-parts": [[2026]] }
+    }
+  ]
+}

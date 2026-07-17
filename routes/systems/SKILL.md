@@ -1,6 +1,6 @@
 ---
 name: linxira-systems-router
-description: Route Linux, remote access, GPU, HPC, cloud compute, and host administration tasks to the smallest matching Linxira skill branch.
+description: Route system, Linux, and compute tasks to the smallest matching branch available in the installed Linxira profile.
 skill_class: workflow
 load_policy: conditional
 risk_tags: []

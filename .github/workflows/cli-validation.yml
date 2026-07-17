@@ -3,6 +3,9 @@ name: CLI Validation
 on:
   push:
   pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 4 * * 1'
 
 permissions:
   contents: read
@@ -15,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node: [24]
+        node: [20, 22, 24]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,6 +26,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+      - name: Audit first-party skill metadata
+        shell: pwsh
+        run: ./scripts/audit-first-party-skills.ps1
       - run: npm test
       - run: npm run pack:check
 
@@ -56,3 +62,53 @@ jobs:
       - run: node --version
       - run: npm test
       - run: npm run pack:check
+
+  academic-artifacts-ubuntu:
+    name: Academic artifact E2E / Ubuntu / Node 24
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install document and rendering tools
+        run: sudo apt-get update && sudo apt-get install -y pandoc libreoffice poppler-utils latexmk texlive-xetex texlive-bibtex-extra biber fonts-liberation fonts-lmodern
+      - name: Verify Ubuntu artifact toolchain
+        run: node skills/academic-delivery-planning/scripts/check-academic-toolchain.mjs --require-all
+      - name: Generate and render academic artifacts
+        run: LINXIRA_ACADEMIC_E2E=1 npm test
+
+  academic-artifacts-arch:
+    name: Academic artifact E2E / Arch Linux / Node 24
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:base
+    steps:
+      - name: Install Arch artifact toolchain and checkout prerequisites
+        run: pacman -Syu --noconfirm --needed ca-certificates git pandoc-cli libreoffice-fresh poppler texlive-binextra texlive-xetex texlive-latexrecommended texlive-bibtexextra biber otf-latin-modern ttf-liberation
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Verify Arch artifact toolchain
+        run: node skills/academic-delivery-planning/scripts/check-academic-toolchain.mjs --require-all
+      - name: Generate and render academic artifacts
+        run: LINXIRA_ACADEMIC_E2E=1 npm test
+
+  academic-pptx-windows:
+    name: Academic PPTX E2E / Windows / Node 24
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Generate materialized PPTX artifact
+        shell: pwsh
+        run: $env:LINXIRA_ACADEMIC_PPTX_E2E = '1'; npm test

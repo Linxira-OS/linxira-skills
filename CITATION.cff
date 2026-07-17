@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+title: Linxira Skills
+message: If you use this skill library or cite one of its adapted scientific skills, please cite the repository and the specific skill path.
+type: software
+license: MIT
+version: 0.1.0
+authors:
+  - name: Linxira OS
+repository-code: https://github.com/Linxira-OS/linxira-skills
+url: https://github.com/Linxira-OS/linxira-skills
+abstract: >-
+  Cross-runtime skill platform for research, engineering, and execution
+  workflows, including first-party bioinformatics workflow skills.

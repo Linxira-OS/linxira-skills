@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 2,
+  "status": "approved-for-packaging",
+  "name": "core",
+  "baseProfile": null,
+  "firstPartySkills": [
+    "compute-cloud",
+    "linux-file-transfer",
+    "linux-foundations",
+    "linux-package-management",
+    "linux-remote-access",
+    "linux-storage-networking",
+    "linux-system-administration",
+    "linux-troubleshooting",
+    "research-manuscript-integrity",
+    "scientific-software-engineering"
+  ],
+  "sourceTracks": [],
+  "skills": []
+}

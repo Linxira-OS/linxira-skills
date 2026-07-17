@@ -8,5 +8,13 @@ risk_tags: []
 
 # Delivery Router
 
-Read `reporting/INDEX.md` for report, dashboard, documentation, figure, or
-presentation output. Load only the exact leaf selected there.
+Read only the matching second-level index:
+
+- Manuscript planning, formatting, LaTeX, and document generation: `writing/INDEX.md`
+- Citations, references, BibTeX, and bibliography formatting: `citations/INDEX.md`
+- Scientific figures, tables, evidence images, and AI visuals: `visuals/INDEX.md`
+- Academic talks, PPT design, and PPTX generation: `presentations/INDEX.md`
+- Rendered DOCX/PPTX artifact inspection: `validation/INDEX.md`
+- General dashboards and reporting templates: `reporting/INDEX.md`
+
+Load only the exact leaf selected there.

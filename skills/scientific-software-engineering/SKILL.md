@@ -1,6 +1,6 @@
 ---
 name: scientific-software-engineering
-description: Use when designing, implementing, testing, packaging, reviewing, or maintaining scientific and bioinformatics software, command-line tools, libraries, APIs, data parsers, workflow components, or research code in Python, R, Rust, Go, Java, or shell.
+description: Use when designing, implementing, changing, testing, reviewing, packaging, or maintaining scientific and bioinformatics software. Covers data contracts, scientific invariants, focused regression evidence, and honest completion claims; it does not replace domain analysis or remote-system safety contracts.
 skill_class: guard
 load_policy: conditional
 risk_tags: [controlled-data]
@@ -49,6 +49,11 @@ Test empty inputs, malformed records, duplicate identifiers, alternate contigs,
 missing metadata, compressed streams, interrupted writes, Unicode sample names,
 very large values, NaN/Inf, and platform path differences where relevant.
 
+For a corrected defect, preserve the smallest reproducer as a regression test.
+When the original data is unavailable or controlled, construct a minimized
+synthetic fixture that preserves the relevant shape, units, identifiers, and
+failure boundary, and state the remaining uncertainty.
+
 ## CLI And API Design
 
 Provide `--help`, `--version`, deterministic exit codes, dry-run behavior for
@@ -76,3 +81,10 @@ tolerance.
 Prioritize incorrect biological assumptions, coordinate errors, identifier
 mismatches, data loss, biased statistics, nondeterminism, partial-write hazards,
 unbounded resource use, privacy leakage, and missing validation before style.
+
+## Completion Record
+
+Before declaring a change ready, record the behavior changed, the scientific
+invariant protected, the checks actually run and their results, unavailable
+environments, and any migration or reproducibility impact. Do not report an
+unrun command as passing or infer correctness from plausible-looking output.

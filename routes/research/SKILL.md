@@ -1,6 +1,6 @@
 ---
 name: linxira-research-router
-description: Route research, integrity, scientific AI, and domain analysis tasks to the smallest matching Linxira skill branch.
+description: Route research and domain-analysis tasks to the smallest matching branch available in the installed Linxira profile.
 skill_class: workflow
 load_policy: conditional
 risk_tags: []

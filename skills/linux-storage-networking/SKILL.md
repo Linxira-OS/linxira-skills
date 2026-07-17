@@ -24,8 +24,9 @@ df -hT
 du -xhd1 /path
 ```
 
-For apparent disk-full conditions, check quota, inode use, snapshots, and files
-`du /` scan across remote mounts without considering load and permissions.
+For apparent disk-full conditions, check quota, inode use, snapshots, and
+deleted-open files. Do not run an unbounded `du /` scan across remote mounts
+without considering load, mount boundaries, and permissions.
 
 Before a resize, repair, reformat, LVM/RAID operation, mount change, or fstab
 edit, confirm device identity, mount boundaries, consumers, backup/snapshot

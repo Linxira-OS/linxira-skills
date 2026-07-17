@@ -1,6 +1,6 @@
 ---
 name: linxira-integrations-router
-description: Route external service, browser, Google Workspace, Google Cloud, authentication, and connector tasks to the smallest matching Linxira branch.
+description: Route external-service and connector tasks to the smallest matching branch available in the installed Linxira profile.
 skill_class: workflow
 load_policy: conditional
 risk_tags: []

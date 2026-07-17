@@ -26,17 +26,18 @@ tree:
 
 | Material | Public npm payload | Reason |
 | --- | --- | --- |
-| First-party `skills/` | Yes | Project-owned and audited by this repository. |
+| Profile-selected first-party `skills/` | Yes | Project-owned, audited, and explicitly selected by an approved profile. |
 | Approved MIT `bioSkills` subset | Later, after profile review | The source is MIT, but release profiles still need scientific and execution review. |
 | `awesome-bio-agent-skills` bodies | No | Its root index is CC0 but nested source licenses differ. |
 | `html-anything` bodies | Not by default | The root is Apache-2.0, but 22 templates cite external examples or inspiration. |
 | Proprietary/vendor reference material | No | It is reference-only or has incompatible terms. |
 
-The target first npm release ships the 21 metadata-audited first-party skills,
-four hash-pinned MIT entries from `life-sciences-core`, three hash-pinned
-Apache-2.0 entries from `html-reporting-core`, their required notices, and a
-compact catalog of permitted metadata. It does not publish the full research
-archive merely because that archive exists in a development clone.
+The target first npm release ships 24 first-party skills across `core`,
+`bioinformatics-core`, and `research-communication-core`, plus a compact
+generated descriptor catalog. Seven bulk RNA-seq skills are adapted from
+reviewed ideas in a pinned MIT `bioSkills` revision and record their source
+paths and corrections in-body. No upstream skill body or full research archive
+is published merely because it exists in a development clone.
 
 ## Package Shape
 
@@ -55,6 +56,7 @@ linxira-skills
     profiles.json       Named materialization profiles
   templates/
     AGENTS.md.fragment
+  THIRD_PARTY_NOTICES.md
   LICENSE
   README.md
 ```
@@ -146,9 +148,13 @@ npx linxira-skills update [--dry-run]
 npx linxira-skills uninstall [--dry-run]
 ```
 
-`core` is the initial default profile and contains only the metadata-audited
-first-party skills. Future profiles may include `linux`, `life-sciences-core`,
-`research-engineering`, or `templates`, but a profile is publishable only after
+`core` is the default profile and contains 10 explicitly selected first-party
+skills. `bioinformatics-core` adds 10 first-party domain skills, including a
+bulk RNA-seq analysis path. `research-communication-core` adds 11 first-party
+skills for manuscript structure, citation formatting, Chinese academic body
+formatting, DOCX/LaTeX delivery, scientific figures/tables, image-evidence
+boundaries, academic presentation generation, and rendered-artifact validation.
+Other profiles remain non-installable until
 every included body passes license, provenance, quality, and risk review.
 
 Command behavior is intentionally conservative:
@@ -238,21 +244,25 @@ capabilities and must not be smuggled into a generic installer.
 ## Current Implementation
 
 The repository root now contains the provisional `linxira-skills` package. It
-has no runtime dependencies and
-uses Node's built-in modules for profile materialization, manifest hashing,
-marker updates, and conflict checks. `scripts/build-payload.mjs` generates the
-ignored `payload/` directory from 21 audited first-party skills plus the seven
-hash-pinned third-party entries in `life-sciences-core` and
-`html-reporting-core`, maps every leaf to a three-level target path, and includes
-only the routers and indexes needed by each profile before tests and packing.
+has no runtime dependencies and uses Node's built-in modules for profile
+materialization, manifest hashing, marker updates, and conflict checks.
+`scripts/build-payload.mjs` discovers approved profile manifests, resolves their
+base profiles, selects only referenced first-party skills, generates compact
+descriptors, maps every leaf to a three-level target path, and renders separate
+router/index files for each profile. The build fails when a leaf is not
+advertised or a generated route points to an absent target.
 
-The local Node 24 fixture suite verifies `init`, `status`, `update`,
+The local Node 20/22/24 fixture suite verifies `init`, `status`, `update`,
 `uninstall`, dry runs, progressive route generation, preserved `AGENTS.md` text,
-modified-entry protection, and non-managed path protection. `npm pack --dry-run` verifies that the
-tarball contains only the CLI, generated first-party payload, template,
-README, and license. `.github/workflows/cli-validation.yml` runs the same
+modified-entry protection, and non-managed path protection. The packed-artifact
+test verifies that the tarball contains only release material and excludes
+source tracks, profiles, scripts, tests, and workspace skill sources.
+`.github/workflows/cli-validation.yml` runs the same
 fixture suite and package check on Windows, macOS, Ubuntu, Debian 12, Fedora 42,
-and Arch Linux before a release is marked complete. The distribution containers
-validate user-space installation, path, process, and packaging behavior. Kernel,
+and Arch Linux before a release is marked complete. The full academic artifact
+suite runs independently on Ubuntu (`apt`) and Arch Linux (`pacman`) with native
+Pandoc, LibreOffice, Poppler, XeLaTeX, BibTeX, and Biber packages. The
+distribution containers validate user-space installation, path, process, and
+packaging behavior. Kernel,
 DKMS, NVIDIA driver, scheduler, and hardware claims require a dedicated host;
 CachyOS is therefore not treated as fully validated by an Arch container alone.

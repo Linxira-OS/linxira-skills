@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "result-figure",
+      "class": "evidence",
+      "source": "analysis",
+      "path": "result-figure.png",
+      "label": "Observed result from the declared analysis"
+    },
+    {
+      "id": "workflow-concept",
+      "class": "schematic",
+      "source": "ai-generated",
+      "path": "workflow-concept.png",
+      "label": "AI-generated illustration",
+      "provenance": "workflow-concept.png.provenance.json"
+    },
+    {
+      "id": "licensed-image",
+      "class": "decorative",
+      "source": "external",
+      "path": "licensed-image.png",
+      "label": "External licensed image",
+      "sourceUrl": "https://example.invalid/image"
+    }
+  ]
+}

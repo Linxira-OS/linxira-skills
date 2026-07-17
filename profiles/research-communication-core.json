@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 2,
+  "status": "approved-for-packaging",
+  "name": "research-communication-core",
+  "baseProfile": "core",
+  "firstPartySkills": [
+    "academic-delivery-planning",
+    "academic-artifact-validation",
+    "academic-document-formatting",
+    "academic-document-generation",
+    "academic-presentation-design",
+    "academic-presentation-generation",
+    "academic-visual-evidence",
+    "citation-and-reference-formatting",
+    "latex-academic-authoring",
+    "manuscript-structure-and-argument",
+    "scientific-figures-and-tables"
+  ],
+  "sourceTracks": [],
+  "skills": []
+}

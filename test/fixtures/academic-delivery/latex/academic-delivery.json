@@ -1,0 +1,15 @@
+{
+  "artifact": "paper",
+  "language": "en-US",
+  "outputs": ["pdf", "tex"],
+  "authoringStack": "latex-bibtex",
+  "citationStyle": "plain-bibtex-fixture",
+  "source": "main.tex",
+  "bibliography": "references.bib",
+  "outputDirectory": "dist",
+  "images": {
+    "requireRealEvidence": true,
+    "allowAiIllustration": false,
+    "assets": []
+  }
+}

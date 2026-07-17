@@ -1,15 +1,19 @@
 import { createHash } from 'node:crypto';
 import {
   cp,
+  lstat,
   mkdir,
+  open,
   readFile,
   readdir,
+  realpath,
+  rename,
   rm,
   stat,
   writeFile,
 } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -29,18 +33,32 @@ export async function run(argv, cwd = process.cwd(), io = console) {
   }
 
   const root = await findGitRoot(cwd);
+  for (const path of [
+    join(root, 'AGENTS.md'),
+    join(root, '.gitignore'),
+    join(root, '.agents', 'skills'),
+    manifestPath(root),
+  ]) {
+    await assertNoSymlinkComponents(root, path);
+  }
 
   if (command === 'init') {
-    return initialize(root, options, io);
+    return options.dryRun
+      ? initialize(root, options, io)
+      : withOperationLock(root, command, () => initialize(root, options, io));
   }
   if (command === 'status') {
     return showStatus(root, io);
   }
   if (command === 'update') {
-    return update(root, options, io);
+    return options.dryRun
+      ? update(root, options, io)
+      : withOperationLock(root, command, () => update(root, options, io));
   }
   if (command === 'uninstall') {
-    return uninstall(root, options, io);
+    return options.dryRun
+      ? uninstall(root, options, io)
+      : withOperationLock(root, command, () => uninstall(root, options, io));
   }
 
   throw new CliError(`Unknown command: ${command}`);
@@ -88,7 +106,7 @@ async function findGitRoot(cwd) {
 
   while (true) {
     if (existsSync(join(candidate, '.git'))) {
-      return candidate;
+      return realpath(candidate);
     }
 
     const parent = dirname(candidate);
@@ -110,6 +128,7 @@ async function initialize(root, options, io) {
   const targets = profileData.entries.map(({ target }) => join(root, '.agents', 'skills', target));
 
   for (const target of targets) {
+    await assertNoSymlinkComponents(root, target);
     if (existsSync(target)) {
       throw new CliError(`Refusing to overwrite non-managed skill directory: ${relative(root, target)}`);
     }
@@ -124,13 +143,26 @@ async function initialize(root, options, io) {
     return 0;
   }
 
-  await mkdir(join(root, '.agents', 'skills'), { recursive: true });
-  for (const entry of profileData.entries) {
-    await copyEntry(entry, join(root, '.agents', 'skills', entry.target));
+  const createdTargets = [];
+  try {
+    await mkdir(join(root, '.agents', 'skills'), { recursive: true });
+    for (const entry of profileData.entries) {
+      const target = join(root, '.agents', 'skills', entry.target);
+      createdTargets.push(target);
+      await copyEntry(entry, target);
+    }
+    await applyPlan(agentsPlan);
+    await applyPlan(ignorePlan);
+    await writeManifest(root, manifest);
+  } catch (error) {
+    for (const target of createdTargets.reverse()) {
+      await rm(target, { recursive: true, force: true });
+    }
+    await restorePlan(agentsPlan);
+    await restorePlan(ignorePlan);
+    await rm(manifestPath(root), { force: true });
+    throw error;
   }
-  await applyPlan(agentsPlan);
-  await applyPlan(ignorePlan);
-  await writeManifest(root, manifest);
   io.log(`Initialized ${profile} profile with ${profileData.entries.length} managed entries.`);
   return 0;
 }
@@ -142,6 +174,7 @@ async function showStatus(root, io) {
     return 0;
   }
 
+  await assertManifestTargetsSafe(root, manifest);
   const statuses = await managedStatuses(root, manifest);
   io.log(`Profile: ${manifest.profile}`);
   for (const { id, state } of statuses) {
@@ -157,7 +190,11 @@ async function update(root, options, io) {
     throw new CliError('No Linxira manifest found. Run init first.');
   }
 
+  await assertManifestTargetsSafe(root, manifest);
   const profileData = await profileEntries(manifest.profile);
+  for (const { target } of profileData.entries) {
+    await assertNoSymlinkComponents(root, join(root, '.agents', 'skills', target));
+  }
   const currentStatuses = await managedStatuses(root, manifest);
   const divergent = currentStatuses.filter(({ state }) => state !== 'ok');
   if (divergent.length > 0 && !options.force) {
@@ -193,17 +230,46 @@ async function update(root, options, io) {
     return 0;
   }
 
-  for (const [, record] of removals) {
-    await rm(join(root, '.agents', 'skills', record.path), { recursive: true, force: true });
+  const backupRoot = join(root, '.linxira', `.update-backup-${process.pid}-${Date.now()}`);
+  const moved = [];
+  const copiedTargets = [];
+  try {
+    for (const record of Object.values(manifest.entries)) {
+      const target = join(root, '.agents', 'skills', record.path);
+      if (!existsSync(target)) {
+        continue;
+      }
+      const backup = join(backupRoot, ...record.path.split('/'));
+      await mkdir(dirname(backup), { recursive: true });
+      await rename(target, backup);
+      moved.push({ target, backup });
+    }
+    for (const entry of profileData.entries) {
+      const target = join(root, '.agents', 'skills', entry.target);
+      copiedTargets.push(target);
+      await copyEntry(entry, target);
+    }
+    await applyPlan(agentsPlan);
+    await applyPlan(ignorePlan);
+    await writeManifest(root, nextManifest);
+  } catch (error) {
+    for (const target of copiedTargets.reverse()) {
+      await rm(target, { recursive: true, force: true });
+    }
+    await restorePlan(agentsPlan);
+    await restorePlan(ignorePlan);
+    for (const { target, backup } of moved.reverse()) {
+      await mkdir(dirname(target), { recursive: true });
+      await rename(backup, target);
+    }
+    await rm(backupRoot, { recursive: true, force: true });
+    throw error;
   }
-  for (const entry of profileData.entries) {
-    const target = join(root, '.agents', 'skills', entry.target);
-    await rm(target, { recursive: true, force: true });
-    await copyEntry(entry, target);
+  try {
+    await rm(backupRoot, { recursive: true, force: true });
+  } catch {
+    io.log(`Updated ${manifest.profile} profile, but backup cleanup requires review: ${relative(root, backupRoot)}`);
   }
-  await applyPlan(agentsPlan);
-  await applyPlan(ignorePlan);
-  await writeManifest(root, nextManifest);
   io.log(`Updated ${manifest.profile} profile.`);
   return 0;
 }
@@ -214,6 +280,7 @@ async function uninstall(root, options, io) {
     throw new CliError('No Linxira manifest found.');
   }
 
+  await assertManifestTargetsSafe(root, manifest);
   const statuses = await managedStatuses(root, manifest);
   const divergent = statuses.filter(({ state }) => state !== 'ok');
   if (divergent.length > 0 && !options.force) {
@@ -230,11 +297,35 @@ async function uninstall(root, options, io) {
     return 0;
   }
 
-  for (const { path } of statuses) {
-    await rm(join(root, '.agents', 'skills', path), { recursive: true, force: true });
+  const backupRoot = join(root, '.linxira', `.uninstall-backup-${process.pid}-${Date.now()}`);
+  const moved = [];
+  try {
+    for (const { path } of statuses) {
+      const target = join(root, '.agents', 'skills', path);
+      if (!existsSync(target)) {
+        continue;
+      }
+      const backup = join(backupRoot, ...path.split('/'));
+      await mkdir(dirname(backup), { recursive: true });
+      await rename(target, backup);
+      moved.push({ target, backup });
+    }
+    await applyPlan(agentsPlan);
+    await rm(manifestPath(root), { force: true });
+  } catch (error) {
+    await restorePlan(agentsPlan);
+    for (const { target, backup } of moved.reverse()) {
+      await mkdir(dirname(target), { recursive: true });
+      await rename(backup, target);
+    }
+    await rm(backupRoot, { recursive: true, force: true });
+    throw error;
   }
-  await applyPlan(agentsPlan);
-  await rm(manifestPath(root), { force: true });
+  try {
+    await rm(backupRoot, { recursive: true, force: true });
+  } catch {
+    io.log(`Uninstalled ${manifest.profile} profile, but backup cleanup requires review: ${relative(root, backupRoot)}`);
+  }
   io.log(`Uninstalled ${manifest.profile} profile.`);
   return 0;
 }
@@ -270,6 +361,9 @@ async function profileEntries(profileName) {
       throw new CliError(`Packaged profile contains an invalid agent route: ${profileName}`);
     }
     assertManagedPath(route.path);
+    if (!targets.has(route.path)) {
+      throw new CliError(`Packaged profile advertises a missing agent route: ${route.path}`);
+    }
   }
   return { entries, agentRoutes: profile.agentRoutes };
 }
@@ -346,7 +440,7 @@ async function buildManifest(profile, sources) {
 
 async function writeManifest(root, manifest) {
   await mkdir(dirname(manifestPath(root)), { recursive: true });
-  await writeFile(manifestPath(root), `${JSON.stringify(manifest, null, 2)}\n`);
+  await atomicWriteFile(manifestPath(root), `${JSON.stringify(manifest, null, 2)}\n`);
 }
 
 async function managedStatuses(root, manifest) {
@@ -424,9 +518,10 @@ function markerBlock(routes) {
 
 async function markerPlan(root, action, block = '') {
   const path = join(root, 'AGENTS.md');
-  const before = existsSync(path) ? await readFile(path, 'utf8') : '';
+  const existed = existsSync(path);
+  const before = existed ? await readFile(path, 'utf8') : '';
   const after = action === 'upsert' ? upsertMarker(before, block) : removeMarker(before);
-  return { path, before, after, label: 'AGENTS.md marker block' };
+  return { path, before, after, existed, label: 'AGENTS.md marker block' };
 }
 
 function upsertMarker(content, block) {
@@ -463,20 +558,89 @@ function markerBounds(content) {
 
 async function gitignorePlan(root) {
   const path = join(root, '.gitignore');
-  const before = existsSync(path) ? await readFile(path, 'utf8') : '';
+  const existed = existsSync(path);
+  const before = existed ? await readFile(path, 'utf8') : '';
   const existing = new Set(before.split(/\r?\n/));
   const missing = requiredIgnoreEntries.filter((entry) => !existing.has(entry));
   if (missing.length === 0) {
-    return { path, before, after: before, label: '.gitignore entries' };
+    return { path, before, after: before, existed, label: '.gitignore entries' };
   }
   const prefix = before && !before.endsWith('\n') ? `${before}\n` : before;
-  return { path, before, after: `${prefix}${missing.join('\n')}\n`, label: '.gitignore entries' };
+  return { path, before, after: `${prefix}${missing.join('\n')}\n`, existed, label: '.gitignore entries' };
 }
 
 async function applyPlan(plan) {
   if (plan.after !== plan.before) {
     await mkdir(dirname(plan.path), { recursive: true });
-    await writeFile(plan.path, plan.after);
+    await atomicWriteFile(plan.path, plan.after);
+  }
+}
+
+async function restorePlan(plan) {
+  if (plan.after === plan.before) {
+    return;
+  }
+  if (!plan.existed) {
+    await rm(plan.path, { force: true });
+    return;
+  }
+  await atomicWriteFile(plan.path, plan.before);
+}
+
+async function atomicWriteFile(path, content) {
+  const temporary = `${path}.linxira-${process.pid}-${Date.now()}.tmp`;
+  await writeFile(temporary, content);
+  try {
+    await rename(temporary, path);
+  } catch (error) {
+    await rm(temporary, { force: true });
+    throw error;
+  }
+}
+
+async function assertManifestTargetsSafe(root, manifest) {
+  for (const record of Object.values(manifest.entries)) {
+    await assertNoSymlinkComponents(root, join(root, '.agents', 'skills', record.path));
+  }
+}
+
+async function assertNoSymlinkComponents(root, target) {
+  const path = relative(root, target);
+  if (isAbsolute(path) || path === '..' || path.startsWith('../') || path.startsWith('..\\')) {
+    throw new CliError(`Managed path escapes the repository: ${target}`);
+  }
+  let current = root;
+  for (const segment of path.split(/[\\/]/).filter(Boolean)) {
+    current = join(current, segment);
+    if (!existsSync(current)) {
+      continue;
+    }
+    if ((await lstat(current)).isSymbolicLink()) {
+      throw new CliError(`Refusing to use a symbolic link in a managed path: ${relative(root, current)}`);
+    }
+  }
+}
+
+async function withOperationLock(root, command, action) {
+  const lockPath = join(root, '.linxira', 'operation.lock');
+  await assertNoSymlinkComponents(root, lockPath);
+  await mkdir(dirname(lockPath), { recursive: true });
+  let handle;
+  try {
+    handle = await open(lockPath, 'wx');
+    await handle.writeFile(`${JSON.stringify({ pid: process.pid, command, startedAt: new Date().toISOString() })}\n`);
+  } catch (error) {
+    if (error.code === 'EEXIST') {
+      throw new CliError('Another Linxira lifecycle operation is in progress. Review .linxira/operation.lock if no process is active.');
+    }
+    throw error;
+  }
+
+  try {
+    return await action();
+  } finally {
+    await handle.close();
+    await rm(lockPath, { force: true });
   }
 }
 

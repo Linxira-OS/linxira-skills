@@ -1,0 +1,10 @@
+{
+  "class": "schematic",
+  "purpose": "Explain a generic RNA-seq workflow in a presentation introduction.",
+  "prompt": "A clean flat academic schematic of a generic RNA sequencing workflow, showing sample tube, sequencing reads, analysis graph, and report. No people, no patient data, no fake micrographs, no fake results, no text labels.",
+  "output": "images/rnaseq-workflow-concept.png",
+  "label": "AI-generated illustration",
+  "model": "gpt-image-1",
+  "size": "1536x1024",
+  "externalGenerationApproved": true
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 2,
+  "status": "approved-for-packaging",
+  "name": "bioinformatics-core",
+  "baseProfile": "core",
+  "firstPartySkills": [
+    "bio-analysis-orchestrator",
+    "bioinformatics-reproducibility",
+    "bulk-rnaseq-analysis",
+    "count-matrix-quality-control",
+    "differential-expression-deseq2",
+    "differential-expression-results",
+    "fastq-quality-control",
+    "gene-set-enrichment-analysis",
+    "hpc-bioinformatics-operations",
+    "salmon-quantification"
+  ],
+  "sourceTracks": [],
+  "skills": []
+}

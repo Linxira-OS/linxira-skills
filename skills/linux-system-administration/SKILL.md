@@ -1,6 +1,6 @@
 ---
 name: linux-system-administration
-description: Use when installing, configuring, securing, monitoring, troubleshooting, backing up, or operating Linux servers and services. Covers systemd, packages, users, storage, filesystems, networking, firewalls, SSH, logs, performance, containers, updates, backup, and incident response.
+description: Use when operating Linux services, users, backups, containers, maintenance windows, and incidents on a managed host. Use the focused package, remote-access, storage/networking, transfer, or troubleshooting skill when that subsystem is the primary task.
 skill_class: contract
 load_policy: required
 risk_tags: [destructive, privileged]
@@ -10,6 +10,10 @@ risk_tags: [destructive, privileged]
 
 Operate with least privilege and a recovery path. Gather evidence before making
 changes, especially on remote or production systems.
+
+This skill coordinates host-level administration. It does not replace the
+focused contract for package changes, SSH access, data transfer, storage and
+network mutation, or failure diagnosis.
 
 ## Pre-Change Checklist
 

@@ -2,14 +2,15 @@
 name: linux-troubleshooting
 description: Use when a Linux command, service, package, SSH connection, WSL environment, storage path, network path, process, container, or scientific workload fails, behaves unexpectedly, or performs poorly. Provides an evidence-first diagnosis workflow with minimal reproduction, logs, layered checks, reversible changes, and completion verification.
 skill_class: guard
-load_policy: required
+load_policy: conditional
 risk_tags: [destructive, privileged]
 ---
 
 # Linux Troubleshooting
 
 Diagnose from evidence, not symptoms alone. Preserve the failing state long
-time of failure.
+enough to collect the exact command, error, logs, environment, and time of
+failure before applying a change that may erase evidence.
 
 ## Triage
 
@@ -62,6 +63,7 @@ df -hT
 For a remote workload, also inspect scheduler state/accounting, application
 logs, container logs, and client-side SSH or transfer output. For WSL, label
 whether the failure occurs in Windows or inside the distribution before applying
+Linux or Windows-specific fixes.
 
 ## Select A Narrow Fix
 
@@ -70,6 +72,7 @@ changes, validate configuration before reload, use a second SSH session before
 access changes, and preserve configuration copies before edits. Require explicit
 confirmation before deletion, overwrites, restarts of production services,
 privilege changes, firewall/SSH changes, package removals, kernel/driver changes,
+or destructive storage recovery.
 
 If the evidence does not distinguish plausible causes, state the remaining
 uncertainty and collect the next discriminating observation rather than guessing.

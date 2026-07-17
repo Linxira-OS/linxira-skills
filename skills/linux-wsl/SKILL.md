@@ -39,6 +39,7 @@ development or a remote-server/HPC task.
 ## Filesystem And Tool Boundaries
 
 Keep Linux-heavy repositories, environments, and high-I/O scientific work under
+the WSL Linux filesystem, such as `/home/name/project`. Avoid running such
 workloads from `/mnt/c` unless Windows interoperability is required.
 
 | Context | Path style | Typical command |
@@ -72,18 +73,20 @@ substitute for an institutionally managed production server.
 
 Enable systemd, modify `.wslconfig`, alter networking mode, or add startup
 services only with a stated reason and rollback plan. Changes can affect every
+distribution or require `wsl --shutdown` before they take effect.
 
 ## GPU And Compute
 
 For CUDA in WSL, use the Windows host driver supported for WSL and do not install
-GPU support to current vendor documentation after detecting hardware and WSL
-support. Validate with lightweight discovery commands before downloading models
-or compiling software.
+a separate Linux display driver inside the distribution. Follow current vendor
+WSL guidance after detecting hardware and WSL support. Validate with lightweight
+discovery commands before downloading models or compiling software.
 
 ## Backup And Lifecycle
 
 Export, import, move, terminate, and unregister are lifecycle operations, not
 routine cleanup. Require explicit confirmation before termination or unregister,
+and verify a current export or other recovery path first.
 
 ```powershell
 wsl --export Distribution backup.tar

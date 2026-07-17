@@ -17,7 +17,7 @@ $allowedRiskTags = @(
 )
 
 function Get-FrontmatterValue([string]$Frontmatter, [string]$Field) {
-    $pattern = '(?m)^' + [regex]::Escape($Field) + ':\s*(?<value>[^\r\n]*)$'
+    $pattern = '(?m)^' + [regex]::Escape($Field) + ':\s*(?<value>[^\r\n]*)\r?$'
     $match = [regex]::Match($Frontmatter, $pattern)
     if (-not $match.Success) {
         return $null
@@ -43,15 +43,12 @@ function Get-RiskTags([string]$RawValue, [string]$SkillPath) {
 
 $issues = @()
 $descriptors = @()
-$skillDirectories = Get-ChildItem -LiteralPath $skillsRoot -Directory | Sort-Object Name
+$skillDirectories = Get-ChildItem -LiteralPath $skillsRoot -Directory |
+    Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') } |
+    Sort-Object Name
 
 foreach ($directory in $skillDirectories) {
     $skillPath = Join-Path $directory.FullName 'SKILL.md'
-    if (-not (Test-Path -LiteralPath $skillPath)) {
-        $issues += "$($directory.Name): missing SKILL.md"
-        continue
-    }
-
     $content = [IO.File]::ReadAllText($skillPath)
     $frontmatterMatch = [regex]::Match($content, '\A---\r?\n(?<frontmatter>[\s\S]*?)\r?\n---')
     if (-not $frontmatterMatch.Success) {
@@ -100,6 +97,10 @@ foreach ($directory in $skillDirectories) {
         } catch {
             $issues += $_.Exception.Message
         }
+    }
+
+    if ($content -match '(?m)^## Provenance$' -and $content -notmatch '(?m)^## Citation$') {
+        $issues += "$($directory.Name): skills with a Provenance section must also define a Citation section"
     }
 
     $descriptors += [pscustomobject]@{

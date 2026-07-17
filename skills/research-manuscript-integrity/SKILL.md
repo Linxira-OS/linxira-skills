@@ -86,3 +86,11 @@ State what was drafted or revised, which evidence was used, which citations or
 claims still need verification, and which formatting or source-access limits
 remain. Never report a manuscript as submission-ready when essential evidence,
 citations, permissions, or required review are unresolved.
+
+## Citation
+
+```text
+Linxira OS. Linxira Skills: research-manuscript-integrity. Version 0.1.0.
+Skill path: skills/research-manuscript-integrity/SKILL.md. GitHub.
+https://github.com/Linxira-OS/linxira-skills
+```

@@ -1,8 +1,11 @@
 # HTML Reporting Core Review
 
+> Status: reviewed but not packaged. The selected upstream bodies need stronger
+> input/output, accessibility, CDN-approval, and asset contracts before release.
+
 ## Decision
 
-`profiles/html-reporting-core.json` defines a reviewed optional profile. It
+`profiles/html-reporting-core.json` defines a retained review record. It
 extends `core` with three self-contained, Apache-2.0
 `html-anything` skill bodies at revision
 `aea749837d780f1da6261f2ed777d7e107231f5f`:
@@ -47,7 +50,6 @@ the payload.
 
 ## Packaging Gate
 
-The payload builder verifies the three hashes, copies only their `SKILL.md`
-bodies, includes the Apache-2.0 notice, and has a fixture for the full
-`init --profile html-reporting-core` lifecycle. This profile remains opt-in
-and does not change the default `core` or `life-sciences-core` payloads.
+The three hashes remain pinned for review, but the payload builder excludes the
+profile and CLI installation rejects its name. Re-entry requires adapted bodies,
+asset/CDN review, and a new lifecycle fixture.

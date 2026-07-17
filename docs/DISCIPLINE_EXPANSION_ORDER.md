@@ -2,7 +2,7 @@
 
 ## Decision
 
-After `life-sciences-core`, expansion proceeds by capability dependency rather
+After `bioinformatics-core`, expansion proceeds by capability dependency rather
 than by copying more subject trees first. Horizontal packages must mature before
 new discipline packs depend on them.
 

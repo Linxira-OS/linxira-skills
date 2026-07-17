@@ -105,6 +105,17 @@ network command. Use VS Code Remote SSH for approved remote code editing; it
 does not remove the need to understand where files, compute, and credentials
 reside.
 
+## Persistent Remote Work
+
+SSH keepalives detect dead connections; they do not preserve a process. Use
+`tmux` for interactive work that must survive disconnects and durable log files
+for non-interactive commands. On managed clusters, use the site scheduler rather
+than `tmux`, `screen`, or `nohup` for compute work on a login node.
+
+After reconnecting, inspect existing sessions, processes, scheduler jobs, logs,
+and partial outputs before launching a duplicate run. End completed sessions and
+record the terminal state of background work.
+
 ## Remote Windows Hosts
 
 For a Windows target, confirm whether the remote service starts PowerShell, CMD,

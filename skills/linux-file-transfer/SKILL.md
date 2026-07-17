@@ -91,6 +91,7 @@ On Windows, use Windows OpenSSH from PowerShell for CLI transfers, WinSCP for a
 Windows-first SFTP GUI, and FileZilla when the same GUI needs to work across
 platforms. For a GUI handoff, provide the protocol, host alias/hostname, port,
 username, key-selection method, local directory, remote directory, transfer
+direction, overwrite behavior, and verification method before the user starts.
 
 Do not ask a user to paste passwords, private keys, or one-time codes. Screenshots
 may guide controls but should not unnecessarily expose protected filenames or

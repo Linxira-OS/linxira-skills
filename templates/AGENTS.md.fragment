@@ -6,7 +6,10 @@ Project-local Linxira content is materialized as a progressive routing tree unde
 
 {{routes}}
 
-Follow that router to one second-level index, then load only the exact leaf skill
-required by the task. Do not scan or preload the complete tree. Follow the
-selected leaf's risk and completion requirements before action.
+Follow that router to one second-level index, then load the primary leaf skill
+required by the task. Load an additional leaf only when the primary skill names
+it as a dependency or an independent risk gate requires a companion contract.
+Do not scan or preload the complete tree, and do not combine overlapping
+alternatives. Follow every selected leaf's risk and completion requirements
+before action.
 <!-- linxira-skills:end -->

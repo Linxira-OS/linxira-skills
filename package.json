@@ -11,6 +11,8 @@
     "dist/",
     "payload/",
     "templates/",
+    "CITATION.cff",
+    "THIRD_PARTY_NOTICES.md",
     "CHANGELOG.md",
     "LICENSE",
     "README.md"
@@ -21,7 +23,8 @@
   "scripts": {
     "build:payload": "node scripts/build-payload.mjs",
     "prepack": "npm run build:payload",
-    "test": "npm run build:payload && node --test test/**/*.test.mjs",
+    "prepublishOnly": "npm test",
+    "test": "npm run build:payload && node --test --test-concurrency=1 test/build-payload.test.mjs test/academic-delivery-tools.test.mjs test/academic-delivery-e2e.test.mjs test/cli.test.mjs",
     "pack:check": "npm pack --dry-run"
   }
 }

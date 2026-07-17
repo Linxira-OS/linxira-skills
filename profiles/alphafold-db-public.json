@@ -1,23 +1,30 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "status": "reviewed-not-packaged",
   "name": "alphafold-db-public",
-  "baseProfile": "life-sciences-core",
+  "baseProfile": "bioinformatics-core",
+  "firstPartySkills": [],
   "sourceTracks": [
     {
       "id": "bioskills",
+      "repositoryPath": "sources/bioSkills",
+      "skillRoot": "sources/bioSkills",
       "revision": "24f0694a125e53f04a7c66a54ba9b81461b7227f",
       "license": "MIT",
-      "notice": "sources/bioSkills/LICENSE"
+      "notice": "sources/bioSkills/LICENSE",
+      "noticeTarget": "bioSkills-MIT.txt"
     }
   ],
   "skills": [
     {
       "name": "bio-structural-biology-alphafold-predictions",
+      "sourceTrack": "bioskills",
       "relativePath": "structural-biology/alphafold-predictions",
+      "targetPath": "research/life-sciences/bio-structural-biology-alphafold-predictions",
       "bodySha256": "106c074dd3374c691d90aa3340e3203d3c0ceefea9b340f4f100fe883400a782",
-      "loadPolicy": "required",
-      "riskTags": ["public-network-read", "external-reference"]
+      "skillClass": "workflow",
+      "loadPolicy": "conditional",
+      "riskTags": []
     }
   ]
 }
