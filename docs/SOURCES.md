@@ -100,6 +100,17 @@ models and must remain separate:
   and three `assets/` subdirectories referenced by their owning skills. Twenty-two
   skills cite external examples or inspiration, so the track is
   `indexed-with-provenance-gate`, not an automatically routable full-source pack.
+- `nexu-io/open-design` at
+  `188ae72f8eed8c53634602635ec50ed5f85a71ac` is an Apache-2.0 candidate source,
+  not a local source track. Its 492 `SKILL.md` paths include duplicated template
+  and example surfaces, directory-local licenses, and account/API/deployment
+  actions. `OPEN_DESIGN_SOURCE_REVIEW.md` requires per-skill review before any
+  adaptation or indexing.
+- `tw93/kami` at
+  `f97bfc9ef83626edb863f6e42632067047a23601` is an MIT implementation reference.
+  Its monolithic skill depends on sibling templates, scripts, references, fonts,
+  and multiple rendering runtimes. `KAMI_SOURCE_REVIEW.md` approves selective
+  first-party adaptation of workflow principles, not direct packaging.
 - `anthropics/skills` at
   `9d2f1ae187231d8199c64b5b762e1bdf2244733d` exposes public source files, but
   each reviewed document directory (`docx`, `pdf`, `pptx`, `xlsx`) contains a

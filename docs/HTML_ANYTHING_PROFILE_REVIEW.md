@@ -20,6 +20,35 @@ The profile contains only the hash-pinned `SKILL.md` bodies. Its selected
 guides do not rely on sibling assets. The root Apache-2.0 notice must accompany
 any future payload materialization.
 
+## Revision Recheck
+
+A separate source review at revision
+`d0efb1eaa3b65c731709981718cd5a0a0d4e8f71` found the same 81-skill discovery
+root and the same directory-name inventory as the materialized
+`aea749837d780f1da6261f2ed777d7e107231f5f` source track. In particular,
+`dashboard`, `data-report`, `docs-page`, and `doc-kami-parchment` are present at
+both revisions. This recheck does not move the profile pin: body hashes,
+external-example metadata, and sibling assets must be regenerated and reviewed
+before any revision update.
+
+The resulting classification remains:
+
+| Surface | Decision |
+| --- | --- |
+| `dashboard`, `data-report`, `docs-page` | Adapt candidates; retain the current reviewed record but do not package the upstream bodies. |
+| Templates with declared external examples | Reference until the original source, revision, license, and asset boundary are independently resolved. |
+| `doc-kami-parchment` | Reference only; see `docs/KAMI_SOURCE_REVIEW.md`. |
+| `waitlist-page` | Reject from the reporting profile because its form creates an external-write contract. |
+| Complete 81-skill track | Indexed with a provenance gate, not directly routable or installable. |
+
+A future adapted route remains three levels deep:
+
+```text
+delivery router
+  -> reporting index
+    -> exact adapted dashboard, data-report, or docs-page leaf
+```
+
 ## Full Track Classification
 
 The catalog schema v2 records a declared `ExampleSource` for every skill that
