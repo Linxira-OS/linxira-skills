@@ -123,6 +123,7 @@ test('init rolls back copied entries when a later target cannot be created', asy
   assert.equal(existsSync(join(root, '.agents', 'skills', 'research', 'SKILL.md')), false);
   assert.equal(existsSync(join(root, '.linxira', 'manifest.json')), false);
   assert.equal(existsSync(join(root, 'AGENTS.md')), false);
+  assert.equal(await readFile(join(root, '.agents', 'skills', 'systems'), 'utf8'), 'blocks systems directory\n');
 });
 
 test('concurrent lifecycle commands are serialized by a repository lock', async (context) => {

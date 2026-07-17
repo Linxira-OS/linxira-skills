@@ -156,7 +156,11 @@ async function initialize(root, options, io) {
     await writeManifest(root, manifest);
   } catch (error) {
     for (const target of createdTargets.reverse()) {
-      await rm(target, { recursive: true, force: true });
+      try {
+        await rm(target, { recursive: true, force: true });
+      } catch {
+        // A blocked ancestor can make one target unremovable; continue rolling back earlier copies.
+      }
     }
     await restorePlan(agentsPlan);
     await restorePlan(ignorePlan);

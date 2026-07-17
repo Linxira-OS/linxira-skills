@@ -163,6 +163,7 @@ async function executePlan(plan, manifest, manifestPath) {
     const result = spawnSync(command.executable, command.arguments, {
       cwd: dirname(manifestPath),
       encoding: 'utf8',
+      env: command.executable === 'latexmk' ? latexEnvironment(dirname(manifestPath)) : process.env,
     });
     if (result.status !== 0) {
       fail(`${command.executable} failed with exit code ${String(result.status)}: ${commandOutput(result).slice(0, 1000)}`);
@@ -197,6 +198,15 @@ async function executePlan(plan, manifest, manifestPath) {
   };
   await writeFile(recordPath, `${JSON.stringify(record, null, 2)}\n`, { flag: 'wx' });
   console.log(JSON.stringify({ executed: true, outputDirectory: plan.outputDirectory }, null, 2));
+}
+
+function latexEnvironment(baseDirectory) {
+  const separator = process.platform === 'win32' ? ';' : ':';
+  return {
+    ...process.env,
+    BIBINPUTS: [baseDirectory, process.env.BIBINPUTS ?? ''].join(separator),
+    TEXINPUTS: [baseDirectory, process.env.TEXINPUTS ?? ''].join(separator),
+  };
 }
 
 async function fileRecords(files) {

@@ -15,6 +15,15 @@ sudo pacman -Syu --needed pandoc-cli libreoffice-fresh poppler \
   texlive-bibtexextra biber otf-latin-modern ttf-liberation
 ```
 
+Arch installs `biber` under `/usr/bin/vendor_perl`, which is added by the
+system login profile. In non-login shells such as CI containers, activate it
+and refresh the newly installed fonts before running the preflight:
+
+```bash
+export PATH="/usr/bin/vendor_perl:$PATH"
+fc-cache -f
+```
+
 Package ownership:
 
 | Capability | Arch package |

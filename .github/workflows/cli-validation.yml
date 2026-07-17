@@ -88,6 +88,8 @@ jobs:
     steps:
       - name: Install Arch artifact toolchain and checkout prerequisites
         run: pacman -Syu --noconfirm --needed ca-certificates git pandoc-cli libreoffice-fresh poppler texlive-binextra texlive-xetex texlive-latexrecommended texlive-bibtexextra biber otf-latin-modern ttf-liberation
+      - name: Activate Arch artifact toolchain paths and fonts
+        run: printf '%s\n' /usr/bin/vendor_perl >> "$GITHUB_PATH" && fc-cache -f
       - uses: actions/checkout@v4
         with:
           submodules: recursive

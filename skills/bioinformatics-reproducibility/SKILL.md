@@ -59,7 +59,7 @@ The workflow must declare inputs, outputs, resources, retries, logs, software,
 and failure behavior. Do not use file existence alone as proof of success when a
 tool can leave partial outputs.
 
-## Provenance
+## Run Provenance
 
 Capture:
 

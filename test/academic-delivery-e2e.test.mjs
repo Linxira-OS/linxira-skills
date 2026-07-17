@@ -133,8 +133,8 @@ test('materialized academic tooling creates and renders DOCX and PPTX artifacts'
   assert.ok((await readFile(presentationOutput)).byteLength > 0);
 
   const validationScript = join(project, '.agents', 'skills', 'delivery', 'validation', 'academic-artifact-validation', 'scripts', 'render-and-inspect.mjs');
-  const documentRenderDirectory = join(project, 'document', 'rendered');
-  const presentationRenderDirectory = join(project, 'presentation', 'rendered');
+  const documentRenderDirectory = join(project, 'document', 'dist', 'rendered');
+  const presentationRenderDirectory = join(project, 'presentation', 'dist', 'rendered');
   execFileSync(process.execPath, [validationScript, documentOutput, documentRenderDirectory, '--expect=Fixture Document Title'], { cwd: project, stdio: 'pipe' });
   execFileSync(process.execPath, [validationScript, presentationOutput, presentationRenderDirectory, '--expect=Fixture Presentation', '--expect=Source: Fixture source [1]'], { cwd: project, stdio: 'pipe' });
   const documentReport = JSON.parse(await readFile(join(documentRenderDirectory, 'render-report.json'), 'utf8'));
