@@ -121,6 +121,22 @@ test('biology payload preserves wet-lab action gates', async () => {
   }
 });
 
+test('science payload preserves domain safety gates', async () => {
+  const catalog = JSON.parse(await readFile(join(packageRoot, 'payload', 'catalog.json'), 'utf8'));
+  const expected = {
+    'chemistry-experimental-design': ['biosafety', 'controlled-data', 'privileged'],
+    'physics-experimental-design': ['controlled-data', 'privileged'],
+    'animal-physiology-experimental-design': ['biosafety', 'clinical', 'controlled-data'],
+    'ecology-field-experimental-design': ['biosafety', 'controlled-data'],
+    'medical-translational-study-design': ['clinical', 'controlled-data'],
+  };
+  for (const [id, riskTags] of Object.entries(expected)) {
+    const descriptor = catalog.skills.find((skill) => skill.id === id);
+    assert.ok(descriptor, `missing science skill: ${id}`);
+    assert.deepEqual(descriptor.riskTags, riskTags);
+  }
+});
+
 test('payload builder rejects invalid status and escaping paths', async (context) => {
   const invalidStatusRoot = await buildFixture(context, { status: 'approved-for-packagin' });
   assert.throws(() => runBuild(invalidStatusRoot), /Invalid profile status/);

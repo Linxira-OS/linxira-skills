@@ -217,6 +217,34 @@ test('biology-research-core materializes experimental and evidence routes', asyn
   assert.equal(await run(['uninstall'], root, output()), 0);
 });
 
+test('science-research-core materializes cross-domain experimental design', async (context) => {
+  const root = await fixture();
+  context.after(() => rm(root, { recursive: true, force: true }));
+  assert.equal(await run(['init', '--profile', 'science-research-core'], root, output()), 0);
+  const manifest = JSON.parse(await readFile(join(root, '.linxira', 'manifest.json'), 'utf8'));
+  assert.equal(manifest.profile, 'science-research-core');
+  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 46);
+  for (const [branch, skills] of Object.entries({
+    'research/life-sciences': [
+      'biochemistry-molecular-experimental-design',
+      'crop-plant-experimental-design',
+      'ecology-field-experimental-design',
+      'animal-physiology-experimental-design',
+    ],
+    'research/chemistry': ['chemistry-experimental-design'],
+    'research/physics': ['physics-experimental-design'],
+    'research/medical': ['medical-translational-study-design'],
+  })) {
+    for (const skill of skills) {
+      assert.equal(existsSync(join(root, '.agents', 'skills', ...branch.split('/'), skill, 'SKILL.md')), true);
+    }
+  }
+  await assertInstalledRoutes(root);
+  assert.equal(await run(['status'], root, output()), 0);
+  assert.equal(await run(['update'], root, output()), 0);
+  assert.equal(await run(['uninstall'], root, output()), 0);
+});
+
 test('research-communication-core materializes delivery skills', async (context) => {
   const root = await fixture();
   context.after(() => rm(root, { recursive: true, force: true }));

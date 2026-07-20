@@ -34,12 +34,16 @@ new discipline packs depend on them.
    Why fourth: AI workflows build on engineering, web, and compute boundaries,
    and then become reusable by multiple domains.
 
-5. **Next domain packs**
-   Candidate order after life sciences:
-   - chemistry and materials
-   - earth and environmental sciences
-   - physics and photonics
-   - clinical and translational extensions only after stronger policy gates
+5. **`science-research-core`**
+   Scope: chemistry, physics, biochemistry and molecular biology, crop and plant
+   science, ecology, animal physiology, and medical/translational study design.
+   These are design and evidence workflows, not unrestricted laboratory or
+   clinical execution.
+
+6. **Future specialized packs**
+   Materials simulation, clinical data connectors, veterinary methods, and
+   domain-specific instruments remain separate candidates after source and safety
+   review.
 
 ## Non-Overlap Rule
 

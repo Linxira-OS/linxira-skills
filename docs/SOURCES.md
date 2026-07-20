@@ -62,6 +62,9 @@ These projects were identified with GitHub CLI and are not vendored by default:
 | `Yuan1z0825/nature-skills` | Apache-2.0 manuscript, figure, and editorial extension candidate |
 | `nexu-io/html-anything` | Apache-2.0 HTML deliverable and presentation-template candidate |
 | `Light0305/Light-skills` | MIT research-workflow reference at `6b44f57d1274eb38a6c79dc29c2d21e5e0a225a9`; clean-room adaptation only because some files cite incompletely attributed CC BY-NC-derived material |
+| `HeshamFS/materials-simulation-skills` | Apache-2.0 selective physics/materials numerical-validation candidate; review revision `fa1ce8de76b2ab7a856f81891525cfa227fadfe9` |
+| `bgtamang/AgriClaw` | MIT crop-trial and crop-GWAS adaptation candidate; review revision `e710911a1707d2baf0991cb4c730e1ce98d27149` |
+| `google-deepmind/science-skills` | Apache-2.0 grounded chemistry and clinical-trial database connector candidate; review revision `0b42509800f49e6eb7809505d96e20a890ef99bd` |
 | `anthropics/skills` | Do-not-ingest document-skill reference; reviewed terms prohibit outside-service retention, copying, derivatives, and distribution |
 | `openai/plugins` | Current Codex plugin examples; license and dependency review per plugin |
 

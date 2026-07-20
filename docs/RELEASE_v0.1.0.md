@@ -11,6 +11,7 @@ bioinformatics, and academic communication work:
 - `core`
 - `bioinformatics-core`
 - `biology-research-core`
+- `science-research-core`
 - `research-communication-core`
 
 ## Included
@@ -22,6 +23,9 @@ bioinformatics, and academic communication work:
 - 19 additional profile skills for biological ideation, literature search and
   screening, evidence synthesis, experimental and statistical design, governed
   wet-lab planning, and complete publication delivery.
+- 7 additional domain design skills for chemistry, physics, crop and plant
+  science, ecology, animal physiology, biochemistry/molecular biology, and
+  medical/translational research.
 - 11 first-party academic communication skills for manuscript structure,
   reference formatting, Chinese body formatting, DOCX/LaTeX delivery,
   figure/table review, image-evidence boundaries, and slide deck generation.

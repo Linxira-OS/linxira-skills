@@ -45,6 +45,10 @@ Approved `risk_tags` are `account-bound`, `biosafety`, `clinical`,
 training, approvals, controlled SOPs, hazard response, or waste handling. It does
 not authorize laboratory execution and must not be collapsed into `clinical`.
 
+`privileged` also applies to chemistry or physics plans that depend on controlled
+facilities, restricted apparatus, hazardous materials, export controls, or
+specialist operator authorization. A planning skill never grants that access.
+
 `reference` skills explain broadly useful material. `workflow` skills organize
 multi-step work. `guard` skills impose evidence, validation, safety, or
 reproducibility checks. `contract` skills describe host, tool, file, or remote

@@ -3,6 +3,10 @@
 - Biological experimental units, controls, allocation, blocking, and batches: `biological-experimental-design/SKILL.md`
 - Estimands, endpoints, power, models, missingness, and multiplicity: `biological-study-statistics/SKILL.md`
 - Authorized wet-lab SOP, approval, hazard, provenance, and checkpoint planning: `wet-lab-experiment-planning/SKILL.md`
+- Biochemistry and molecular biology experiments: `biochemistry-molecular-experimental-design/SKILL.md`
+- Crop and plant physiology, field, greenhouse, and genotype-environment studies: `crop-plant-experimental-design/SKILL.md`
+- Ecology, field sampling, occupancy, abundance, and spatial-temporal designs: `ecology-field-experimental-design/SKILL.md`
+- Animal physiology, welfare, repeated measures, and humane endpoints: `animal-physiology-experimental-design/SKILL.md`
 - Broad analysis planning and method routing: `bio-analysis-orchestrator/SKILL.md`
 - Reproducible bioinformatics environments and artifacts: `bioinformatics-reproducibility/SKILL.md`
 - Full or multi-stage bulk RNA-seq workflow: `bulk-rnaseq-analysis/SKILL.md`

@@ -5,9 +5,14 @@
     "biological-experimental-design": "research/life-sciences/biological-experimental-design",
     "biological-research-ideation": "research/discovery/biological-research-ideation",
     "biological-study-statistics": "research/life-sciences/biological-study-statistics",
+    "animal-physiology-experimental-design": "research/life-sciences/animal-physiology-experimental-design",
     "bio-analysis-orchestrator": "research/life-sciences/bio-analysis-orchestrator",
     "bioinformatics-reproducibility": "research/life-sciences/bioinformatics-reproducibility",
     "bulk-rnaseq-analysis": "research/life-sciences/bulk-rnaseq-analysis",
+    "biochemistry-molecular-experimental-design": "research/life-sciences/biochemistry-molecular-experimental-design",
+    "chemistry-experimental-design": "research/chemistry/chemistry-experimental-design",
+    "crop-plant-experimental-design": "research/life-sciences/crop-plant-experimental-design",
+    "ecology-field-experimental-design": "research/life-sciences/ecology-field-experimental-design",
     "academic-delivery-planning": "delivery/writing/academic-delivery-planning",
     "academic-artifact-validation": "delivery/validation/academic-artifact-validation",
     "academic-document-formatting": "delivery/writing/academic-document-formatting",
@@ -22,6 +27,7 @@
     "fastq-quality-control": "research/life-sciences/fastq-quality-control",
     "latex-academic-authoring": "delivery/writing/latex-academic-authoring",
     "manuscript-structure-and-argument": "delivery/writing/manuscript-structure-and-argument",
+    "medical-translational-study-design": "research/medical/medical-translational-study-design",
     "gene-set-enrichment-analysis": "research/life-sciences/gene-set-enrichment-analysis",
     "salmon-quantification": "research/life-sciences/salmon-quantification",
     "research-manuscript-integrity": "research/integrity/research-manuscript-integrity",
@@ -44,6 +50,7 @@
     "life-science-literature-search": "research/discovery/life-science-literature-search",
     "literature-screening-and-extraction": "research/discovery/literature-screening-and-extraction",
     "research-web": "integrations/web/research-web",
+    "physics-experimental-design": "research/physics/physics-experimental-design",
     "wet-lab-experiment-planning": "research/life-sciences/wet-lab-experiment-planning"
   }
 }

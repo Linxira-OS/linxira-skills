@@ -26,6 +26,7 @@ Current profile counts in the package build:
 | `core` | 10 first-party software, integrity, Linux, transfer, and compute skills |
 | `bioinformatics-core` | `core` plus 10 first-party bioinformatics and bulk RNA-seq workflow skills |
 | `biology-research-core` | `bioinformatics-core` plus 19 first-party biological discovery, experimental design, wet-lab governance, and complete academic delivery skills |
+| `science-research-core` | `biology-research-core` plus chemistry, physics, crop/plant, ecology, animal physiology, biochemistry/molecular biology, and medical/translational study-design skills |
 | `research-communication-core` | `core` plus 11 first-party manuscript, citation, formatting, figure, image, document, LaTeX, presentation, and rendered-artifact validation skills |
 
 Reviewed connector profiles such as AlphaFold DB public access are tracked in
@@ -104,6 +105,7 @@ Profile selection:
 npx linxira-skills init --profile core
 npx linxira-skills init --profile bioinformatics-core
 npx linxira-skills init --profile biology-research-core
+npx linxira-skills init --profile science-research-core
 npx linxira-skills init --profile research-communication-core
 ```
 
@@ -126,6 +128,8 @@ First-party skills provide execution boundaries for:
   ranked enrichment, HPC handoff, and reproducibility
 - biological hypothesis development, literature search and screening, evidence
   synthesis, experimental design, study statistics, and authorized wet-lab planning
+- chemistry, physics, crop/plant, ecology, animal physiology, biochemistry,
+  molecular biology, and medical/translational study design
 - manuscript structure, reference formatting, scientific figure/table design,
   and academic slide deck design
 

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 2,
+  "status": "approved-for-packaging",
+  "name": "science-research-core",
+  "baseProfile": "biology-research-core",
+  "firstPartySkills": [
+    "animal-physiology-experimental-design",
+    "biochemistry-molecular-experimental-design",
+    "chemistry-experimental-design",
+    "crop-plant-experimental-design",
+    "ecology-field-experimental-design",
+    "medical-translational-study-design",
+    "physics-experimental-design"
+  ],
+  "sourceTracks": [],
+  "skills": []
+}

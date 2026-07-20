@@ -11,6 +11,9 @@ All notable changes to this package are documented in this file.
 - First-party `biology-research-core` profile for biological ideation,
   literature search and collection, evidence synthesis, experimental design,
   statistical planning, governed wet-lab planning, and manuscript preparation.
+- First-party `science-research-core` profile for chemistry, physics, crop and
+  plant science, ecology, animal physiology, biochemistry and molecular biology,
+  and medical/translational study design.
 - First-party `research-communication-core` profile for manuscript structure,
   reference formatting, Chinese academic body formatting, document/LaTeX
   delivery, scientific figures, image-evidence boundaries, and academic slides.

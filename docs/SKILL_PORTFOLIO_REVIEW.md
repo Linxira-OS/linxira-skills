@@ -12,6 +12,10 @@ reproducibility, bulk RNA-seq, and HPC handoff.
 biological ideation, literature evidence, experimental and statistical design,
 governed wet-lab planning, and the complete academic delivery chain.
 
+`science-research-core` adds seven domain leaves for biochemistry/molecular
+biology, crop and plant science, ecology, animal physiology, chemistry, physics,
+and medical/translational study design.
+
 `research-communication-core` adds 11 delivery skills for manuscript structure,
 reference formatting, figures, evidence-bound images, documents, LaTeX,
 presentations, and rendered-artifact validation.
