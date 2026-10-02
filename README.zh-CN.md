@@ -55,7 +55,20 @@ Linux 是所有 profile 可复用的执行基础层，不是一个学科包。
 | `bioinformatics-core` | `core` + 10 个一方生物信息学和 bulk RNA-seq 闭环技能 |
 | `biology-research-core` | `bioinformatics-core` + 19 个一方生物学课题、文献、证据、实验设计、统计、湿实验治理和完整论文交付技能 |
 | `science-research-core` | `biology-research-core` + 化学、物理、作物/植物、生态、动物生理、生物化学/分子生物学和医学/转化研究设计技能 |
-| `research-communication-core` | `core` + 11 个一方论文写作、引用、正文排版、图像边界、文档、LaTeX、学术 PPT 和渲染验收技能 |
+| `research-communication-core` | `core` + 44 个一方论文写作、引用、正文排版、图表、图像边界、文档、LaTeX、学术 PPT、科研绘图生产与中文科研文档技能（含 vendored 的 Apache-2.0/MIT 适配，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)） |
+
+以上技能族已全部进入 `research-communication-core` profile（详见
+[docs/SOURCES.md](docs/SOURCES.md) 与根目录
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)）：
+
+- 科研绘图生产：出版级 matplotlib 风格层（`scientific-figure-style`）与
+  CS/ML、生物、化学、物理四个学科图式层（`discipline-figure-patterns`）
+- 可编辑论文架构图与 PPTX/海报生成：`paper-fig`、`editable-design`、
+  `html-to-pptx`（vendored，Apache-2.0）
+- Origin/OriginPro 自动出图与反读验证：`editaplot`（vendored，Apache-2.0，
+  需本机 Origin 商业授权）
+- 中文科研文档工作流：国自然标书分节、SCI 投稿、选刊、文献流程等 27 个技能
+  （vendored 自 ChineseResearchLaTeX，MIT）
 
 另外还定义了若干 reviewed connector profile，例如 AlphaFold DB public，
 但它们目前不是单独打包 payload。
@@ -68,7 +81,7 @@ Ubuntu 都作为一等运行环境。CI 会分别使用原生 `pacman` 与 `apt`
 ## 安装
 
 ```bash
-npm install --save-dev linxira-skills
+npm install --save-dev @linxiraos/linxira-skills
 npx linxira-skills init
 ```
 
@@ -91,6 +104,15 @@ payload：
 - 已核实 license
 - 已保存所需 notice
 - 已明确 payload 边界
+
+宽松许可（Apache-2.0、MIT）的上游技能可直接 vendored 进 `skills/`：每个目录
+保留上游许可文本，在 `VENDORED.md` 固定上游 commit，并补齐一方审计所需的
+frontmatter 元数据。目前尚无 installable profile 引用它们，因此在 profile
+审阅放行之前，打包 payload 仍然不包含第三方正文。
+
+两个科研绘图技能族（`scientific-figure-style`、`discipline-figure-patterns`）
+是 clean-room 自研：仅从 CC BY-NC 及混合许可社区项目的概念级能力清单出发
+原创撰写，未复制任何上游表达、代码、配色或资产清单，因此不登记为第三方材料。
 
 当前公开 payload 不包含第三方技能正文：
 

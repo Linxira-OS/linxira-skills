@@ -32,18 +32,23 @@ tree:
 | `html-anything` bodies | Not by default | The root is Apache-2.0, but 22 templates cite external examples or inspiration. |
 | Proprietary/vendor reference material | No | It is reference-only or has incompatible terms. |
 
-The target first npm release ships 46 unique first-party skills across `core`,
+The target first npm release ships 79 unique first-party skills across `core`,
 `bioinformatics-core`, `biology-research-core`, `science-research-core`, and
 `research-communication-core`, plus a compact generated descriptor catalog.
 Seven bulk RNA-seq skills are adapted from
 reviewed ideas in a pinned MIT `bioSkills` revision and record their source
-paths and corrections in-body. No upstream skill body or full research archive
+paths and corrections in-body. The `research-communication-core` profile also
+carries vendored Apache-2.0 and MIT skill bodies (Origin rendering, editable
+paper figures and PPTX generation, and Chinese research-document workflows)
+with upstream notices pinned in `THIRD_PARTY_NOTICES.md`, plus two clean-room
+scientific-figure families authored from concept-level outlines; see
+[`SOURCES.md`](SOURCES.md) for the vendoring record. No upstream skill body or full research archive
 is published merely because it exists in a development clone.
 
 ## Package Shape
 
-The initial distribution is one package, provisionally named
-`linxira-skills`, with the executable `linxira-skills`. Splitting
+The initial distribution is one package, `@linxiraos/linxira-skills` with the
+executable `linxira-skills`. Splitting
 the CLI and resource packs is deferred until the approved resource payload makes
 the single package impractical.
 
@@ -142,7 +147,7 @@ indexes and leaves are reached through their explicit repository paths.
 ## CLI Contract
 
 ```text
-npm install --save-dev linxira-skills
+npm install --save-dev @linxiraos/linxira-skills
 npx linxira-skills init [--profile core] [--dry-run]
 npx linxira-skills status
 npx linxira-skills update [--dry-run]
@@ -213,7 +218,7 @@ the following release pipeline:
 Users update only from a published package version:
 
 ```text
-npm update linxira-skills
+npm update @linxiraos/linxira-skills
 npx linxira-skills update
 ```
 

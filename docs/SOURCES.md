@@ -14,6 +14,27 @@
 | `.research-temp/azure-ai-infrastructure` | `Azure/ai-infrastructure-on-azure` | Same | MIT | Azure GPU/HPC operational-reference pattern; local revision `c2d57c6bbe3f9772f265e5229a6ea4dd0f646075` |
 | `.research-temp/canonical-openstack-skills` | `canonical/openstack-agentic-skills` | Same | License requires per-file/repository confirmation | LXD, diagnostics, and cloud-operation reference; local revision `d261177fc895142fb115641d661bd582efac164d` |
 
+## Vendored First-Party Skills
+
+Skills copied into `skills/` from permissively licensed upstreams. Each skill
+directory retains its upstream license text, records the upstream revision in
+`VENDORED.md`, and adds local frontmatter metadata
+(`skill_class`, `load_policy`, `risk_tags`) required by
+`scripts/audit-first-party-skills.ps1`. Bodies are otherwise unmodified.
+
+| Local skills | Upstream | Revision | License | Notes |
+| --- | --- | --- | --- | --- |
+| `skills/editaplot` | `hang-jin/editaplot` | `01721038afd212103d96225319b22d1bbfe32270` | Apache-2.0 | Origin/OriginPro COM rendering skill; `runtime/` engine and launcher not vendored — see the skill's `VENDORED.md`; requires local Origin license (risk tags `paid`, `privileged`) |
+| `skills/paper-fig`, `skills/editable-design`, `skills/html-to-pptx` | `yejy53/Editable-Design` | `c87b16f6d7c198e2b6967f13f1b1baa939d6f31f` | Apache-2.0 | Editable paper figures, posters, and PPTX conversion; Codex runtime helpers (`@oai/artifact-tool`, Playwright, LibreOffice) not vendored — per-skill `VENDORED.md` lists unresolved references |
+| `skills/nsfc-*` (11), `skills/paper-*` (4), `skills/research-*` (9), `skills/make-latex-model`, `skills/transfer-old-latex-to-new`, `skills/complete-example` | `huangwb8/ChineseResearchLaTeX` | `f1c7206faafde597c65f9eb9fa6b2abaa5518c6e` | MIT | Chinese research-document AI skills (NSFC grant, SCI submission, literature workflow); template repositories and `.bensz-api` workspace convention not vendored |
+
+Skills written clean-room from concept-level specifications are first-party
+work and are not registered here. Two plotting-skill families
+(`scientific-figure-style`, `discipline-figure-patterns`) were authored in this
+repository from capability outlines distilled from CC BY-NC and mixed-license
+community projects; no upstream expression, code, palettes, or asset lists were
+copied.
+
 Temporary sources are ignored by Git and are not distributed. The broad archive
 contains duplicates, vendored repositories, generated indexes, and unrelated
 skills. Trace each selected skill back to its original project.

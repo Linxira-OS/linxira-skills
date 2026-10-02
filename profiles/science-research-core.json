@@ -5,12 +5,24 @@
   "baseProfile": "biology-research-core",
   "firstPartySkills": [
     "animal-physiology-experimental-design",
+    "aquatic-biology-field-study-design",
     "biochemistry-molecular-experimental-design",
+    "cell-biology-experimental-design",
+    "cellular-imaging-cytometry-study-design",
     "chemistry-experimental-design",
+    "conservation-biology-study-design",
     "crop-plant-experimental-design",
+    "developmental-biology-experimental-design",
     "ecology-field-experimental-design",
+    "genetics-genomics-study-design",
+    "immunology-experimental-design",
     "medical-translational-study-design",
-    "physics-experimental-design"
+    "microbiology-experimental-design",
+    "multi-omics-study-design",
+    "neuroscience-experimental-design",
+    "physics-experimental-design",
+    "plant-physiology-experimental-design",
+    "soil-biology-experimental-design"
   ],
   "sourceTracks": [],
   "skills": []

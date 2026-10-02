@@ -5,3 +5,24 @@
 - Apply Chinese academic body typography and citation marks: `academic-document-formatting/SKILL.md`
 - Author and compile Chinese/English LaTeX projects: `latex-academic-authoring/SKILL.md`
 - Generate DOCX, PDF, and TeX deliverables: `academic-document-generation/SKILL.md`
+- Walk a complete AI-augmented LaTeX authoring example end to end: `complete-example/SKILL.md`
+- Turn a ChineseResearchLaTeX project into a high-quality reusable template with style alignment: `make-latex-model/SKILL.md`
+- Migrate legacy thesis, paper, resume, or scattered LaTeX into a current template: `transfer-old-latex-to-new/SKILL.md`
+- Draft paired Chinese and English NSFC grant abstracts with title suggestions: `nsfc-abstract/SKILL.md`
+- Produce a submittable NSFC budget justification project: `nsfc-budget/SKILL.md`
+- Recommend NSFC application codes with traceable reasons, read-only: `nsfc-code/SKILL.md`
+- Remove machine-flavored phrasing from NSFC prose at wording, sentence, and section levels: `nsfc-humanization/SKILL.md`
+- Write or restructure the NSFC research justification with verifiable semantic argumentation: `nsfc-justification-writer/SKILL.md`
+- Check NSFC page-budget compliance and expand or compress to target: `nsfc-length-aligner/SKILL.md`
+- Run read-only quality control on NSFC drafts: tone, citation authenticity, and structure: `nsfc-qc/SKILL.md`
+- Verify consistency and authenticity between NSFC in-text citations and the bibliography: `nsfc-ref-alignment/SKILL.md`
+- Write or rebuild NSFC research content with innovation points and annual schedule: `nsfc-research-content-writer/SKILL.md`
+- Write or rebuild NSFC research foundation with work conditions and risk response: `nsfc-research-foundation-writer/SKILL.md`
+- Simulate multi-dimension expert review of an NSFC application: `nsfc-reviewers/SKILL.md`
+- Profile a target journal's requirements, formats, fees, and community reputation: `paper-know-journal/SKILL.md`
+- Recommend candidate SCI journals for a manuscript: `paper-select-journal/SKILL.md`
+- Draft, revise, and polish SCI journal papers in a LaTeX project: `paper-write-sci/SKILL.md`
+- Sink reusable writing insights into a project guide with stable terminology: `research-guide-updater/SKILL.md`
+- Develop scientific questions and testable hypotheses from research material: `research-idea/SKILL.md`
+- Plan personalized, executable analysis strategies from top-venue methods: `research-plan/SKILL.md`
+- Extract a structured topic summary with keywords from files or pages: `research-topic-extractor/SKILL.md`

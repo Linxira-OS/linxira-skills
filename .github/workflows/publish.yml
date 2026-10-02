@@ -1,0 +1,42 @@
+name: Publish
+
+# Publishes @linxiraos/linxira-skills through npm trusted publishing (OIDC).
+# Requires the npm-side trusted publisher binding to match exactly:
+#   repository owner/name: Linxira-OS/linxira-skills
+#   workflow filename:     publish.yml
+#   environment:           npm
+# No NPM_TOKEN secret is used.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish to npm (trusted publishing)
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Audit first-party skill metadata
+        shell: pwsh
+        run: ./scripts/audit-first-party-skills.ps1
+      - name: Test
+        run: npm test
+      - name: Publish
+        run: npm publish --provenance --access public

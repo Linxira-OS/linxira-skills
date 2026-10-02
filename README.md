@@ -15,7 +15,7 @@ Chinese overview: [README.zh-CN.md](README.zh-CN.md)
 
 ## Package
 
-- npm package: `linxira-skills`
+- npm package: `@linxiraos/linxira-skills`
 - executable: `linxira-skills`
 - install model: materialize reviewed skill profiles into a target repository
 
@@ -27,7 +27,7 @@ Current profile counts in the package build:
 | `bioinformatics-core` | `core` plus 10 first-party bioinformatics and bulk RNA-seq workflow skills |
 | `biology-research-core` | `bioinformatics-core` plus 19 first-party biological discovery, experimental design, wet-lab governance, and complete academic delivery skills |
 | `science-research-core` | `biology-research-core` plus chemistry, physics, crop/plant, ecology, animal physiology, biochemistry/molecular biology, and medical/translational study-design skills |
-| `research-communication-core` | `core` plus 11 first-party manuscript, citation, formatting, figure, image, document, LaTeX, presentation, and rendered-artifact validation skills |
+| `research-communication-core` | `core` plus 44 first-party manuscript, citation, formatting, figure, image, document, LaTeX, presentation, scientific-figure production, and Chinese research-document skills (including vendored Apache-2.0/MIT adaptations; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)) |
 
 Reviewed connector profiles such as AlphaFold DB public access are tracked in
 this repository, but are not separate packaged payloads yet.
@@ -74,8 +74,20 @@ synthesis, statistical planning, wet-lab governance, and publication.
 ## Third-Party And Adaptation
 
 Reviewed third-party material is included only when its source revision,
-license, notice, and payload boundary are pinned explicitly. The current public
-payload contains no third-party skill bodies.
+license, notice, and payload boundary are pinned explicitly.
+
+Permissively licensed upstream skills (Apache-2.0, MIT) are vendored directly
+into `skills/`: each directory retains the upstream license text, pins the
+upstream commit in a `VENDORED.md` record, and adds the local frontmatter
+metadata required by the first-party audit. No installable profile references
+them yet, so the packaged public payload still ships no third-party bodies
+until a profile review admits them.
+
+Clean-room plotting skills (`scientific-figure-style`,
+`discipline-figure-patterns`) are first-party work authored from concept-level
+capability outlines distilled from CC BY-NC and mixed-license community
+projects; no upstream expression, code, palettes, or asset lists were copied,
+and they are therefore not registered as third-party material.
 
 - `bioinformatics-core` contains first-party adaptations informed by pinned MIT
   `bioSkills` paths, with provenance and concrete corrections recorded in each
@@ -95,7 +107,7 @@ review documents for concrete inclusion and modification boundaries.
 ## Install
 
 ```bash
-npm install --save-dev linxira-skills
+npm install --save-dev @linxiraos/linxira-skills
 npx linxira-skills init
 ```
 
@@ -132,6 +144,21 @@ First-party skills provide execution boundaries for:
   molecular biology, and medical/translational study design
 - manuscript structure, reference formatting, scientific figure/table design,
   and academic slide deck design
+- scientific figure production across disciplines: publication-style
+  matplotlib conventions (`scientific-figure-style`) and per-discipline figure
+  patterns for CS/ML, biology, chemistry, and physics
+  (`discipline-figure-patterns`)
+- editable paper architecture figures and PPTX/poster generation
+  (`paper-fig`, `editable-design`, `html-to-pptx`; vendored, Apache-2.0)
+- Origin/OriginPro automated rendering with read-back verification
+  (`editaplot`; vendored, Apache-2.0, requires a local Origin license)
+- Chinese research-document workflows: NSFC grant sections, SCI submission,
+  journal selection, and literature routines (27 skills vendored from
+  ChineseResearchLaTeX, MIT)
+
+All of the above are packaged through the `research-communication-core`
+profile; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and
+[docs/SOURCES.md](docs/SOURCES.md).
 
 ## Citation
 

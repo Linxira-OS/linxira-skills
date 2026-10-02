@@ -223,13 +223,25 @@ test('science-research-core materializes cross-domain experimental design', asyn
   assert.equal(await run(['init', '--profile', 'science-research-core'], root, output()), 0);
   const manifest = JSON.parse(await readFile(join(root, '.linxira', 'manifest.json'), 'utf8'));
   assert.equal(manifest.profile, 'science-research-core');
-  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 46);
+  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 58);
   for (const [branch, skills] of Object.entries({
     'research/life-sciences': [
       'biochemistry-molecular-experimental-design',
       'crop-plant-experimental-design',
       'ecology-field-experimental-design',
       'animal-physiology-experimental-design',
+      'aquatic-biology-field-study-design',
+      'cell-biology-experimental-design',
+      'cellular-imaging-cytometry-study-design',
+      'conservation-biology-study-design',
+      'developmental-biology-experimental-design',
+      'genetics-genomics-study-design',
+      'immunology-experimental-design',
+      'microbiology-experimental-design',
+      'multi-omics-study-design',
+      'neuroscience-experimental-design',
+      'plant-physiology-experimental-design',
+      'soil-biology-experimental-design',
     ],
     'research/chemistry': ['chemistry-experimental-design'],
     'research/physics': ['physics-experimental-design'],
@@ -255,22 +267,62 @@ test('research-communication-core materializes delivery skills', async (context)
       'academic-document-generation',
       'latex-academic-authoring',
       'manuscript-structure-and-argument',
+      'complete-example',
+      'make-latex-model',
+      'transfer-old-latex-to-new',
+      'nsfc-abstract',
+      'nsfc-budget',
+      'nsfc-code',
+      'nsfc-humanization',
+      'nsfc-justification-writer',
+      'nsfc-length-aligner',
+      'nsfc-qc',
+      'nsfc-ref-alignment',
+      'nsfc-research-content-writer',
+      'nsfc-research-foundation-writer',
+      'nsfc-reviewers',
+      'paper-know-journal',
+      'paper-select-journal',
+      'paper-write-sci',
+      'research-guide-updater',
+      'research-idea',
+      'research-plan',
+      'research-topic-extractor',
     ],
     validation: ['academic-artifact-validation'],
-    citations: ['citation-and-reference-formatting'],
-    visuals: ['scientific-figures-and-tables', 'academic-visual-evidence'],
+    citations: ['citation-and-reference-formatting', 'research-citation-check'],
+    visuals: [
+      'scientific-figures-and-tables',
+      'academic-visual-evidence',
+      'scientific-figure-style',
+      'discipline-figure-patterns',
+      'editaplot',
+      'paper-fig',
+      'editable-design',
+      'html-to-pptx',
+      'paper-explain-figures',
+    ],
     presentations: ['academic-presentation-design', 'academic-presentation-generation'],
   };
+  const discovery = [
+    'research-literature-search',
+    'research-literature-review',
+    'research-literature-interpretation',
+    'research-literature-radar',
+  ];
 
   assert.equal(await run(['init', '--profile', 'research-communication-core'], root, output()), 0);
   const manifest = JSON.parse(await readFile(join(root, '.linxira', 'manifest.json'), 'utf8'));
   assert.equal(manifest.profile, 'research-communication-core');
-  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 21);
+  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 54);
   assert.match(await readFile(join(root, 'AGENTS.md'), 'utf8'), /delivery\/SKILL\.md/);
   for (const [branch, names] of Object.entries(skills)) {
     for (const skill of names) {
       assert.equal(existsSync(join(root, '.agents', 'skills', 'delivery', branch, skill, 'SKILL.md')), true);
     }
+  }
+  for (const skill of discovery) {
+    assert.equal(existsSync(join(root, '.agents', 'skills', 'research', 'discovery', skill, 'SKILL.md')), true);
   }
   await assertInstalledRoutes(root);
   assert.equal(await run(['status'], root, output()), 0);
@@ -294,12 +346,24 @@ test('packed CLI contains only release material and runs in a clean Git reposito
 
   const npmCli = process.env.npm_execpath;
   assert.ok(npmCli, 'npm_execpath must be set by npm test');
+  // npm 12 rejects `pack --json` when the outer `npm test` run leaks its
+  // npm_config_* / npm_package_* variables into the nested invocation. Run the
+  // inner npm with those variables stripped; keep npm_execpath for resolution.
+  const innerEnv = Object.fromEntries(
+    Object.entries(process.env).filter(
+      ([key]) => !/^(?:npm|NPM)_(?:config|package)_/.test(key),
+    ),
+  );
   const packOutput = execFileSync(process.execPath, [npmCli, 'pack', '--json', '--pack-destination', tarballDirectory], {
     cwd: packageRoot,
     stdio: 'pipe',
     encoding: 'utf8',
+    env: innerEnv,
   });
-  const [packResult] = JSON.parse(packOutput);
+  const parsedPack = JSON.parse(packOutput);
+  // npm <= 11 returns an array of pack results; npm 12 returns an object
+  // keyed by package name. Accept both shapes.
+  const packResult = Array.isArray(parsedPack) ? parsedPack[0] : Object.values(parsedPack)[0];
   const packedPaths = packResult.files.map(({ path }) => path);
   assert.ok(packedPaths.includes('CITATION.cff'));
   assert.ok(packedPaths.includes('THIRD_PARTY_NOTICES.md'));
@@ -320,9 +384,23 @@ test('packed CLI contains only release material and runs in a clean Git reposito
   const tarballs = await readdir(tarballDirectory);
   assert.equal(tarballs.length, 1);
   const tarball = join(tarballDirectory, tarballs[0]);
-  execFileSync(process.execPath, [npmCli, 'install', '--ignore-scripts', '--no-package-lock', '--no-audit', '--no-fund', '--prefix', project, tarball], {
-    stdio: 'pipe',
-  });
+  const npmMajor = Number(
+    execFileSync(process.execPath, [npmCli, '--version'], { encoding: 'utf8' }).trim().split('.')[0],
+  );
+  const moduleRoot = join(project, 'node_modules', 'linxira-skills');
+  // npm 12's scripts allowlist (EALLOWSCRIPTS) blocks tarball installs into a
+  // --prefix project that has no package.json yet, and its --allow-scripts
+  // flag is itself forbidden there. The packed tarball declares no
+  // install-time lifecycle scripts, so for npm 12+ unpack the identical
+  // artifact directly; older npm keeps a real `npm install`.
+  if (npmMajor >= 12) {
+    await mkdir(moduleRoot, { recursive: true });
+    execFileSync('tar', ['-xzf', tarball, '-C', moduleRoot, '--strip-components', '1'], { stdio: 'pipe' });
+  } else {
+    execFileSync(process.execPath, [npmCli, 'install', '--ignore-scripts', '--no-package-lock', '--no-audit', '--no-fund', '--prefix', project, tarball], {
+      stdio: 'pipe',
+    });
+  }
   execFileSync('git', ['init', '--quiet', project]);
   const cli = join(project, 'node_modules', 'linxira-skills', 'dist', 'linxira-skills.js');
 
