@@ -32,7 +32,7 @@ test('materialized presentation tooling creates a standard-ratio PPTX', { skip: 
   const cli = join(project, 'node_modules', '@linxiraos', 'linxira-skills', 'dist', 'linxira-skills.js');
   execFileSync(process.execPath, [cli, 'init', '--profile', 'research-communication-core'], { cwd: project, stdio: 'pipe' });
 
-  const presentationScript = join(project, '.agents', 'skills', 'delivery', 'presentations', 'academic-presentation-generation', 'scripts', 'create-pptx.mjs');
+  const presentationScript = join(project, '.agents', 'skills', 'linxira-delivery', 'presentations', 'academic-presentation-generation', 'scripts', 'create-pptx.mjs');
   const presentationManifest = join(project, 'presentation', 'slides.json');
   execFileSync(process.execPath, [presentationScript, 'create', presentationManifest], { cwd: project, stdio: 'pipe' });
   const output = join(project, 'presentation', 'dist', 'presentation.pptx');
@@ -61,9 +61,9 @@ test('materialized document tooling compiles XeLaTeX with BibTeX and Biber outpu
   const cli = join(project, 'node_modules', '@linxiraos', 'linxira-skills', 'dist', 'linxira-skills.js');
   execFileSync(process.execPath, [cli, 'init', '--profile', 'research-communication-core'], { cwd: project, stdio: 'pipe' });
 
-  const documentScript = join(project, '.agents', 'skills', 'delivery', 'writing', 'academic-document-generation', 'scripts', 'render-document.mjs');
-  const cslToBibtex = join(project, '.agents', 'skills', 'delivery', 'citations', 'citation-and-reference-formatting', 'scripts', 'csl-json-to-bibtex.mjs');
-  const bibtexValidator = join(project, '.agents', 'skills', 'delivery', 'citations', 'citation-and-reference-formatting', 'scripts', 'validate-bibtex.mjs');
+  const documentScript = join(project, '.agents', 'skills', 'linxira-delivery', 'writing', 'academic-document-generation', 'scripts', 'render-document.mjs');
+  const cslToBibtex = join(project, '.agents', 'skills', 'linxira-delivery', 'citations', 'citation-and-reference-formatting', 'scripts', 'csl-json-to-bibtex.mjs');
+  const bibtexValidator = join(project, '.agents', 'skills', 'linxira-delivery', 'citations', 'citation-and-reference-formatting', 'scripts', 'validate-bibtex.mjs');
   execFileSync(process.execPath, [cslToBibtex, join(project, 'latex', 'references.json'), join(project, 'latex', 'references.bib')], { cwd: project, stdio: 'pipe' });
   execFileSync(process.execPath, [bibtexValidator, join(project, 'latex', 'references.bib')], { cwd: project, stdio: 'pipe' });
   const latexManifest = join(project, 'latex', 'academic-delivery.json');
@@ -72,7 +72,7 @@ test('materialized document tooling compiles XeLaTeX with BibTeX and Biber outpu
   assert.ok(existsSync(pdf));
   assert.ok((await readFile(pdf)).byteLength > 0);
 
-  const validationScript = join(project, '.agents', 'skills', 'delivery', 'validation', 'academic-artifact-validation', 'scripts', 'render-and-inspect.mjs');
+  const validationScript = join(project, '.agents', 'skills', 'linxira-delivery', 'validation', 'academic-artifact-validation', 'scripts', 'render-and-inspect.mjs');
   const rendered = join(project, 'latex', 'dist', 'rendered');
   execFileSync(process.execPath, [validationScript, pdf, rendered, '--expect=Fixture LaTeX Title'], { cwd: project, stdio: 'pipe' });
   const report = JSON.parse(await readFile(join(rendered, 'render-report.json'), 'utf8'));
@@ -113,7 +113,7 @@ test('materialized academic tooling creates and renders DOCX and PPTX artifacts'
   const cli = join(project, 'node_modules', '@linxiraos', 'linxira-skills', 'dist', 'linxira-skills.js');
   execFileSync(process.execPath, [cli, 'init', '--profile', 'research-communication-core'], { cwd: project, stdio: 'pipe' });
 
-  const documentScript = join(project, '.agents', 'skills', 'delivery', 'writing', 'academic-document-generation', 'scripts', 'render-document.mjs');
+  const documentScript = join(project, '.agents', 'skills', 'linxira-delivery', 'writing', 'academic-document-generation', 'scripts', 'render-document.mjs');
   const documentManifest = join(project, 'document', 'academic-delivery.json');
   execFileSync(process.execPath, [documentScript, 'execute', documentManifest], { cwd: project, stdio: 'pipe' });
   const documentOutput = join(project, 'document', 'dist', 'manuscript.docx');
@@ -125,14 +125,14 @@ test('materialized academic tooling creates and renders DOCX and PPTX artifacts'
   assert.deepEqual(deliveryRecord.outputs.map(({ kind }) => kind), ['docx']);
   assert.deepEqual(deliveryRecord.warnings, []);
 
-  const presentationScript = join(project, '.agents', 'skills', 'delivery', 'presentations', 'academic-presentation-generation', 'scripts', 'create-pptx.mjs');
+  const presentationScript = join(project, '.agents', 'skills', 'linxira-delivery', 'presentations', 'academic-presentation-generation', 'scripts', 'create-pptx.mjs');
   const presentationManifest = join(project, 'presentation', 'slides.json');
   execFileSync(process.execPath, [presentationScript, 'create', presentationManifest], { cwd: project, stdio: 'pipe' });
   const presentationOutput = join(project, 'presentation', 'dist', 'presentation.pptx');
   assert.ok(existsSync(presentationOutput));
   assert.ok((await readFile(presentationOutput)).byteLength > 0);
 
-  const validationScript = join(project, '.agents', 'skills', 'delivery', 'validation', 'academic-artifact-validation', 'scripts', 'render-and-inspect.mjs');
+  const validationScript = join(project, '.agents', 'skills', 'linxira-delivery', 'validation', 'academic-artifact-validation', 'scripts', 'render-and-inspect.mjs');
   const documentRenderDirectory = join(project, 'document', 'dist', 'rendered');
   const presentationRenderDirectory = join(project, 'presentation', 'dist', 'rendered');
   execFileSync(process.execPath, [validationScript, documentOutput, documentRenderDirectory, '--expect=Fixture Document Title'], { cwd: project, stdio: 'pipe' });

@@ -9,6 +9,7 @@ import {
   realpath,
   rename,
   rm,
+  rmdir,
   stat,
   writeFile,
 } from 'node:fs/promises';
@@ -67,7 +68,7 @@ export async function run(argv, cwd = process.cwd(), io = console) {
 function parseArguments(argv) {
   const [rawCommand = 'help', ...rawOptions] = argv;
   const command = rawCommand === '--help' || rawCommand === '-h' ? 'help' : rawCommand;
-  const options = { dryRun: false, force: false, profile: undefined };
+  const options = { dryRun: false, force: false, profile: undefined, layout: undefined };
 
   for (let index = 0; index < rawOptions.length; index += 1) {
     const option = rawOptions[index];
@@ -80,6 +81,12 @@ function parseArguments(argv) {
       index += 1;
       if (!options.profile || options.profile.startsWith('-')) {
         throw new CliError('--profile requires a profile name.');
+      }
+    } else if (option === '--layout') {
+      options.layout = rawOptions[index + 1];
+      index += 1;
+      if (!options.layout || options.layout.startsWith('-')) {
+        throw new CliError('--layout requires a layout name.');
       }
     } else if (option === '--help' || option === '-h') {
       return { command: 'help', options };
@@ -94,11 +101,39 @@ function parseArguments(argv) {
   if (options.profile && command !== 'init') {
     throw new CliError('--profile is only supported by init.');
   }
+  if (options.layout && command !== 'init') {
+    throw new CliError('--layout is only supported by init. The installed layout is recorded in the manifest.');
+  }
+  if (options.layout && !layoutNames.has(options.layout)) {
+    throw new CliError(`Unknown layout: ${options.layout}. Supported layouts: ${[...layoutNames].join(', ')}.`);
+  }
   if (options.force && !['update', 'uninstall'].includes(command)) {
     throw new CliError('--force is only supported by update and uninstall.');
   }
 
   return { command, options };
+}
+
+const layoutNames = new Set(['namespaced', 'flat']);
+
+function applyLayout(layout, target) {
+  if (layout !== 'namespaced') {
+    return target;
+  }
+  const separator = target.indexOf('/');
+  return separator === -1 ? `linxira-${target}` : `linxira-${target.slice(0, separator)}${target.slice(separator)}`;
+}
+
+function applyLayoutToEntries(layout, entries) {
+  return entries.map((entry) => ({ ...entry, target: applyLayout(layout, entry.target) }));
+}
+
+function applyLayoutToAgentRoutes(layout, agentRoutes) {
+  return agentRoutes.map((route) => ({ ...route, path: applyLayout(layout, route.path) }));
+}
+
+function manifestLayout(manifest) {
+  return manifest.layout ?? 'flat';
 }
 
 async function findGitRoot(cwd) {
@@ -123,9 +158,12 @@ async function initialize(root, options, io) {
     throw new CliError('This repository is already initialized. Use update or uninstall instead.');
   }
 
+  const layout = options.layout ?? 'namespaced';
   const profile = options.profile ?? 'core';
   const profileData = await profileEntries(profile);
-  const targets = profileData.entries.map(({ target }) => join(root, '.agents', 'skills', target));
+  const entries = applyLayoutToEntries(layout, profileData.entries);
+  const agentRoutes = applyLayoutToAgentRoutes(layout, profileData.agentRoutes);
+  const targets = entries.map(({ target }) => join(root, '.agents', 'skills', target));
 
   for (const target of targets) {
     await assertNoSymlinkComponents(root, target);
@@ -134,19 +172,19 @@ async function initialize(root, options, io) {
     }
   }
 
-  const agentsPlan = await markerPlan(root, 'upsert', markerBlock(profileData.agentRoutes));
+  const agentsPlan = await markerPlan(root, 'upsert', markerBlock(agentRoutes));
   const ignorePlan = await gitignorePlan(root);
-  const manifest = await buildManifest(profile, profileData.entries);
+  const manifest = await buildManifest(layout, profile, entries);
 
   if (options.dryRun) {
-    reportInitPlan(profile, profileData.entries, agentsPlan, ignorePlan, io);
+    reportInitPlan(profile, entries, agentsPlan, ignorePlan, io);
     return 0;
   }
 
   const createdTargets = [];
   try {
     await mkdir(join(root, '.agents', 'skills'), { recursive: true });
-    for (const entry of profileData.entries) {
+    for (const entry of entries) {
       const target = join(root, '.agents', 'skills', entry.target);
       createdTargets.push(target);
       await copyEntry(entry, target);
@@ -167,7 +205,7 @@ async function initialize(root, options, io) {
     await rm(manifestPath(root), { force: true });
     throw error;
   }
-  io.log(`Initialized ${profile} profile with ${profileData.entries.length} managed entries.`);
+  io.log(`Initialized ${profile} profile with ${entries.length} managed entries (${layout} layout).`);
   return 0;
 }
 
@@ -195,8 +233,11 @@ async function update(root, options, io) {
   }
 
   await assertManifestTargetsSafe(root, manifest);
+  const layout = manifestLayout(manifest);
   const profileData = await profileEntries(manifest.profile);
-  for (const { target } of profileData.entries) {
+  const entries = applyLayoutToEntries(layout, profileData.entries);
+  const agentRoutes = applyLayoutToAgentRoutes(layout, profileData.agentRoutes);
+  for (const { target } of entries) {
     await assertNoSymlinkComponents(root, join(root, '.agents', 'skills', target));
   }
   const currentStatuses = await managedStatuses(root, manifest);
@@ -206,24 +247,24 @@ async function update(root, options, io) {
   }
 
   const managedTargets = new Set(Object.values(manifest.entries).map(({ path }) => path));
-  const desiredEntries = new Map(profileData.entries.map((entry) => [entry.id, entry]));
-  for (const { id, target } of profileData.entries) {
+  const desiredEntries = new Map(entries.map((entry) => [entry.id, entry]));
+  for (const { target } of entries) {
     const targetPath = join(root, '.agents', 'skills', target);
     if (existsSync(targetPath) && !managedTargets.has(target)) {
       throw new CliError(`Refusing to overwrite non-managed Linxira path: ${relative(root, targetPath)}`);
     }
   }
 
-  const agentsPlan = await markerPlan(root, 'upsert', markerBlock(profileData.agentRoutes));
+  const agentsPlan = await markerPlan(root, 'upsert', markerBlock(agentRoutes));
   const ignorePlan = await gitignorePlan(root);
-  const nextManifest = await buildManifest(manifest.profile, profileData.entries);
+  const nextManifest = await buildManifest(layout, manifest.profile, entries);
   const removals = Object.entries(manifest.entries).filter(([id, record]) => {
     const desired = desiredEntries.get(id);
     return !desired || desired.target !== record.path;
   });
 
   if (options.dryRun) {
-    for (const { target } of profileData.entries) {
+    for (const { target } of entries) {
       io.log(`[dry-run] refresh .agents/skills/${target}`);
     }
     for (const [, record] of removals) {
@@ -248,13 +289,14 @@ async function update(root, options, io) {
       await rename(target, backup);
       moved.push({ target, backup });
     }
-    for (const entry of profileData.entries) {
+    for (const entry of entries) {
       const target = join(root, '.agents', 'skills', entry.target);
       copiedTargets.push(target);
       await copyEntry(entry, target);
     }
     await applyPlan(agentsPlan);
     await applyPlan(ignorePlan);
+    await pruneEmptyAncestors(root, Object.values(manifest.entries).map(({ path }) => path));
     await writeManifest(root, nextManifest);
   } catch (error) {
     for (const target of copiedTargets.reverse()) {
@@ -315,6 +357,7 @@ async function uninstall(root, options, io) {
       moved.push({ target, backup });
     }
     await applyPlan(agentsPlan);
+    await pruneEmptyAncestors(root, statuses.map(({ path }) => path));
     await rm(manifestPath(root), { force: true });
   } catch (error) {
     await restorePlan(agentsPlan);
@@ -412,6 +455,9 @@ async function readManifest(root) {
   if (!manifest || manifest.schemaVersion !== 2 || typeof manifest.profile !== 'string' || !manifest.entries || typeof manifest.entries !== 'object') {
     throw new CliError('The Linxira manifest has an unsupported shape.');
   }
+  if (manifest.layout !== undefined && !layoutNames.has(manifest.layout)) {
+    throw new CliError('The Linxira manifest has an unsupported layout value.');
+  }
   for (const [id, record] of Object.entries(manifest.entries)) {
     assertEntryId(id);
     if (!record || typeof record.hash !== 'string' || (record.kind !== 'file' && record.kind !== 'directory')) {
@@ -426,7 +472,7 @@ function manifestPath(root) {
   return join(root, '.linxira', 'manifest.json');
 }
 
-async function buildManifest(profile, sources) {
+async function buildManifest(layout, profile, sources) {
   const packageInfo = JSON.parse(await readFile(join(packageRoot, 'package.json'), 'utf8'));
   const entries = {};
   for (const { id, source, target, kind } of sources) {
@@ -435,6 +481,7 @@ async function buildManifest(profile, sources) {
 
   return {
     schemaVersion: 2,
+    layout,
     installerVersion: packageInfo.version,
     payloadVersion: packageInfo.version,
     profile,
@@ -608,6 +655,33 @@ async function assertManifestTargetsSafe(root, manifest) {
   }
 }
 
+// After removals, prune now-empty managed ancestor directories so a layout
+// root like .agents/skills/linxira-engineering/ does not linger as an empty
+// husk. rmdir refuses non-empty directories, so user content is never lost.
+async function pruneEmptyAncestors(root, materializedPaths) {
+  const skillsRoot = join(root, '.agents', 'skills');
+  const candidates = new Set();
+  for (const path of materializedPaths) {
+    let current = dirname(join(skillsRoot, path));
+    while (current !== skillsRoot && current.startsWith(skillsRoot)) {
+      candidates.add(current);
+      current = dirname(current);
+    }
+  }
+  for (const directory of [...candidates].sort((left, right) => right.length - left.length)) {
+    try {
+      await rmdir(directory);
+    } catch {
+      // Still contains managed or user content; keep it.
+    }
+  }
+  try {
+    await rmdir(skillsRoot);
+  } catch {
+    // The skills root still holds other content; keep it.
+  }
+}
+
 async function assertNoSymlinkComponents(root, target) {
   const path = relative(root, target);
   if (isAbsolute(path) || path === '..' || path.startsWith('../') || path.startsWith('..\\')) {
@@ -665,5 +739,5 @@ function reportPlans(agentsPlan, ignorePlan, io) {
 }
 
 function helpText() {
-  return `Usage: linxira-skills <command> [options]\n\nCommands:\n  init [--profile core] [--dry-run]\n  status\n  update [--dry-run] [--force]\n  uninstall [--dry-run] [--force]`;
+  return `Usage: linxira-skills <command> [options]\n\nCommands:\n  init [--profile core] [--layout namespaced|flat] [--dry-run]\n  status\n  update [--dry-run] [--force]\n  uninstall [--dry-run] [--force]\n\nLayouts:\n  namespaced  default; materializes routers as .agents/skills/linxira-<root>/ to\n              avoid collisions with other skills in the same directory\n  flat        materializes routers as .agents/skills/<root>/; matches v0.1.0`;
 }

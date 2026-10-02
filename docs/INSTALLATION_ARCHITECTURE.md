@@ -86,13 +86,13 @@ target-repository/
   AGENTS.md                 Existing file, updated through a marker block
   .agents/
     skills/
-      engineering/
+      linxira-engineering/
         SKILL.md
         software/
           INDEX.md
           scientific-software-engineering/
             SKILL.md
-      systems/
+      linxira-systems/
         SKILL.md
         linux/
           INDEX.md
@@ -101,6 +101,10 @@ target-repository/
   .linxira/
     manifest.json
 ```
+
+`init --layout flat` materializes the same tree without the `linxira-` root
+prefix, matching the v0.1.0 layout. The chosen layout is recorded in
+`manifest.json` and followed by `status`, `update`, and `uninstall`.
 
 The initializer adds these exact ignore entries if absent:
 
@@ -128,8 +132,8 @@ The CLI must upsert, rather than append repeatedly, this bounded block:
 Project-local Linxira content is materialized as a progressive routing tree
 under `.agents/skills/`. Read only one matching top-level router first:
 
-- Route software and performance work through `.agents/skills/engineering/SKILL.md`.
-- Route Linux and compute work through `.agents/skills/systems/SKILL.md`.
+- Route software and performance work through `.agents/skills/linxira-engineering/SKILL.md`.
+- Route Linux and compute work through `.agents/skills/linxira-systems/SKILL.md`.
 
 Follow that router to one second-level index, then load only the exact leaf skill
 required by the task.
@@ -148,7 +152,7 @@ indexes and leaves are reached through their explicit repository paths.
 
 ```text
 npm install --save-dev @linxiraos/linxira-skills
-npx linxira-skills init [--profile core] [--dry-run]
+npx linxira-skills init [--profile core] [--layout namespaced|flat] [--dry-run]
 npx linxira-skills status
 npx linxira-skills update [--dry-run]
 npx linxira-skills uninstall [--dry-run]

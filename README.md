@@ -111,6 +111,22 @@ npm install --save-dev @linxiraos/linxira-skills
 npx linxira-skills init
 ```
 
+`init` materializes one of two layouts (recorded in `.linxira/manifest.json`):
+
+- **`namespaced` (default, recommended):** routers land at
+  `.agents/skills/linxira-<root>/` (for example `linxira-delivery/`), so the
+  managed tree cannot collide with skills from other tools in the same
+  directory.
+- **`flat`:** routers land at `.agents/skills/<root>/` (for example
+  `delivery/`), matching the v0.1.0 layout. Opt in with
+  `npx linxira-skills init --layout flat`.
+
+Both layouts keep the five top-level routers discoverable and load everything
+else through the generated `AGENTS.md` block and relative `INDEX.md` links;
+`status`, `update`, and `uninstall` follow whichever layout the manifest
+records. Uninstall also prunes now-empty managed directories instead of
+leaving husks behind.
+
 Profile selection:
 
 ```bash

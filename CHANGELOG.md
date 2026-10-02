@@ -2,7 +2,27 @@
 
 All notable changes to this package are documented in this file.
 
-## [0.1.0] - Unreleased
+## [0.1.1] - 2026-10-02
+
+### Added
+
+- Dual materialization layouts: `namespaced` (default) materializes routers as
+  `.agents/skills/linxira-<root>/` so the managed tree cannot collide with
+  skills from other tools; `init --layout flat` keeps the v0.1.0 unprefixed
+  roots. The chosen layout is recorded in `.linxira/manifest.json` and followed
+  by `status`, `update`, and `uninstall`.
+- Uninstall and profile-shrinking updates prune now-empty managed ancestor
+  directories instead of leaving empty husks under `.agents/skills/`.
+
+### Fixed
+
+- Installed-CLI tests resolve the binary under the scoped
+  `node_modules/@linxiraos/linxira-skills` layout.
+- The packed-artifact test accepts both npm ≤ 11 and npm 12 `pack --json`
+  output shapes, installs natively on npm ≤ 11, and skips the emulated install
+  on npm 12/Windows where bsdtar cannot read UTF-8 tarball names.
+
+## [0.1.0] - 2026-10-02
 
 ### Added
 

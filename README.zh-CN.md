@@ -85,6 +85,18 @@ npm install --save-dev @linxiraos/linxira-skills
 npx linxira-skills init
 ```
 
+`init` 支持两种物化布局（记录在 `.linxira/manifest.json`）：
+
+- **`namespaced`（默认，推荐）**：router 落在
+  `.agents/skills/linxira-<root>/`（如 `linxira-delivery/`），管理的目录树
+  不会与同一目录下其他工具的 skills 冲突
+- **`flat`**：router 落在 `.agents/skills/<root>/`（如 `delivery/`），与
+  v0.1.0 布局一致。用 `npx linxira-skills init --layout flat` 启用
+
+两种布局都保持五个顶层 router 可被发现，其余内容通过生成的 `AGENTS.md`
+标记块与相对 `INDEX.md` 链接加载；`status`、`update`、`uninstall` 会跟随
+manifest 记录的布局。卸载时会顺带清掉已空的管理目录，不残留空壳。
+
 指定 profile：
 
 ```bash
