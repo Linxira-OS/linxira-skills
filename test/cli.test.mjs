@@ -387,7 +387,7 @@ test('packed CLI contains only release material and runs in a clean Git reposito
   const npmMajor = Number(
     execFileSync(process.execPath, [npmCli, '--version'], { encoding: 'utf8' }).trim().split('.')[0],
   );
-  const moduleRoot = join(project, 'node_modules', 'linxira-skills');
+  const moduleRoot = join(project, 'node_modules', '@linxiraos', 'linxira-skills');
   // npm 12's scripts allowlist (EALLOWSCRIPTS) blocks tarball installs into a
   // --prefix project that has no package.json yet, and its --allow-scripts
   // flag is itself forbidden there. The packed tarball declares no
@@ -402,7 +402,7 @@ test('packed CLI contains only release material and runs in a clean Git reposito
     });
   }
   execFileSync('git', ['init', '--quiet', project]);
-  const cli = join(project, 'node_modules', 'linxira-skills', 'dist', 'linxira-skills.js');
+  const cli = join(project, 'node_modules', '@linxiraos', 'linxira-skills', 'dist', 'linxira-skills.js');
 
   execFileSync(process.execPath, [cli, 'init', '--profile', 'bioinformatics-core'], { cwd: project, stdio: 'pipe' });
   const manifest = JSON.parse(await readFile(join(project, '.linxira', 'manifest.json'), 'utf8'));

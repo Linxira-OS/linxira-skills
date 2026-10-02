@@ -29,7 +29,7 @@ test('materialized presentation tooling creates a standard-ratio PPTX', { skip: 
   const tarball = join(tarballs, pack[0].filename);
   execNpm(['ci', '--ignore-scripts', '--no-audit', '--no-fund'], project);
   execNpm(['install', '--ignore-scripts', '--no-audit', '--no-fund', tarball], project);
-  const cli = join(project, 'node_modules', 'linxira-skills', 'dist', 'linxira-skills.js');
+  const cli = join(project, 'node_modules', '@linxiraos', 'linxira-skills', 'dist', 'linxira-skills.js');
   execFileSync(process.execPath, [cli, 'init', '--profile', 'research-communication-core'], { cwd: project, stdio: 'pipe' });
 
   const presentationScript = join(project, '.agents', 'skills', 'delivery', 'presentations', 'academic-presentation-generation', 'scripts', 'create-pptx.mjs');
@@ -58,7 +58,7 @@ test('materialized document tooling compiles XeLaTeX with BibTeX and Biber outpu
   const tarball = join(tarballs, pack[0].filename);
   execNpm(['ci', '--ignore-scripts', '--no-audit', '--no-fund'], project);
   execNpm(['install', '--ignore-scripts', '--no-audit', '--no-fund', tarball], project);
-  const cli = join(project, 'node_modules', 'linxira-skills', 'dist', 'linxira-skills.js');
+  const cli = join(project, 'node_modules', '@linxiraos', 'linxira-skills', 'dist', 'linxira-skills.js');
   execFileSync(process.execPath, [cli, 'init', '--profile', 'research-communication-core'], { cwd: project, stdio: 'pipe' });
 
   const documentScript = join(project, '.agents', 'skills', 'delivery', 'writing', 'academic-document-generation', 'scripts', 'render-document.mjs');
@@ -110,7 +110,7 @@ test('materialized academic tooling creates and renders DOCX and PPTX artifacts'
   execNpm(['ci', '--ignore-scripts', '--no-audit', '--no-fund'], project);
   execNpm(['install', '--ignore-scripts', '--no-audit', '--no-fund', tarball], project);
 
-  const cli = join(project, 'node_modules', 'linxira-skills', 'dist', 'linxira-skills.js');
+  const cli = join(project, 'node_modules', '@linxiraos', 'linxira-skills', 'dist', 'linxira-skills.js');
   execFileSync(process.execPath, [cli, 'init', '--profile', 'research-communication-core'], { cwd: project, stdio: 'pipe' });
 
   const documentScript = join(project, '.agents', 'skills', 'delivery', 'writing', 'academic-document-generation', 'scripts', 'render-document.mjs');
