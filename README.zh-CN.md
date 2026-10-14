@@ -122,9 +122,8 @@ payload：
 frontmatter 元数据。目前尚无 installable profile 引用它们，因此在 profile
 审阅放行之前，打包 payload 仍然不包含第三方正文。
 
-两个科研绘图技能族（`scientific-figure-style`、`discipline-figure-patterns`）
-是 clean-room 自研：仅从 CC BY-NC 及混合许可社区项目的概念级能力清单出发
-原创撰写，未复制任何上游表达、代码、配色或资产清单，因此不登记为第三方材料。
+科研绘图技能族（`scientific-figure-style`、`discipline-figure-patterns`、
+`ai-figure-prompting`）为本仓库原创作品，不登记为第三方材料。
 
 当前公开 payload 不包含第三方技能正文：
 

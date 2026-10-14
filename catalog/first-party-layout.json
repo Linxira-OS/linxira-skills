@@ -58,6 +58,7 @@
     "academic-presentation-design": "delivery/presentations/academic-presentation-design",
     "academic-presentation-generation": "delivery/presentations/academic-presentation-generation",
     "academic-visual-evidence": "delivery/visuals/academic-visual-evidence",
+    "ai-figure-prompting": "delivery/visuals/ai-figure-prompting",
     "count-matrix-quality-control": "research/life-sciences/count-matrix-quality-control",
     "citation-and-reference-formatting": "delivery/citations/citation-and-reference-formatting",
     "differential-expression-deseq2": "research/life-sciences/differential-expression-deseq2",

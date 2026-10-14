@@ -19,13 +19,32 @@ argument are already settled.
 - Field-specific chart conventions and venue patterns → `discipline-figure-patterns`.
 - Everything measurable about style (mm, pt, hex, spines, DPI) → this skill.
 
+## Working Files
+
+| Path | Role |
+|---|---|
+| `scripts/pubstyle.py` | The only style module: entry point, palettes, save, validation |
+| `examples/01_trend_lines.py` | Direct line labels, semantic roles, reference band |
+| `examples/02_grouped_bars.py` | Print-safe bars: edge stroke plus hatch double coding |
+| `examples/03_annotated_heatmap.py` | Four-spine heatmap, labelled cells, labelled colorbar |
+| `examples/04_shared_legend_panels.py` | Four panels, one legend strip, panel letters |
+| `examples/05_uncertainty_scatter.py` | Both-axis error bars, shaded band, marker double coding |
+
+Run any demo from the skill directory (`python examples/01_trend_lines.py`); each
+writes PDF + PNG into `examples/output/` and refuses to write if validation fails.
+Copy `scripts/pubstyle.py` into the project once, then let every figure script
+import it.
+
 ## Style Workflow
 
 1. Fix the target width in millimeters before drawing; design content to it.
-2. Apply the style once per project through the helper entry in `references/api.md`.
+2. Apply the style once per project through `apply_publication_style` in
+   `scripts/pubstyle.py` (contract: `references/api.md`).
 3. Pick colors only by the rules in section 3; never sample them ad hoc.
 4. Strip chart junk: extra spines, framed legends, redundant ticks and digits.
-5. Export vector-first, then run the export checklist in `references/api.md`.
+5. Export vector-first with `save_figure` (tighten inside the canvas, never crop),
+   which runs the export checklist in `references/api.md` first and refuses to
+   write a figure that fails it.
 
 ## 1. Layout And Size (版式与尺寸)
 
@@ -59,13 +78,14 @@ up — both silently break the font-size contract.
 - Categorical series (分类数据): draw only from a color-vision-deficiency-safe
   palette — Okabe-Ito (blue `#0072B2`, vermillion `#D55E00`, green `#009E73`,
   orange `#E69F00`, sky `#56B4E9`, purple `#CC79A7`, yellow `#F0E442`) or
-  ColorBrewer Dark2.
+  ColorBrewer Dark2. Reach them through `categorical(n)` / `SEMANTIC[role]`, never
+  as literals scattered through scripts.
 - Fix semantic roles once per paper and reuse them in every figure: proposed
   method = blue, baselines = gray/black, variants or ablations = orange, single
   emphasis = vermillion. One emphasis color per figure.
 - Continuous fields (连续数据): perceptually uniform colormaps only — `viridis`
   (safe default), `magma`/`inferno` (higher contrast), `cividis` (most CVD-safe).
-  Never `jet` or rainbow.
+  Never `jet` or rainbow; `sequential()` refuses them.
 - Diverging data with a meaningful midpoint: ColorBrewer diverging (`RdBu_r`,
   `PiYG`) centered on that midpoint.
 - More than 8 categories: stop adding hues — group categories, split panels, or
@@ -96,12 +116,16 @@ up — both silently break the font-size contract.
   in print (thin yellow lines, pale cyan fills).
 - White opaque background; run the layout tightening as the last step before
   writing files — arrange content inside the canvas, never crop the canvas.
+- Treat `validate_figure` as a test: it renders the texts, measures them, resolves
+  colors and colormaps, and compares the canvas width against the journal target;
+  any violation means the figure is not done.
 
 ## Which Reference To Open When
 
 | Situation | Open |
 |---|---|
 | Wiring style into code: entry function, palettes, save + validate | `references/api.md` |
+| A worked, runnable figure of each kind | `examples/*.py` |
 | Multi-panel layout, external legends, print-safe bars, CVD double coding | `references/common-patterns.md` |
 | Why a rule exists, or judging a trade-off (density, ink, print vs screen) | `references/design-theory.md` |
 

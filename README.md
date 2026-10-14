@@ -83,11 +83,9 @@ metadata required by the first-party audit. No installable profile references
 them yet, so the packaged public payload still ships no third-party bodies
 until a profile review admits them.
 
-Clean-room plotting skills (`scientific-figure-style`,
-`discipline-figure-patterns`) are first-party work authored from concept-level
-capability outlines distilled from CC BY-NC and mixed-license community
-projects; no upstream expression, code, palettes, or asset lists were copied,
-and they are therefore not registered as third-party material.
+First-party original plotting families (`scientific-figure-style`,
+`discipline-figure-patterns`, `ai-figure-prompting`) are works of this
+repository and are not registered as third-party material.
 
 - `bioinformatics-core` contains first-party adaptations informed by pinned MIT
   `bioSkills` paths, with provenance and concrete corrections recorded in each

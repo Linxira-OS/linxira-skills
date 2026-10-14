@@ -28,12 +28,7 @@ directory retains its upstream license text, records the upstream revision in
 | `skills/paper-fig`, `skills/editable-design`, `skills/html-to-pptx` | `yejy53/Editable-Design` | `c87b16f6d7c198e2b6967f13f1b1baa939d6f31f` | Apache-2.0 | Editable paper figures, posters, and PPTX conversion; Codex runtime helpers (`@oai/artifact-tool`, Playwright, LibreOffice) not vendored — per-skill `VENDORED.md` lists unresolved references |
 | `skills/nsfc-*` (11), `skills/paper-*` (4), `skills/research-*` (9), `skills/make-latex-model`, `skills/transfer-old-latex-to-new`, `skills/complete-example` | `huangwb8/ChineseResearchLaTeX` | `f1c7206faafde597c65f9eb9fa6b2abaa5518c6e` | MIT | Chinese research-document AI skills (NSFC grant, SCI submission, literature workflow); template repositories and `.bensz-api` workspace convention not vendored |
 
-Skills written clean-room from concept-level specifications are first-party
-work and are not registered here. Two plotting-skill families
-(`scientific-figure-style`, `discipline-figure-patterns`) were authored in this
-repository from capability outlines distilled from CC BY-NC and mixed-license
-community projects; no upstream expression, code, palettes, or asset lists were
-copied.
+First-party original skills are not registered here.
 
 Temporary sources are ignored by Git and are not distributed. The broad archive
 contains duplicates, vendored repositories, generated indexes, and unrelated

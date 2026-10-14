@@ -322,6 +322,7 @@ test('research-communication-core materializes delivery skills', async (context)
       'editable-design',
       'html-to-pptx',
       'paper-explain-figures',
+      'ai-figure-prompting',
     ],
     presentations: ['academic-presentation-design', 'academic-presentation-generation'],
   };
@@ -335,7 +336,7 @@ test('research-communication-core materializes delivery skills', async (context)
   assert.equal(await run(['init', '--profile', 'research-communication-core'], root, output()), 0);
   const manifest = JSON.parse(await readFile(join(root, '.linxira', 'manifest.json'), 'utf8'));
   assert.equal(manifest.profile, 'research-communication-core');
-  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 54);
+  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 55);
   assert.match(await readFile(join(root, 'AGENTS.md'), 'utf8'), /delivery\/SKILL\.md/);
   for (const [branch, names] of Object.entries(skills)) {
     for (const skill of names) {
