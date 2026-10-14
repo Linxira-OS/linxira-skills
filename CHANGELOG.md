@@ -2,6 +2,31 @@
 
 All notable changes to this package are documented in this file.
 
+## [0.1.2] - 2026-10-02
+
+### Added
+
+- `figureforge` (vendored, MIT): the original FigureForge browser SVG editor
+  subtree with a first-party Chinese wrapper skill; zero-install local editing
+  of figures, posters, and schematics.
+- `ppt-master` (vendored, MIT): the full document-to-editable-PPTX skill
+  subtree (13k files) with its integrity guard preserved unmodified; brand
+  template and AGPL dependency notes recorded in the skill's `VENDORED.md`.
+- `mcp-connectors` profile with `mcp-recommendations` (verified MCP landscape
+  by capability area) and `open-design` (fail-closed connector for the local
+  OpenDesign MCP server).
+- `integrations/mcp` route branch; visuals and presentations indexes updated.
+- Clean-room plotting rewrite: `scientific-figure-style` now ships an original
+  `scripts/pubstyle.py` plus five runnable demos; `discipline-figure-patterns`
+  deepened to a 50+ figure-type per-discipline library; new
+  `ai-figure-prompting` skill for compliant AI schematic generation.
+
+### Changed
+
+- `research-communication-core` carries 47 first-party skills.
+- The packed-artifact test accepts large payloads and both npm 11/12
+  `pack --json` shapes; emulated install is skipped on npm 12/Windows.
+
 ## [0.1.1] - 2026-10-02
 
 ### Added

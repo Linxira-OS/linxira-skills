@@ -1,6 +1,6 @@
 {
   "name": "@linxiraos/linxira-skills",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Cross-runtime initializer for reviewed research, engineering, and execution skill profiles.",
   "license": "MIT",
   "type": "module",
