@@ -12,3 +12,4 @@ Read only the matching second-level index:
 
 - Google Workspace or Google Cloud: `google/INDEX.md`
 - Browser, portal, upload, download, or account-bound web work: `web/INDEX.md`
+- MCP server discovery and external tool connectors: `mcp/INDEX.md`

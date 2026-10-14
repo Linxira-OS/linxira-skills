@@ -55,11 +55,13 @@ Linux 是所有 profile 可复用的执行基础层，不是一个学科包。
 | `bioinformatics-core` | `core` + 10 个一方生物信息学和 bulk RNA-seq 闭环技能 |
 | `biology-research-core` | `bioinformatics-core` + 19 个一方生物学课题、文献、证据、实验设计、统计、湿实验治理和完整论文交付技能 |
 | `science-research-core` | `biology-research-core` + 化学、物理、作物/植物、生态、动物生理、生物化学/分子生物学和医学/转化研究设计技能 |
-| `research-communication-core` | `core` + 44 个一方论文写作、引用、正文排版、图表、图像边界、文档、LaTeX、学术 PPT、科研绘图生产与中文科研文档技能（含 vendored 的 Apache-2.0/MIT 适配，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)） |
+| `research-communication-core` | `core` + 47 个一方论文写作、引用、正文排版、图表、图像边界、文档、LaTeX、学术 PPT、科研绘图生产、AI 生图、图形编辑器与中文科研文档技能（含 vendored 的 Apache-2.0/MIT 适配，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)） |
+| `mcp-connectors` | 2 个一方 MCP 导航与 OpenDesign 连接器技能；连接器在本地守护进程与 `od` CLI 未安装前不生效（fail-closed） |
 
-以上技能族已全部进入 `research-communication-core` profile（详见
+科研绘图、编辑器与中文科研文档技能族已进入 `research-communication-core`；
+MCP 连接器两技能另在 `mcp-connectors` profile。详见
 [docs/SOURCES.md](docs/SOURCES.md) 与根目录
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)）：
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)：
 
 - 科研绘图生产：出版级 matplotlib 风格层（`scientific-figure-style`）与
   CS/ML、生物、化学、物理四个学科图式层（`discipline-figure-patterns`）
@@ -69,6 +71,10 @@ Linux 是所有 profile 可复用的执行基础层，不是一个学科包。
   需本机 Origin 商业授权）
 - 中文科研文档工作流：国自然标书分节、SCI 投稿、选刊、文献流程等 27 个技能
   （vendored 自 ChineseResearchLaTeX，MIT）
+- 零安装浏览器 SVG 图形编辑器（`figureforge`，vendored，MIT）与文档→可编辑
+  PPTX 生产套件（`ppt-master`，vendored，MIT）
+- MCP 导航与外部设计工作区连接（`mcp-recommendations`、`open-design`；
+  `mcp-connectors` profile，外部服务未安装时 fail-closed）
 
 另外还定义了若干 reviewed connector profile，例如 AlphaFold DB public，
 但它们目前不是单独打包 payload。

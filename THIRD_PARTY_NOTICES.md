@@ -14,6 +14,8 @@ are not listed here.
 | `hang-jin/editaplot` | `01721038afd212103d96225319b22d1bbfe32270` | Apache-2.0 | `editaplot` (skill only; the `runtime/` rendering engine and launcher are not vendored and are not part of the npm payload) |
 | `yejy53/Editable-Design` | `c87b16f6d7c198e2b6967f13f1b1baa939d6f31f` | Apache-2.0 | `paper-fig`, `editable-design`, `html-to-pptx` |
 | `huangwb8/ChineseResearchLaTeX` | `f1c7206faafde597c65f9eb9fa6b2abaa5518c6e` | MIT | 27 skills: `complete-example`, `make-latex-model`, `transfer-old-latex-to-new`, eleven `nsfc-*`, four `paper-*`, nine `research-*` |
+| `jing1312/nature-figure-skill` | `af778027c866e2e6b3432b946e44a4a2b4434d82` | MIT | `figureforge` (the original FigureForge browser editor subtree only; the repository's derived `nature-*` skill texts and its CC BY-NC assets are not included) |
+| `hugohe3/ppt-master` | `b6843645766c9ab63a7f1486cfd330d6ad337e99` | MIT | `ppt-master` (full skill subtree, 13k files). Legal notes: PyMuPDF (AGPL-3.0) appears only as an optional requirement and is not redistributed; `templates/brands/` brand identities are reference-only and MIT grants no trademark rights; optional paid image-generation backends and edge-tts narration |
 
 Apache-2.0 requires retaining license and notice files and stating changes:
 each vendored directory keeps its upstream `LICENSE`/`NOTICE` files and a

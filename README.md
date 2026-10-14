@@ -27,7 +27,8 @@ Current profile counts in the package build:
 | `bioinformatics-core` | `core` plus 10 first-party bioinformatics and bulk RNA-seq workflow skills |
 | `biology-research-core` | `bioinformatics-core` plus 19 first-party biological discovery, experimental design, wet-lab governance, and complete academic delivery skills |
 | `science-research-core` | `biology-research-core` plus chemistry, physics, crop/plant, ecology, animal physiology, biochemistry/molecular biology, and medical/translational study-design skills |
-| `research-communication-core` | `core` plus 44 first-party manuscript, citation, formatting, figure, image, document, LaTeX, presentation, scientific-figure production, and Chinese research-document skills (including vendored Apache-2.0/MIT adaptations; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)) |
+| `research-communication-core` | `core` plus 47 first-party manuscript, citation, formatting, figure, image, document, LaTeX, presentation, scientific-figure production, AI-figure, editor, and Chinese research-document skills (including vendored Apache-2.0/MIT adaptations; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)) |
+| `mcp-connectors` | 2 first-party MCP navigation and OpenDesign connector skills; the OpenDesign connector is inert until its local daemon and `od` CLI are installed |
 
 Reviewed connector profiles such as AlphaFold DB public access are tracked in
 this repository, but are not separate packaged payloads yet.
@@ -164,15 +165,21 @@ First-party skills provide execution boundaries for:
   (`discipline-figure-patterns`)
 - editable paper architecture figures and PPTX/poster generation
   (`paper-fig`, `editable-design`, `html-to-pptx`; vendored, Apache-2.0)
+- zero-install browser SVG figure editing (`figureforge`; vendored, MIT) and
+  document-to-editable-PPTX production suites (`ppt-master`; vendored, MIT)
+- MCP server discovery and external design workspace connection
+  (`mcp-recommendations`, `open-design`; `mcp-connectors` profile, fail-closed
+  until the external server is installed)
 - Origin/OriginPro automated rendering with read-back verification
   (`editaplot`; vendored, Apache-2.0, requires a local Origin license)
 - Chinese research-document workflows: NSFC grant sections, SCI submission,
   journal selection, and literature routines (27 skills vendored from
   ChineseResearchLaTeX, MIT)
 
-All of the above are packaged through the `research-communication-core`
-profile; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and
-[docs/SOURCES.md](docs/SOURCES.md).
+The figure, editor, PPTX, and Chinese research-document families ship through
+the `research-communication-core` profile; the two MCP connector skills ship
+through `mcp-connectors`. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
+and [docs/SOURCES.md](docs/SOURCES.md).
 
 ## Citation
 

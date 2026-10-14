@@ -32,9 +32,10 @@ tree:
 | `html-anything` bodies | Not by default | The root is Apache-2.0, but 22 templates cite external examples or inspiration. |
 | Proprietary/vendor reference material | No | It is reference-only or has incompatible terms. |
 
-The target first npm release ships 79 unique first-party skills across `core`,
-`bioinformatics-core`, `biology-research-core`, `science-research-core`, and
-`research-communication-core`, plus a compact generated descriptor catalog.
+The target first npm release ships 84 unique first-party skills across `core`,
+`bioinformatics-core`, `biology-research-core`, `science-research-core`,
+`research-communication-core`, and `mcp-connectors`, plus a compact generated
+descriptor catalog.
 Seven bulk RNA-seq skills are adapted from
 reviewed ideas in a pinned MIT `bioSkills` revision and record their source
 paths and corrections in-body. The `research-communication-core` profile also

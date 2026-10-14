@@ -323,8 +323,9 @@ test('research-communication-core materializes delivery skills', async (context)
       'html-to-pptx',
       'paper-explain-figures',
       'ai-figure-prompting',
+      'figureforge',
     ],
-    presentations: ['academic-presentation-design', 'academic-presentation-generation'],
+    presentations: ['academic-presentation-design', 'academic-presentation-generation', 'ppt-master'],
   };
   const discovery = [
     'research-literature-search',
@@ -336,7 +337,7 @@ test('research-communication-core materializes delivery skills', async (context)
   assert.equal(await run(['init', '--profile', 'research-communication-core'], root, output()), 0);
   const manifest = JSON.parse(await readFile(join(root, '.linxira', 'manifest.json'), 'utf8'));
   assert.equal(manifest.profile, 'research-communication-core');
-  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 55);
+  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 57);
   assert.match(await readFile(join(root, 'AGENTS.md'), 'utf8'), /delivery\/SKILL\.md/);
   for (const [branch, names] of Object.entries(skills)) {
     for (const skill of names) {
@@ -346,6 +347,22 @@ test('research-communication-core materializes delivery skills', async (context)
   for (const skill of discovery) {
     assert.equal(existsSync(join(root, '.agents', 'skills', 'linxira-research', 'discovery', skill, 'SKILL.md')), true);
   }
+  await assertInstalledRoutes(root);
+  assert.equal(await run(['status'], root, output()), 0);
+  assert.equal(await run(['uninstall'], root, output()), 0);
+});
+
+test('mcp-connectors materializes the MCP integration branch', async (context) => {
+  const root = await fixture();
+  context.after(() => rm(root, { recursive: true, force: true }));
+
+  assert.equal(await run(['init', '--profile', 'mcp-connectors'], root, output()), 0);
+  const manifest = JSON.parse(await readFile(join(root, '.linxira', 'manifest.json'), 'utf8'));
+  assert.equal(manifest.profile, 'mcp-connectors');
+  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 2);
+  assert.equal(existsSync(join(root, '.agents', 'skills', 'linxira-integrations', 'mcp', 'mcp-recommendations', 'SKILL.md')), true);
+  assert.equal(existsSync(join(root, '.agents', 'skills', 'linxira-integrations', 'mcp', 'open-design', 'SKILL.md')), true);
+  assert.match(await readFile(join(root, 'AGENTS.md'), 'utf8'), /linxira-integrations\/SKILL\.md/);
   await assertInstalledRoutes(root);
   assert.equal(await run(['status'], root, output()), 0);
   assert.equal(await run(['uninstall'], root, output()), 0);
@@ -381,6 +398,7 @@ test('packed CLI contains only release material and runs in a clean Git reposito
     stdio: 'pipe',
     encoding: 'utf8',
     env: innerEnv,
+    maxBuffer: 256 * 1024 * 1024,
   });
   const parsedPack = JSON.parse(packOutput);
   // npm <= 11 returns an array of pack results; npm 12 returns an object

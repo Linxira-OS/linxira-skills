@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 2,
+  "status": "approved-for-packaging",
+  "name": "mcp-connectors",
+  "firstPartySkills": [
+    "mcp-recommendations",
+    "open-design"
+  ],
+  "sourceTracks": [],
+  "skills": []
+}

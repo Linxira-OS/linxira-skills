@@ -27,6 +27,8 @@ directory retains its upstream license text, records the upstream revision in
 | `skills/editaplot` | `hang-jin/editaplot` | `01721038afd212103d96225319b22d1bbfe32270` | Apache-2.0 | Origin/OriginPro COM rendering skill; `runtime/` engine and launcher not vendored — see the skill's `VENDORED.md`; requires local Origin license (risk tags `paid`, `privileged`) |
 | `skills/paper-fig`, `skills/editable-design`, `skills/html-to-pptx` | `yejy53/Editable-Design` | `c87b16f6d7c198e2b6967f13f1b1baa939d6f31f` | Apache-2.0 | Editable paper figures, posters, and PPTX conversion; Codex runtime helpers (`@oai/artifact-tool`, Playwright, LibreOffice) not vendored — per-skill `VENDORED.md` lists unresolved references |
 | `skills/nsfc-*` (11), `skills/paper-*` (4), `skills/research-*` (9), `skills/make-latex-model`, `skills/transfer-old-latex-to-new`, `skills/complete-example` | `huangwb8/ChineseResearchLaTeX` | `f1c7206faafde597c65f9eb9fa6b2abaa5518c6e` | MIT | Chinese research-document AI skills (NSFC grant, SCI submission, literature workflow); template repositories and `.bensz-api` workspace convention not vendored |
+| `skills/figureforge` | `jing1312/nature-figure-skill` | `af778027c866e2e6b3432b946e44a4a2b4434d82` | MIT | Original FigureForge browser editor subtree only; derived `nature-*` texts and CC BY-NC assets excluded |
+| `skills/ppt-master` | `hugohe3/ppt-master` | `b6843645766c9ab63a7f1486cfd330d6ad337e99` | MIT | Full skill subtree (13k files); AGPL PyMuPDF is an optional requirement only; brand templates are reference-only (see skill `VENDORED.md`) |
 
 First-party original skills are not registered here.
 
