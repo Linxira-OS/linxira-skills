@@ -4,7 +4,7 @@ All notable changes to this package are documented in this file.
 
 ## Unreleased
 
-## [0.2.0] - 2026-10-28
+## [0.1.3] - 2026-10-28
 
 ### Added
 
