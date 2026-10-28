@@ -25,8 +25,11 @@ test('materialized presentation tooling creates a standard-ratio PPTX', { skip: 
   execFileSync('git', ['init', '--quiet', project]);
   await writeFixturePng(join(project, 'presentation', 'images', 'fixture.png'));
 
-  const pack = JSON.parse(execNpm(['pack', '--json', '--pack-destination', tarballs], packageRoot));
-  const tarball = join(tarballs, pack[0].filename);
+  const packed = JSON.parse(execNpm(['pack', '--json', '--pack-destination', tarballs], packageRoot));
+  // npm <=10 prints an array; npm 11 prints an object keyed by package name.
+  const pack = Array.isArray(packed) ? packed[0] : Object.values(packed)[0];
+  assert.ok(pack?.filename, 'npm pack did not report a tarball filename');
+  const tarball = join(tarballs, pack.filename);
   execNpm(['ci', '--ignore-scripts', '--no-audit', '--no-fund'], project);
   execNpm(['install', '--ignore-scripts', '--no-audit', '--no-fund', tarball], project);
   const cli = join(project, 'node_modules', '@linxiraos', 'linxira-skills', 'dist', 'linxira-skills.js');
@@ -54,8 +57,11 @@ test('materialized document tooling compiles XeLaTeX with BibTeX and Biber outpu
   await cp(fixtureRoot, project, { recursive: true });
   execFileSync('git', ['init', '--quiet', project]);
 
-  const pack = JSON.parse(execNpm(['pack', '--json', '--pack-destination', tarballs], packageRoot));
-  const tarball = join(tarballs, pack[0].filename);
+  const packed = JSON.parse(execNpm(['pack', '--json', '--pack-destination', tarballs], packageRoot));
+  // npm <=10 prints an array; npm 11 prints an object keyed by package name.
+  const pack = Array.isArray(packed) ? packed[0] : Object.values(packed)[0];
+  assert.ok(pack?.filename, 'npm pack did not report a tarball filename');
+  const tarball = join(tarballs, pack.filename);
   execNpm(['ci', '--ignore-scripts', '--no-audit', '--no-fund'], project);
   execNpm(['install', '--ignore-scripts', '--no-audit', '--no-fund', tarball], project);
   const cli = join(project, 'node_modules', '@linxiraos', 'linxira-skills', 'dist', 'linxira-skills.js');
@@ -105,8 +111,11 @@ test('materialized academic tooling creates and renders DOCX and PPTX artifacts'
   execFileSync('git', ['init', '--quiet', project]);
   await writeFixturePng(join(project, 'presentation', 'images', 'fixture.png'));
 
-  const pack = JSON.parse(execNpm(['pack', '--json', '--pack-destination', tarballs], packageRoot));
-  const tarball = join(tarballs, pack[0].filename);
+  const packed = JSON.parse(execNpm(['pack', '--json', '--pack-destination', tarballs], packageRoot));
+  // npm <=10 prints an array; npm 11 prints an object keyed by package name.
+  const pack = Array.isArray(packed) ? packed[0] : Object.values(packed)[0];
+  assert.ok(pack?.filename, 'npm pack did not report a tarball filename');
+  const tarball = join(tarballs, pack.filename);
   execNpm(['ci', '--ignore-scripts', '--no-audit', '--no-fund'], project);
   execNpm(['install', '--ignore-scripts', '--no-audit', '--no-fund', tarball], project);
 
@@ -145,7 +154,14 @@ test('materialized academic tooling creates and renders DOCX and PPTX artifacts'
 });
 
 function execNpm(argumentsList, cwd) {
-  return execFileSync(process.execPath, [npmCli, ...argumentsList], { cwd, encoding: 'utf8', stdio: 'pipe' });
+  return execFileSync(process.execPath, [npmCli, ...argumentsList], {
+    cwd,
+    encoding: 'utf8',
+    stdio: 'pipe',
+    // `npm pack --json` prints the full file list; the payload is ~70 MB
+    // unpacked, which overflows Node's 1 MB default maxBuffer (ENOBUFS).
+    maxBuffer: 32 * 1024 * 1024,
+  });
 }
 
 function commandExists(executable) {
