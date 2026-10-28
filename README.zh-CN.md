@@ -113,6 +113,31 @@ npx linxira-skills init --profile science-research-core
 npx linxira-skills init --profile research-communication-core
 ```
 
+### 项目作用域与用户作用域
+
+**默认且推荐使用项目作用域。** 它要求在 Git 仓库内运行，安装到仓库根目录，
+写入 `AGENTS.md` 标记块，把 `.agents/skills/` 与 `.linxira/` 加入
+`.gitignore`，并把状态记录在 `.linxira/manifest.json`。
+
+用户作用域为当前用户安装一次，不依赖任何仓库；不要求 Git 仓库，不修改
+`AGENTS.md` 或 `.gitignore`，也绝不写入 `~/.zeta`：
+
+- 作用域根目录：设置了 `LINXIRA_SKILLS_HOME` 时使用该值，否则使用操作系统
+  用户主目录
+- 技能目录：`<作用域根>/.agents/skills/`（namespaced 布局，`linxira-*` 前缀）
+- manifest：`<作用域根>/.agents/linxira-skills.json`
+
+```bash
+npx linxira-skills init --user      # 等价的 --global
+npx linxira-skills status --user
+npx linxira-skills update --user
+npx linxira-skills uninstall --user
+```
+
+用户作用域安装会让技能对每个项目可见，并在所有项目中占用 Agent 上下文；
+除非确实需要跨项目工具，否则优先使用项目作用域。`--user` 亦可写作
+`--global`。
+
 ## 第三方说明
 
 本仓库不会把第三方技能伪装成原创内容。只有满足以下条件的第三方正文才会被纳入

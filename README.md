@@ -144,6 +144,32 @@ npx linxira-skills update
 npx linxira-skills uninstall
 ```
 
+### Project vs user scope
+
+**Project scope is the default and the recommendation.** It requires running
+inside a Git repository, installs under the repository root, writes the
+`AGENTS.md` marker block, adds `.agents/skills/` and `.linxira/` to
+`.gitignore`, and records state in `.linxira/manifest.json`.
+
+User scope installs skills once for the current user, outside any repository.
+It does not need a Git repository, does not touch `AGENTS.md` or `.gitignore`,
+and never writes to `~/.zeta`:
+
+- scope root: `$LINXIRA_SKILLS_HOME` when set, otherwise the OS home directory
+- skills: `<scope root>/.agents/skills/` (namespaced layout, `linxira-*` roots)
+- manifest: `<scope root>/.agents/linxira-skills.json`
+
+```bash
+npx linxira-skills init --user      # alias: --global
+npx linxira-skills status --user
+npx linxira-skills update --user
+npx linxira-skills uninstall --user
+```
+
+A user-scope install makes every installed skill visible to every project and
+consumes agent context everywhere, so prefer project scope unless the skills
+are genuinely cross-project tooling. `--user` is also accepted as `--global`.
+
 ## What Is Included
 
 First-party skills provide execution boundaries for:

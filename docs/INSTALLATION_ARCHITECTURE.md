@@ -18,6 +18,36 @@ agents from one router to one second-level index and then to one exact leaf.
 A project can therefore use the same installed profile without a second
 runtime-specific plugin or a flat root containing every leaf skill.
 
+## Installation Scopes
+
+Project scope is the default and the recommendation. It requires a Git
+repository and writes the marker block, ignore entries, and
+`.linxira/manifest.json` described below.
+
+User scope installs once for the current user and is intended for
+cross-project tooling. `init --user` / `--global` resolves the scope root from
+`LINXIRA_SKILLS_HOME` when set, otherwise from the OS home directory. It does
+not require a Git repository, and it must not touch `AGENTS.md`, `.gitignore`,
+or `~/.zeta`:
+
+```text
+<scope root>/
+  .agents/
+    skills/                 namespaced layout (linxira-* roots)
+    linxira-skills.json     manifest (schema v2)
+```
+
+`status`, `update`, and `uninstall` read the user manifest only when `--user`
+(or `--global`) is passed; without it they keep project behavior. User-scope
+mutations keep the operation lock, symlink-component checks, rollback, and
+non-managed-directory refusal, but the lock and backup directories live under
+`.agents/` instead of `.linxira/`. No `.linxira/` directory is created in the
+scope root.
+
+Because a user-scope install is visible to every project and consumes agent
+context everywhere, `init --user` prints a one-line warning and project scope
+remains the default.
+
 ## What Is And Is Not Installed
 
 The repository retains complete upstream source tracks for research, review,
@@ -153,10 +183,10 @@ indexes and leaves are reached through their explicit repository paths.
 
 ```text
 npm install --save-dev @linxiraos/linxira-skills
-npx linxira-skills init [--profile core] [--layout namespaced|flat] [--dry-run]
-npx linxira-skills status
-npx linxira-skills update [--dry-run]
-npx linxira-skills uninstall [--dry-run]
+npx linxira-skills init [--profile core] [--layout namespaced|flat] [--user|--global] [--dry-run]
+npx linxira-skills status [--user|--global]
+npx linxira-skills update [--user|--global] [--dry-run]
+npx linxira-skills uninstall [--user|--global] [--dry-run]
 ```
 
 `core` is the default profile and contains 10 explicitly selected first-party
@@ -185,7 +215,10 @@ Command behavior is intentionally conservative:
 
 All mutating commands support `--dry-run`. None run `git add`, modify source
 submodules, fetch an upstream repository, request credentials, or send data to a
-remote service.
+remote service. With `--user`/`--global`, the same commands skip the Git-root
+requirement, operate on `<scope root>/.agents/skills/` and
+`<scope root>/.agents/linxira-skills.json`, and skip the `AGENTS.md` marker and
+`.gitignore` plans.
 
 ## Token And Model Behavior
 

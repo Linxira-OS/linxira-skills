@@ -14,6 +14,7 @@ import {
   writeFile,
 } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -33,33 +34,36 @@ export async function run(argv, cwd = process.cwd(), io = console) {
     return 0;
   }
 
-  const root = await findGitRoot(cwd);
-  for (const path of [
-    join(root, 'AGENTS.md'),
-    join(root, '.gitignore'),
-    join(root, '.agents', 'skills'),
-    manifestPath(root),
-  ]) {
-    await assertNoSymlinkComponents(root, path);
+  const scope = await resolveScope(options.user, cwd);
+  const guardedPaths = scope.user
+    ? [scope.skillsDir, scope.manifestFile, scope.lockFile]
+    : [
+        join(scope.root, 'AGENTS.md'),
+        join(scope.root, '.gitignore'),
+        scope.skillsDir,
+        scope.manifestFile,
+      ];
+  for (const path of guardedPaths) {
+    await assertNoSymlinkComponents(scope.root, path);
   }
 
   if (command === 'init') {
     return options.dryRun
-      ? initialize(root, options, io)
-      : withOperationLock(root, command, () => initialize(root, options, io));
+      ? initialize(scope, options, io)
+      : withOperationLock(scope, command, () => initialize(scope, options, io));
   }
   if (command === 'status') {
-    return showStatus(root, io);
+    return showStatus(scope, io);
   }
   if (command === 'update') {
     return options.dryRun
-      ? update(root, options, io)
-      : withOperationLock(root, command, () => update(root, options, io));
+      ? update(scope, options, io)
+      : withOperationLock(scope, command, () => update(scope, options, io));
   }
   if (command === 'uninstall') {
     return options.dryRun
-      ? uninstall(root, options, io)
-      : withOperationLock(root, command, () => uninstall(root, options, io));
+      ? uninstall(scope, options, io)
+      : withOperationLock(scope, command, () => uninstall(scope, options, io));
   }
 
   throw new CliError(`Unknown command: ${command}`);
@@ -68,7 +72,7 @@ export async function run(argv, cwd = process.cwd(), io = console) {
 function parseArguments(argv) {
   const [rawCommand = 'help', ...rawOptions] = argv;
   const command = rawCommand === '--help' || rawCommand === '-h' ? 'help' : rawCommand;
-  const options = { dryRun: false, force: false, profile: undefined, layout: undefined };
+  const options = { dryRun: false, force: false, user: false, profile: undefined, layout: undefined };
 
   for (let index = 0; index < rawOptions.length; index += 1) {
     const option = rawOptions[index];
@@ -76,6 +80,8 @@ function parseArguments(argv) {
       options.dryRun = true;
     } else if (option === '--force') {
       options.force = true;
+    } else if (option === '--user' || option === '--global') {
+      options.user = true;
     } else if (option === '--profile') {
       options.profile = rawOptions[index + 1];
       index += 1;
@@ -152,10 +158,44 @@ async function findGitRoot(cwd) {
   }
 }
 
-async function initialize(root, options, io) {
-  const existingManifest = await readManifest(root);
+async function resolveScope(user, cwd) {
+  if (user) {
+    const configured = process.env.LINXIRA_SKILLS_HOME;
+    const root = resolve(configured && configured.trim() ? configured : homedir());
+    return buildScope(root, true);
+  }
+  return buildScope(await findGitRoot(cwd), false);
+}
+
+// Project scope keeps .linxira/ build state in the repository. User scope
+// stores only what agents must read: skills under .agents/skills/ and the
+// manifest beside them. No .linxira directory is created in the home root.
+function buildScope(root, user) {
+  const agentsDir = join(root, '.agents');
+  return {
+    root,
+    user,
+    agentsDir,
+    skillsDir: join(agentsDir, 'skills'),
+    manifestFile: user ? join(agentsDir, 'linxira-skills.json') : join(root, '.linxira', 'manifest.json'),
+    lockFile: user ? join(agentsDir, 'linxira-skills.lock') : join(root, '.linxira', 'operation.lock'),
+    backupDir: user ? agentsDir : join(root, '.linxira'),
+    manifestLabel: user ? '.agents/linxira-skills.json' : '.linxira/manifest.json',
+    lockLabel: user ? '.agents/linxira-skills.lock' : '.linxira/operation.lock',
+  };
+}
+
+async function initialize(scope, options, io) {
+  const { root } = scope;
+  if (scope.user) {
+    io.log('Warning: a user-scope install makes skills visible to every project and consumes agent context; prefer project scope unless intentional.');
+  }
+
+  const existingManifest = await readManifest(scope);
   if (existingManifest) {
-    throw new CliError('This repository is already initialized. Use update or uninstall instead.');
+    throw new CliError(scope.user
+      ? 'The user scope is already initialized. Use update or uninstall instead.'
+      : 'This repository is already initialized. Use update or uninstall instead.');
   }
 
   const layout = options.layout ?? 'namespaced';
@@ -163,7 +203,7 @@ async function initialize(root, options, io) {
   const profileData = await profileEntries(profile);
   const entries = applyLayoutToEntries(layout, profileData.entries);
   const agentRoutes = applyLayoutToAgentRoutes(layout, profileData.agentRoutes);
-  const targets = entries.map(({ target }) => join(root, '.agents', 'skills', target));
+  const targets = entries.map(({ target }) => join(scope.skillsDir, target));
 
   for (const target of targets) {
     await assertNoSymlinkComponents(root, target);
@@ -172,26 +212,32 @@ async function initialize(root, options, io) {
     }
   }
 
-  const agentsPlan = await markerPlan(root, 'upsert', markerBlock(agentRoutes));
-  const ignorePlan = await gitignorePlan(root);
+  // User scope must not touch AGENTS.md or .gitignore: it is shared by every
+  // project and must not advertise project-specific routes.
+  const agentsPlan = scope.user ? undefined : await markerPlan(root, 'upsert', markerBlock(agentRoutes));
+  const ignorePlan = scope.user ? undefined : await gitignorePlan(root);
   const manifest = await buildManifest(layout, profile, entries);
 
   if (options.dryRun) {
-    reportInitPlan(profile, entries, agentsPlan, ignorePlan, io);
+    reportInitPlan(scope, profile, entries, agentsPlan, ignorePlan, io);
     return 0;
   }
 
   const createdTargets = [];
   try {
-    await mkdir(join(root, '.agents', 'skills'), { recursive: true });
+    await mkdir(scope.skillsDir, { recursive: true });
     for (const entry of entries) {
-      const target = join(root, '.agents', 'skills', entry.target);
+      const target = join(scope.skillsDir, entry.target);
       createdTargets.push(target);
       await copyEntry(entry, target);
     }
-    await applyPlan(agentsPlan);
-    await applyPlan(ignorePlan);
-    await writeManifest(root, manifest);
+    if (agentsPlan) {
+      await applyPlan(agentsPlan);
+    }
+    if (ignorePlan) {
+      await applyPlan(ignorePlan);
+    }
+    await writeManifest(scope, manifest);
   } catch (error) {
     for (const target of createdTargets.reverse()) {
       try {
@@ -200,24 +246,28 @@ async function initialize(root, options, io) {
         // A blocked ancestor can make one target unremovable; continue rolling back earlier copies.
       }
     }
-    await restorePlan(agentsPlan);
-    await restorePlan(ignorePlan);
-    await rm(manifestPath(root), { force: true });
+    if (agentsPlan) {
+      await restorePlan(agentsPlan);
+    }
+    if (ignorePlan) {
+      await restorePlan(ignorePlan);
+    }
+    await rm(scope.manifestFile, { force: true });
     throw error;
   }
-  io.log(`Initialized ${profile} profile with ${entries.length} managed entries (${layout} layout).`);
+  io.log(`Initialized ${profile} profile with ${entries.length} managed entries (${layout} layout${scope.user ? ', user scope' : ''}).`);
   return 0;
 }
 
-async function showStatus(root, io) {
-  const manifest = await readManifest(root);
+async function showStatus(scope, io) {
+  const manifest = await readManifest(scope);
   if (!manifest) {
     io.log('No Linxira manifest found.');
     return 0;
   }
 
-  await assertManifestTargetsSafe(root, manifest);
-  const statuses = await managedStatuses(root, manifest);
+  await assertManifestTargetsSafe(scope, manifest);
+  const statuses = await managedStatuses(scope, manifest);
   io.log(`Profile: ${manifest.profile}`);
   for (const { id, state } of statuses) {
     io.log(`${id}: ${state}`);
@@ -226,21 +276,22 @@ async function showStatus(root, io) {
   return statuses.some(({ state }) => state !== 'ok') ? 1 : 0;
 }
 
-async function update(root, options, io) {
-  const manifest = await readManifest(root);
+async function update(scope, options, io) {
+  const { root } = scope;
+  const manifest = await readManifest(scope);
   if (!manifest) {
     throw new CliError('No Linxira manifest found. Run init first.');
   }
 
-  await assertManifestTargetsSafe(root, manifest);
+  await assertManifestTargetsSafe(scope, manifest);
   const layout = manifestLayout(manifest);
   const profileData = await profileEntries(manifest.profile);
   const entries = applyLayoutToEntries(layout, profileData.entries);
   const agentRoutes = applyLayoutToAgentRoutes(layout, profileData.agentRoutes);
   for (const { target } of entries) {
-    await assertNoSymlinkComponents(root, join(root, '.agents', 'skills', target));
+    await assertNoSymlinkComponents(root, join(scope.skillsDir, target));
   }
-  const currentStatuses = await managedStatuses(root, manifest);
+  const currentStatuses = await managedStatuses(scope, manifest);
   const divergent = currentStatuses.filter(({ state }) => state !== 'ok');
   if (divergent.length > 0 && !options.force) {
     throw new CliError(`Refusing to replace modified managed entries: ${divergent.map(({ id }) => id).join(', ')}. Re-run with --force after review.`);
@@ -249,14 +300,14 @@ async function update(root, options, io) {
   const managedTargets = new Set(Object.values(manifest.entries).map(({ path }) => path));
   const desiredEntries = new Map(entries.map((entry) => [entry.id, entry]));
   for (const { target } of entries) {
-    const targetPath = join(root, '.agents', 'skills', target);
+    const targetPath = join(scope.skillsDir, target);
     if (existsSync(targetPath) && !managedTargets.has(target)) {
       throw new CliError(`Refusing to overwrite non-managed Linxira path: ${relative(root, targetPath)}`);
     }
   }
 
-  const agentsPlan = await markerPlan(root, 'upsert', markerBlock(agentRoutes));
-  const ignorePlan = await gitignorePlan(root);
+  const agentsPlan = scope.user ? undefined : await markerPlan(root, 'upsert', markerBlock(agentRoutes));
+  const ignorePlan = scope.user ? undefined : await gitignorePlan(root);
   const nextManifest = await buildManifest(layout, manifest.profile, entries);
   const removals = Object.entries(manifest.entries).filter(([id, record]) => {
     const desired = desiredEntries.get(id);
@@ -271,16 +322,16 @@ async function update(root, options, io) {
       io.log(`[dry-run] remove .agents/skills/${record.path}`);
     }
     reportPlans(agentsPlan, ignorePlan, io);
-    io.log('[dry-run] write .linxira/manifest.json');
+    io.log(`[dry-run] write ${scope.manifestLabel}`);
     return 0;
   }
 
-  const backupRoot = join(root, '.linxira', `.update-backup-${process.pid}-${Date.now()}`);
+  const backupRoot = join(scope.backupDir, `.update-backup-${process.pid}-${Date.now()}`);
   const moved = [];
   const copiedTargets = [];
   try {
     for (const record of Object.values(manifest.entries)) {
-      const target = join(root, '.agents', 'skills', record.path);
+      const target = join(scope.skillsDir, record.path);
       if (!existsSync(target)) {
         continue;
       }
@@ -290,20 +341,28 @@ async function update(root, options, io) {
       moved.push({ target, backup });
     }
     for (const entry of entries) {
-      const target = join(root, '.agents', 'skills', entry.target);
+      const target = join(scope.skillsDir, entry.target);
       copiedTargets.push(target);
       await copyEntry(entry, target);
     }
-    await applyPlan(agentsPlan);
-    await applyPlan(ignorePlan);
+    if (agentsPlan) {
+      await applyPlan(agentsPlan);
+    }
+    if (ignorePlan) {
+      await applyPlan(ignorePlan);
+    }
     await pruneEmptyAncestors(root, Object.values(manifest.entries).map(({ path }) => path));
-    await writeManifest(root, nextManifest);
+    await writeManifest(scope, nextManifest);
   } catch (error) {
     for (const target of copiedTargets.reverse()) {
       await rm(target, { recursive: true, force: true });
     }
-    await restorePlan(agentsPlan);
-    await restorePlan(ignorePlan);
+    if (agentsPlan) {
+      await restorePlan(agentsPlan);
+    }
+    if (ignorePlan) {
+      await restorePlan(ignorePlan);
+    }
     for (const { target, backup } of moved.reverse()) {
       await mkdir(dirname(target), { recursive: true });
       await rename(backup, target);
@@ -320,34 +379,35 @@ async function update(root, options, io) {
   return 0;
 }
 
-async function uninstall(root, options, io) {
-  const manifest = await readManifest(root);
+async function uninstall(scope, options, io) {
+  const { root } = scope;
+  const manifest = await readManifest(scope);
   if (!manifest) {
     throw new CliError('No Linxira manifest found.');
   }
 
-  await assertManifestTargetsSafe(root, manifest);
-  const statuses = await managedStatuses(root, manifest);
+  await assertManifestTargetsSafe(scope, manifest);
+  const statuses = await managedStatuses(scope, manifest);
   const divergent = statuses.filter(({ state }) => state !== 'ok');
   if (divergent.length > 0 && !options.force) {
     throw new CliError(`Refusing to remove modified managed entries: ${divergent.map(({ id }) => id).join(', ')}. Re-run with --force after review.`);
   }
 
-  const agentsPlan = await markerPlan(root, 'remove');
+  const agentsPlan = scope.user ? undefined : await markerPlan(root, 'remove');
   if (options.dryRun) {
     for (const { path } of statuses) {
       io.log(`[dry-run] remove .agents/skills/${path}`);
     }
     reportPlans(agentsPlan, undefined, io);
-    io.log('[dry-run] remove .linxira/manifest.json');
+    io.log(`[dry-run] remove ${scope.manifestLabel}`);
     return 0;
   }
 
-  const backupRoot = join(root, '.linxira', `.uninstall-backup-${process.pid}-${Date.now()}`);
+  const backupRoot = join(scope.backupDir, `.uninstall-backup-${process.pid}-${Date.now()}`);
   const moved = [];
   try {
     for (const { path } of statuses) {
-      const target = join(root, '.agents', 'skills', path);
+      const target = join(scope.skillsDir, path);
       if (!existsSync(target)) {
         continue;
       }
@@ -356,11 +416,15 @@ async function uninstall(root, options, io) {
       await rename(target, backup);
       moved.push({ target, backup });
     }
-    await applyPlan(agentsPlan);
+    if (agentsPlan) {
+      await applyPlan(agentsPlan);
+    }
     await pruneEmptyAncestors(root, statuses.map(({ path }) => path));
-    await rm(manifestPath(root), { force: true });
+    await rm(scope.manifestFile, { force: true });
   } catch (error) {
-    await restorePlan(agentsPlan);
+    if (agentsPlan) {
+      await restorePlan(agentsPlan);
+    }
     for (const { target, backup } of moved.reverse()) {
       await mkdir(dirname(target), { recursive: true });
       await rename(backup, target);
@@ -439,8 +503,8 @@ function assertManagedPath(value) {
   }
 }
 
-async function readManifest(root) {
-  const path = manifestPath(root);
+async function readManifest(scope) {
+  const path = manifestPath(scope);
   if (!existsSync(path)) {
     return null;
   }
@@ -468,8 +532,8 @@ async function readManifest(root) {
   return manifest;
 }
 
-function manifestPath(root) {
-  return join(root, '.linxira', 'manifest.json');
+function manifestPath(scope) {
+  return scope.manifestFile;
 }
 
 async function buildManifest(layout, profile, sources) {
@@ -489,15 +553,15 @@ async function buildManifest(layout, profile, sources) {
   };
 }
 
-async function writeManifest(root, manifest) {
-  await mkdir(dirname(manifestPath(root)), { recursive: true });
-  await atomicWriteFile(manifestPath(root), `${JSON.stringify(manifest, null, 2)}\n`);
+async function writeManifest(scope, manifest) {
+  await mkdir(dirname(manifestPath(scope)), { recursive: true });
+  await atomicWriteFile(manifestPath(scope), `${JSON.stringify(manifest, null, 2)}\n`);
 }
 
-async function managedStatuses(root, manifest) {
+async function managedStatuses(scope, manifest) {
   const statuses = [];
   for (const [id, record] of Object.entries(manifest.entries).sort(([left], [right]) => left.localeCompare(right))) {
-    const target = join(root, '.agents', 'skills', record.path);
+    const target = join(scope.skillsDir, record.path);
     let state = 'ok';
     if (!existsSync(target)) {
       state = 'missing';
@@ -649,9 +713,9 @@ async function atomicWriteFile(path, content) {
   }
 }
 
-async function assertManifestTargetsSafe(root, manifest) {
+async function assertManifestTargetsSafe(scope, manifest) {
   for (const record of Object.values(manifest.entries)) {
-    await assertNoSymlinkComponents(root, join(root, '.agents', 'skills', record.path));
+    await assertNoSymlinkComponents(scope.root, join(scope.skillsDir, record.path));
   }
 }
 
@@ -699,9 +763,9 @@ async function assertNoSymlinkComponents(root, target) {
   }
 }
 
-async function withOperationLock(root, command, action) {
-  const lockPath = join(root, '.linxira', 'operation.lock');
-  await assertNoSymlinkComponents(root, lockPath);
+async function withOperationLock(scope, command, action) {
+  const lockPath = scope.lockFile;
+  await assertNoSymlinkComponents(scope.root, lockPath);
   await mkdir(dirname(lockPath), { recursive: true });
   let handle;
   try {
@@ -709,7 +773,7 @@ async function withOperationLock(root, command, action) {
     await handle.writeFile(`${JSON.stringify({ pid: process.pid, command, startedAt: new Date().toISOString() })}\n`);
   } catch (error) {
     if (error.code === 'EEXIST') {
-      throw new CliError('Another Linxira lifecycle operation is in progress. Review .linxira/operation.lock if no process is active.');
+      throw new CliError(`Another Linxira lifecycle operation is in progress. Review ${scope.lockLabel} if no process is active.`);
     }
     throw error;
   }
@@ -722,12 +786,12 @@ async function withOperationLock(root, command, action) {
   }
 }
 
-function reportInitPlan(profile, sources, agentsPlan, ignorePlan, io) {
+function reportInitPlan(scope, profile, sources, agentsPlan, ignorePlan, io) {
   for (const { target } of sources) {
     io.log(`[dry-run] copy .agents/skills/${target}`);
   }
   reportPlans(agentsPlan, ignorePlan, io);
-  io.log(`[dry-run] write .linxira/manifest.json for ${profile}`);
+  io.log(`[dry-run] write ${scope.manifestLabel} for ${profile}`);
 }
 
 function reportPlans(agentsPlan, ignorePlan, io) {
@@ -739,5 +803,5 @@ function reportPlans(agentsPlan, ignorePlan, io) {
 }
 
 function helpText() {
-  return `Usage: linxira-skills <command> [options]\n\nCommands:\n  init [--profile core] [--layout namespaced|flat] [--dry-run]\n  status\n  update [--dry-run] [--force]\n  uninstall [--dry-run] [--force]\n\nLayouts:\n  namespaced  default; materializes routers as .agents/skills/linxira-<root>/ to\n              avoid collisions with other skills in the same directory\n  flat        materializes routers as .agents/skills/<root>/; matches v0.1.0`;
+  return `Usage: linxira-skills <command> [options]\n\nCommands:\n  init [--profile core] [--layout namespaced|flat] [--user|--global] [--dry-run]\n  status [--user|--global]\n  update [--user|--global] [--dry-run] [--force]\n  uninstall [--user|--global] [--dry-run] [--force]\n\nScopes:\n  project  default; requires a Git repository and installs under the repo root\n  user     installs for the current user under <LINXIRA_SKILLS_HOME or HOME>.\n           Primarily for cross-project tooling; it is visible to every project\n           and consumes agent context, so prefer project scope.\n\nLayouts:\n  namespaced  default; materializes routers as .agents/skills/linxira-<root>/ to\n              avoid collisions with other skills in the same directory\n  flat        materializes routers as .agents/skills/<root>/; matches v0.1.0\n\nPaths (user scope):\n  skills    <scope>/.agents/skills/\n  manifest  <scope>/.agents/linxira-skills.json\n\nExamples:\n  linxira-skills init --profile core\n  linxira-skills status\n  linxira-skills init --user --profile mcp-connectors\n  linxira-skills status --user\n  linxira-skills uninstall --user`;
 }

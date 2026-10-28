@@ -2,6 +2,27 @@
 
 All notable changes to this package are documented in this file.
 
+## Unreleased
+
+## [0.2.0] - 2026-10-28
+
+### Added
+
+- User-scope installation: `init`, `status`, `update`, and `uninstall` accept
+  `--user` (alias `--global`). A user-scope install does not require a Git
+  repository, does not touch `AGENTS.md` or `.gitignore`, and never writes to
+  `~/.zeta`. It installs under `$LINXIRA_SKILLS_HOME` when set, otherwise the
+  OS home directory: skills in `<scope root>/.agents/skills/` (namespaced
+  `linxira-*` roots) and metadata in
+  `<scope root>/.agents/linxira-skills.json`.
+- `init --user` prints a one-line warning that a global install is visible to
+  every project and consumes agent context; project scope remains the default
+  and the recommendation.
+- User-scope operations keep the operation lock, symlink-component checks,
+  rollback behavior, and refusal to overwrite non-managed directories, with
+  lock and backup files under `.agents/` instead of `.linxira/`.
+- Tests covering user-scope init, status, `--global` alias, and uninstall.
+
 ## [0.1.2] - 2026-10-02
 
 ### Added

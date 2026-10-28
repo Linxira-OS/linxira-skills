@@ -375,6 +375,75 @@ test('profiles held for review are not installable', async (context) => {
   await assert.rejects(() => run(['init', '--profile', 'html-reporting-core'], root, output()), /Unknown profile/);
 });
 
+async function userScopeFixture(context) {
+  const scope = await mkdtemp(join(tmpdir(), 'linxira-user-home-'));
+  const cwd = await mkdtemp(join(tmpdir(), 'linxira-user-cwd-'));
+  const previous = process.env.LINXIRA_SKILLS_HOME;
+  process.env.LINXIRA_SKILLS_HOME = scope;
+  context.after(async () => {
+    if (previous === undefined) {
+      delete process.env.LINXIRA_SKILLS_HOME;
+    } else {
+      process.env.LINXIRA_SKILLS_HOME = previous;
+    }
+    await rm(scope, { recursive: true, force: true });
+    await rm(cwd, { recursive: true, force: true });
+  });
+  return { scope, cwd };
+}
+
+test('init --user installs under the user scope without project markers', async (context) => {
+  const { scope, cwd } = await userScopeFixture(context);
+
+  const log = output();
+  assert.equal(await run(['init', '--user'], cwd, log), 0);
+  assert.match(log.lines.join('\n'), /user-scope install makes skills visible to every project/);
+
+  const manifest = JSON.parse(await readFile(join(scope, '.agents', 'linxira-skills.json'), 'utf8'));
+  assert.equal(manifest.profile, 'core');
+  assert.equal(manifest.schemaVersion, 2);
+  assert.equal(manifest.layout, 'namespaced');
+  assert.equal(
+    existsSync(join(scope, '.agents', 'skills', 'linxira-engineering', 'SKILL.md')),
+    true,
+  );
+  assert.equal(existsSync(join(scope, '.linxira')), false);
+  assert.equal(existsSync(join(scope, 'AGENTS.md')), false);
+  assert.equal(existsSync(join(scope, '.gitignore')), false);
+  assert.equal(existsSync(join(cwd, 'AGENTS.md')), false);
+  assert.equal(existsSync(join(cwd, '.gitignore')), false);
+  assert.equal(existsSync(join(cwd, '.agents')), false);
+
+  assert.equal(await run(['status', '--user'], cwd, output()), 0);
+  assert.equal(await run(['uninstall', '--user'], cwd, output()), 0);
+});
+
+test('status --user reports healthy entries and uninstall --user preserves unrelated content', async (context) => {
+  const { scope, cwd } = await userScopeFixture(context);
+  assert.equal(await run(['init', '--user'], cwd, output()), 0);
+
+  const statusLog = output();
+  assert.equal(await run(['status', '--global'], cwd, statusLog), 0);
+  assert.match(statusLog.lines.join('\n'), /^Profile: core$/m);
+  const entryLines = statusLog.lines.filter((line) => line.includes(': ') && !line.startsWith('Profile: '));
+  assert.ok(entryLines.length > 0);
+  for (const line of entryLines) {
+    assert.match(line, /: ok$/);
+  }
+
+  const unrelated = join(scope, '.agents', 'skills', 'custom-user-skill');
+  await mkdir(unrelated, { recursive: true });
+  await writeFile(join(unrelated, 'SKILL.md'), '# User-owned skill\n');
+
+  assert.equal(await run(['uninstall', '--global'], cwd, output()), 0);
+  assert.equal(existsSync(join(scope, '.agents', 'linxira-skills.json')), false);
+  assert.equal(existsSync(join(scope, '.agents', 'skills', 'linxira-engineering')), false);
+  assert.equal(existsSync(join(scope, '.agents', 'skills', 'linxira-research')), false);
+  assert.equal(await readFile(join(unrelated, 'SKILL.md'), 'utf8'), '# User-owned skill\n');
+  assert.equal(existsSync(join(scope, 'AGENTS.md')), false);
+  assert.equal(existsSync(join(scope, '.gitignore')), false);
+});
+
 test('packed CLI contains only release material and runs in a clean Git repository', async (context) => {
   const root = await mkdtemp(join(tmpdir(), 'linxira-packed-'));
   const tarballDirectory = join(root, 'tarballs');
