@@ -4,6 +4,17 @@ All notable changes to this package are documented in this file.
 
 ## Unreleased
 
+## [0.1.4] - 2026-10-29
+
+### Changed
+
+- The Publish workflow now creates the matching GitHub Release on the same tag
+  right after the signed npm publish succeeds (`gh release create
+  --generate-notes`, idempotent when a Release already exists). Publish and
+  Release steps run only for `v*` tag refs, and the workflow keeps a single
+  trigger source (tag push) so creating a Release never re-triggers a second
+  publish.
+
 ## [0.1.3] - 2026-10-28
 
 ### Added

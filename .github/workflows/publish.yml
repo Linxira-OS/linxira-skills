@@ -1,6 +1,14 @@
 name: Publish
 
-# Publishes @linxiraos/linxira-skills through npm trusted publishing (OIDC).
+# Publishes @linxiraos/linxira-skills through npm trusted publishing (OIDC)
+# and then creates the matching GitHub Release on the same tag, so a version
+# is never half-released: the Release page appears only after npm accepted the
+# signed publish.
+#
+# Single trigger source: pushing a v* tag. Creating the Release here does NOT
+# re-trigger this workflow (no `release: published` trigger), which avoids
+# duplicate-publish loops.
+#
 # Requires the npm-side trusted publisher binding to match exactly:
 #   repository owner/name: Linxira-OS/linxira-skills
 #   workflow filename:     publish.yml
@@ -13,7 +21,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 concurrency:
@@ -22,7 +30,7 @@ concurrency:
 
 jobs:
   publish:
-    name: Publish to npm (trusted publishing)
+    name: Publish to npm and create GitHub Release
     runs-on: ubuntu-latest
     environment: npm
     steps:
@@ -38,5 +46,20 @@ jobs:
         run: ./scripts/audit-first-party-skills.ps1
       - name: Test
         run: npm test
-      - name: Publish
+      - name: Publish to npm (trusted publishing)
+        if: startsWith(github.ref, 'refs/tags/v')
         run: npm publish --provenance --access public
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $GITHUB_REF_NAME already exists; leaving it untouched."
+          else
+            gh release create "$GITHUB_REF_NAME" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "$GITHUB_REF_NAME" \
+              --generate-notes
+          fi
