@@ -27,7 +27,7 @@ Current profile counts in the package build:
 | `bioinformatics-core` | `core` plus 10 first-party bioinformatics and bulk RNA-seq workflow skills |
 | `biology-research-core` | `bioinformatics-core` plus 19 first-party biological discovery, experimental design, wet-lab governance, and complete academic delivery skills |
 | `science-research-core` | `biology-research-core` plus chemistry, physics, crop/plant, ecology, animal physiology, biochemistry/molecular biology, and medical/translational study-design skills |
-| `research-communication-core` | `core` plus 47 first-party manuscript, citation, formatting, figure, image, document, LaTeX, presentation, scientific-figure production, AI-figure, editor, and Chinese research-document skills (including vendored Apache-2.0/MIT adaptations; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)) |
+| `research-communication-core` | `core` plus 54 first-party manuscript, citation, formatting, figure, image, document, LaTeX, presentation, scientific-figure production, AI-figure, editor, de-AI-tone writing, provenance-check, R/ggplot, image-polish, and Chinese research-document skills (including vendored Apache-2.0/MIT adaptations; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)) |
 | `mcp-connectors` | 2 first-party MCP navigation and OpenDesign connector skills; the OpenDesign connector is inert until its local daemon and `od` CLI are installed |
 
 Reviewed connector profiles such as AlphaFold DB public access are tracked in
@@ -196,6 +196,15 @@ First-party skills provide execution boundaries for:
 - MCP server discovery and external design workspace connection
   (`mcp-recommendations`, `open-design`; `mcp-connectors` profile, fail-closed
   until the external server is installed)
+- de-AI-tone writing in native languages: English academic and grant prose
+  (`academic-humanizer`), English general (`humanizer`), narrative and venue
+  passes (`sepia`), Simplified Chinese (`qu-ai-wei`; `nsfc-humanization` stays
+  the NSFC-grant specialist)
+- provenance safety before submission: invisible-character and document
+  metadata scanning/cleaning with number and citation fidelity gates
+  (`de-aigc-provenance`)
+- R/ggplot2 publication figures (`r-ggplot-figures`) and disclosed,
+  integrity-bounded image polishing (`figure-polish`)
 - Origin/OriginPro automated rendering with read-back verification
   (`editaplot`; vendored, Apache-2.0, requires a local Origin license)
 - Chinese research-document workflows: NSFC grant sections, SCI submission,

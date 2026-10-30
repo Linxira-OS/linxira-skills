@@ -286,6 +286,10 @@ test('research-communication-core materializes delivery skills', async (context)
       'academic-delivery-planning',
       'academic-document-formatting',
       'academic-document-generation',
+      'academic-humanizer',
+      'humanizer',
+      'sepia',
+      'qu-ai-wei',
       'latex-academic-authoring',
       'manuscript-structure-and-argument',
       'complete-example',
@@ -310,7 +314,7 @@ test('research-communication-core materializes delivery skills', async (context)
       'research-plan',
       'research-topic-extractor',
     ],
-    validation: ['academic-artifact-validation'],
+    validation: ['academic-artifact-validation', 'de-aigc-provenance'],
     citations: ['citation-and-reference-formatting', 'research-citation-check'],
     visuals: [
       'scientific-figures-and-tables',
@@ -324,6 +328,8 @@ test('research-communication-core materializes delivery skills', async (context)
       'paper-explain-figures',
       'ai-figure-prompting',
       'figureforge',
+      'r-ggplot-figures',
+      'figure-polish',
     ],
     presentations: ['academic-presentation-design', 'academic-presentation-generation', 'ppt-master'],
   };
@@ -337,7 +343,7 @@ test('research-communication-core materializes delivery skills', async (context)
   assert.equal(await run(['init', '--profile', 'research-communication-core'], root, output()), 0);
   const manifest = JSON.parse(await readFile(join(root, '.linxira', 'manifest.json'), 'utf8'));
   assert.equal(manifest.profile, 'research-communication-core');
-  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 57);
+  assert.equal(Object.values(manifest.entries).filter(({ kind }) => kind === 'directory').length, 64);
   assert.match(await readFile(join(root, 'AGENTS.md'), 'utf8'), /delivery\/SKILL\.md/);
   for (const [branch, names] of Object.entries(skills)) {
     for (const skill of names) {

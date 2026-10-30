@@ -26,3 +26,7 @@
 - Develop scientific questions and testable hypotheses from research material: `research-idea/SKILL.md`
 - Plan personalized, executable analysis strategies from top-venue methods: `research-plan/SKILL.md`
 - Extract a structured topic summary with keywords from files or pages: `research-topic-extractor/SKILL.md`
+- De-tone English academic prose, papers, abstracts, and rebuttals: `academic-humanizer/SKILL.md`
+- De-tone general English prose with a numbered pattern catalog: `humanizer/SKILL.md`
+- Fix narrative architecture, discourse flow, and venue registers before surface style: `sepia/SKILL.md`
+- De-tone Simplified Chinese prose with pattern catalog, edit boundaries, and platform routing: `qu-ai-wei/SKILL.md`

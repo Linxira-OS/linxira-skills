@@ -11,3 +11,5 @@
 - Decode what a paper figure shows and produce a readable how-to-read report: `paper-explain-figures/SKILL.md`
 - Prompt AI image models for compliant schematic figures, then vectorize and label them: `ai-figure-prompting/SKILL.md`
 - Zero-install browser SVG editor for assembling and refining figures, posters, and schematics: `figureforge/SKILL.md`
+- Build publication figures in R with ggplot2, patchwork, and journal-exact export: `r-ggplot-figures/SKILL.md`
+- Polish publication images with uniform, disclosed adjustments and integrity red lines: `figure-polish/SKILL.md`

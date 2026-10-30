@@ -29,6 +29,10 @@ directory retains its upstream license text, records the upstream revision in
 | `skills/nsfc-*` (11), `skills/paper-*` (4), `skills/research-*` (9), `skills/make-latex-model`, `skills/transfer-old-latex-to-new`, `skills/complete-example` | `huangwb8/ChineseResearchLaTeX` | `f1c7206faafde597c65f9eb9fa6b2abaa5518c6e` | MIT | Chinese research-document AI skills (NSFC grant, SCI submission, literature workflow); template repositories and `.bensz-api` workspace convention not vendored |
 | `skills/figureforge` | `jing1312/nature-figure-skill` | `af778027c866e2e6b3432b946e44a4a2b4434d82` | MIT | Original FigureForge browser editor subtree only; derived `nature-*` texts and CC BY-NC assets excluded |
 | `skills/ppt-master` | `hugohe3/ppt-master` | `b6843645766c9ab63a7f1486cfd330d6ad337e99` | MIT | Full skill subtree (13k files); AGPL PyMuPDF is an optional requirement only; brand templates are reference-only (see skill `VENDORED.md`) |
+| `skills/academic-humanizer` | `AIScientists-Dev/academic-humanizer` | `94b88b23703bed7df507acae7d6d5876209a0cdf` | MIT | English academic and NSF/NIH proposal de-tone pass |
+| `skills/humanizer` | `blader/humanizer` | `0ef9fe5bc3572734fd3ae6c448fe00a30cd5dcf0` | MIT | English general de-AI-tone pattern catalog (criteria from Wikipedia at idea level) |
+| `skills/sepia` | `Nanako0129/sepia` | `fb06be76abeae7dd606960a32f2b10c1d1798e0d` | MIT | Narrative/discourse/venue passes and Chinese calibration; canonical skill subtree only |
+| `skills/qu-ai-wei` | `LifelongLazyLearner/qu-ai-wei` | `1d32e803f091ec90808a69683ebf49e8a970a5e7` | MIT | Simplified Chinese de-AI-tone; v0.9.1 pinned, embedded mode default |
 
 First-party original skills are not registered here.
 

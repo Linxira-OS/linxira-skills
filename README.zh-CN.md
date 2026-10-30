@@ -55,7 +55,7 @@ Linux 是所有 profile 可复用的执行基础层，不是一个学科包。
 | `bioinformatics-core` | `core` + 10 个一方生物信息学和 bulk RNA-seq 闭环技能 |
 | `biology-research-core` | `bioinformatics-core` + 19 个一方生物学课题、文献、证据、实验设计、统计、湿实验治理和完整论文交付技能 |
 | `science-research-core` | `biology-research-core` + 化学、物理、作物/植物、生态、动物生理、生物化学/分子生物学和医学/转化研究设计技能 |
-| `research-communication-core` | `core` + 47 个一方论文写作、引用、正文排版、图表、图像边界、文档、LaTeX、学术 PPT、科研绘图生产、AI 生图、图形编辑器与中文科研文档技能（含 vendored 的 Apache-2.0/MIT 适配，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)） |
+| `research-communication-core` | `core` + 54 个一方论文写作、引用、正文排版、图表、图像边界、文档、LaTeX、学术 PPT、科研绘图生产、AI 生图、图形编辑器、去 AI 味写作、溯源校验、R/ggplot、图片美化与中文科研文档技能（含 vendored 的 Apache-2.0/MIT 适配，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)） |
 | `mcp-connectors` | 2 个一方 MCP 导航与 OpenDesign 连接器技能；连接器在本地守护进程与 `od` CLI 未安装前不生效（fail-closed） |
 
 科研绘图、编辑器与中文科研文档技能族已进入 `research-communication-core`；
@@ -75,6 +75,13 @@ MCP 连接器两技能另在 `mcp-connectors` profile。详见
   PPTX 生产套件（`ppt-master`，vendored，MIT）
 - MCP 导航与外部设计工作区连接（`mcp-recommendations`、`open-design`；
   `mcp-connectors` profile，外部服务未安装时 fail-closed）
+- 原生语言去 AI 味：英文通用（`humanizer`）、英文学术与基金（`academic-humanizer`）、
+  叙事与体裁层（`sepia`）、简体中文通用（`qu-ai-wei`；`nsfc-humanization`
+  仍为标书专用）
+- 投稿前溯源安全：不可见字符与文档元数据扫描/清理 + 数字/引用保真校验
+  （`de-aigc-provenance`）
+- R/ggplot2 出版绘图（`r-ggplot-figures`）与有披露纪律的图片美化
+  （`figure-polish`）
 
 另外还定义了若干 reviewed connector profile，例如 AlphaFold DB public，
 但它们目前不是单独打包 payload。

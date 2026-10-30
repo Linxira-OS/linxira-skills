@@ -4,6 +4,25 @@ All notable changes to this package are documented in this file.
 
 ## Unreleased
 
+## [0.1.5] - 2026-10-30
+
+### Added
+
+- De-AI-tone writing family in native languages: `academic-humanizer`
+  (English academic papers, abstracts, rebuttals, NSF/NIH proposals),
+  `humanizer` (English general pattern catalog), `sepia` (narrative,
+  discourse, and venue passes plus Chinese calibration), and `qu-ai-wei`
+  (Simplified Chinese general, v0.9.1 pinned). All MIT, vendored with pinned
+  revisions; `nsfc-humanization` remains the NSFC-grant specialist.
+- `de-aigc-provenance`: clean-room first-party skill that scans and cleans
+  invisible characters and document metadata (TXT/MD/DOCX/PNG/JPEG) and gates
+  number, citation, and table-reference fidelity. No detection-evasion claims.
+- Plotting gap fillers: `r-ggplot-figures` (R/ggplot2 publication figures with
+  patchwork and journal-exact export) and `figure-polish` (uniform, disclosed
+  image polishing with integrity red lines).
+- `research-communication-core` now carries 54 skills; route indexes updated;
+  THIRD_PARTY_NOTICES and SOURCES list the four new MIT upstreams.
+
 ## [0.1.4] - 2026-10-29
 
 ### Changed
